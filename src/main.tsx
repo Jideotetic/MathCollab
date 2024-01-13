@@ -7,6 +7,7 @@ import "./index.css";
 import HomePage from "./routes/HomePage";
 import Login from "./routes/Login";
 import SignUp from "./routes/SignUp";
+import PasswordReset from "./routes/PasswordReset";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "password-reset",
+        element: <PasswordReset />,
       },
     ],
   },
