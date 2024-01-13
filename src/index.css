@@ -4,5 +4,5 @@
 
 :root {
   font-family: "Roboto Condensed", sans-serif;
-  font-size: clamp(1.2rem, 1.1313rem + 0.3438vw, 1.4063rem);
+  font-size: clamp(1rem, 0.9583rem + 0.2083vw, 1.125rem);
 }

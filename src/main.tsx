@@ -5,6 +5,8 @@ import Root from "./routes/Root";
 import ErrorPage from "./ErrorPage";
 import "./index.css";
 import HomePage from "./routes/HomePage";
+import Login from "./routes/Login";
+import SignUp from "./routes/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,17 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+      {
+        path: "password-reset",
       },
     ],
   },
