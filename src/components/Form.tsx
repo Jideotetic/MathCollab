@@ -3,7 +3,7 @@ import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
 import { useState } from "react";
 
-interface Props {
+export interface Props {
   label: string;
   inputType: string;
 }

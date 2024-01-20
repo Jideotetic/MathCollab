@@ -1,7 +1,7 @@
 import RevealPassword from "./RevealPassword";
-import { InputType } from "../utilities/types";
+import { Props } from "./Form";
 
-export default function Inputs({ inputs }: { inputs: InputType[] }) {
+export default function Inputs({ inputs }: { inputs: Props[] }) {
   return (
     <>
       {inputs.map((input) => (
