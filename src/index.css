@@ -3,6 +3,5 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Roboto Condensed", sans-serif;
-  font-size: clamp(1rem, 0.9583rem + 0.2083vw, 1.125rem);
+  font-family: "Raleway", sans-serif;
 }

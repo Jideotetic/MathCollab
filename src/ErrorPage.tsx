@@ -6,16 +6,13 @@ export default function ErrorPage() {
   let errorCode;
 
   if (isRouteErrorResponse(error)) {
-    if (error.status === 404) {
-      errorCode = error.status;
-    }
+    errorCode = error.status;
     errorMessage = error.data?.message || error.statusText;
   } else if (error instanceof Error) {
     errorMessage = error.message;
   } else if (typeof error === "string") {
     errorMessage = error;
   } else {
-    console.error(error);
     errorMessage = "Unknown error";
   }
 
