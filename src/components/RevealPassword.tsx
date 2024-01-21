@@ -1,16 +1,11 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-
-interface Props {
-  passwordVisible: boolean;
-  onRevealPassword: void;
-}
-
+import { MouseEventHandler } from "react";
 export default function RevealPassword({
   passwordVisible,
   onRevealPassword,
 }: {
   passwordVisible: boolean;
-  onRevealPassword: void;
+  onRevealPassword: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <>

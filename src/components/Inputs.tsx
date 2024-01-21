@@ -5,7 +5,7 @@ import { Props } from "./Form";
 export default function Inputs({ inputs }: { inputs: Props[] }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  function handleRevealPassword(): void {
+  function handleRevealPassword() {
     setPasswordVisible(!passwordVisible);
   }
 
