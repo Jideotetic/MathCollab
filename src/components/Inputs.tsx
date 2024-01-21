@@ -1,13 +1,26 @@
 import RevealPassword from "./RevealPassword";
+import { useState } from "react";
 import { Props } from "./Form";
 
 export default function Inputs({ inputs }: { inputs: Props[] }) {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  function handleRevealPassword(): void {
+    setPasswordVisible(!passwordVisible);
+  }
+
   return (
     <>
       {inputs.map((input) => (
         <div className="relative" key={input.inputType}>
           <input
-            type={input.inputType}
+            type={
+              input.inputType === "email"
+                ? "email"
+                : passwordVisible
+                  ? "text"
+                  : "password"
+            }
             name={input.inputType}
             required
             id={input.inputType}
@@ -21,7 +34,12 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
           >
             {input.label}
           </label>
-          {input.inputType === "password" && <RevealPassword />}
+          {input.inputType === "password" && (
+            <RevealPassword
+              passwordVisible={passwordVisible}
+              onRevealPassword={handleRevealPassword}
+            />
+          )}
         </div>
       ))}
     </>

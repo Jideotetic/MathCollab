@@ -9,20 +9,17 @@ const inputs = [
 ];
 
 const headerContent = {
-  firstHeaderText: "Math",
-  styledText: "C",
-  lastHeaderText: "ollab",
-  secondHeading: "Verify Email",
-  paragraph: "Enter the verification code sent to",
+  title: "Verify Email",
+  description: "Enter the verification code sent to",
   email: "Jideotetic@gmail.com",
 };
 
-export default function OTPForm() {
+export default function VerifyEmailOTPForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="verify-otp" />
-      <FormFooter formType="verify-otp" />
+      <Form inputs={inputs} formType="verify-email" />
+      <FormFooter formType="verify-email" />
     </FormWrapper>
   );
 }

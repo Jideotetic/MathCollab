@@ -4,23 +4,22 @@ import FormFooter from "./FormFooter";
 import Form from "./Form";
 
 const inputs = [
-  { label: "Email", inputType: "email" },
+  { label: "Password", inputType: "password" },
   { label: "Password", inputType: "password" },
 ];
 
 const headerContent = {
-  title: "",
-  description:
-    "Sign in to your account and collaborate with like minds in solving problems",
-  email: "",
+  title: "Reset Password",
+  description: "Enter the verification code send to",
+  email: "Jideotetic@gmail.com",
 };
 
-export default function LoginForm() {
+export default function VerifyPasswordResetForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="login" />
-      <FormFooter formType="login" />
+      <Form inputs={inputs} formType="verify-password-reset" />
+      <FormFooter formType="verify-password-reset" />
     </FormWrapper>
   );
 }

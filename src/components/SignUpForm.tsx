@@ -9,11 +9,8 @@ const inputs = [
 ];
 
 const headerContent = {
-  firstHeaderText: "Math",
-  styledText: "C",
-  lastHeaderText: "ollab",
-  secondHeading: "Create free Account",
-  paragraph:
+  title: "Create free Account",
+  description:
     "Create your free account and collaborate with like minds in solving problems",
   email: "",
 };

@@ -4,25 +4,22 @@ import FormFooter from "./FormFooter";
 import Form from "./Form";
 
 const inputs = [
-  { label: "Password", inputType: "password" },
+  { label: "Email", inputType: "email" },
   { label: "Password", inputType: "password" },
 ];
 
 const headerContent = {
-  firstHeaderText: "Math",
-  styledText: "C",
-  lastHeaderText: "ollab",
-  secondHeading: "Reset Password",
-  paragraph: "Enter the verification code send to",
+  title: "Verify Email",
+  description: "Enter the verification code sent to",
   email: "Jideotetic@gmail.com",
 };
 
-export default function ConfirmPasswordResetForm() {
+export default function OTPForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="confirm-reset" />
-      <FormFooter formType="confirm-reset" />
+      <Form inputs={inputs} formType="verify-otp" />
+      <FormFooter formType="verify-otp" />
     </FormWrapper>
   );
 }

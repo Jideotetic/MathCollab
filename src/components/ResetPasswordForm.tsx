@@ -6,11 +6,8 @@ import Form from "./Form";
 const inputs = [{ label: "Email", inputType: "email" }];
 
 const headerContent = {
-  firstHeaderText: "Math",
-  styledText: "C",
-  lastHeaderText: "ollab",
-  secondHeading: "Reset Password",
-  paragraph: "Provide your registered email to reset your password",
+  title: "Reset Password",
+  description: "Provide your registered email to reset your password",
   email: "",
 };
 

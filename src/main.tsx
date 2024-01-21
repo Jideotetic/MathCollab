@@ -5,9 +5,12 @@ import "./index.css";
 import ErrorPage from "./ErrorPage";
 import SignUpForm from "./components/SignUpForm";
 import LoginForm from "./components/LoginForm";
-import OTPForm from "./components/OTPForm";
 import ResetPasswordForm from "./components/ResetPasswordForm";
-import ConfirmPasswordResetForm from "./components/ConfirmPasswordResetForm";
+import VerifyEmailOTPForm from "./components/VerifyEmailOTPForm";
+import DashboardLayout from "./routes/DashboardLayout";
+import DashboardIndex from "./routes/DashboardIndex";
+import VerifyPasswordResetForm from "./components/VerifyPasswordResetForm";
+import NewPasswordForm from "./components/NewPasswordForm";
 
 const router = createBrowserRouter([
   {
@@ -16,13 +19,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "login",
-    element: <LoginForm />,
+    path: "verify-email",
+    element: <VerifyEmailOTPForm />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "verify-otp",
-    element: <OTPForm />,
+    path: "login",
+    element: <LoginForm />,
     errorElement: <ErrorPage />,
   },
   {
@@ -31,14 +34,25 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "confirm-reset",
-    element: <ConfirmPasswordResetForm />,
+    path: "verify-password-reset",
+    element: <VerifyPasswordResetForm />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "new-password",
+    element: <NewPasswordForm />,
     errorElement: <ErrorPage />,
   },
   {
     path: "dashboard",
-    element: <h1 className="text-4xl">MathCollab Coming Soon</h1>,
+    element: <DashboardLayout />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <DashboardIndex />,
+      },
+    ],
   },
 ]);
 

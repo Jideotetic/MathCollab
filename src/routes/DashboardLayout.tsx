@@ -1,22 +1,20 @@
 import MathCollab from "../components/MathCollab";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Outlet } from "react-router-dom";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";
 import settingsUrl from "../assets/settings.svg";
 import helpUrl from "../assets/help.svg";
 import signOutUrl from "../assets/sign-out.svg";
-// import homeUrl from "../assets/home.svg";
 
-export default function Dashboard() {
+export default function DashboardLayout() {
   return (
     <>
-      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-layout border-2 border-blue-500 bg-white">
-        {/* <div className="h-screen w-[250px] bg-white"> */}
-        <div className="flex flex-col gap-[42px] border-2 border-red-500">
+      <div className="mx-auto grid min-h-screen max-w-[1280px] grid-cols-layout bg-white">
+        <div className="flex flex-col gap-[20px] pb-4 pl-[40px] pr-[23px] pt-[36px]">
           <MathCollab />
           <nav className="flex flex-col gap-[30px]">
-            <div className="flex flex-col gap-[18px]">
+            <div className="space-y-5">
               <div className="flex gap-2 rounded bg-gray-200 py-1.5 pl-4">
                 <img src={switchUserUrl} alt="" />
                 <NavLink
@@ -31,35 +29,39 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold leading-[30px] text-neutral-700">
               Math Tools
             </h2>
-            <ul className="space-y-4">
-              <li className="flex gap-2 rounded py-1.5 pl-4">
-                <img src={calenderUrl} alt="" />
-                <Link
-                  to="/dashboard"
-                  className="font-poppins text-sm font-light leading-tight text-neutral-500"
-                >
-                  Graphing Calculator
-                </Link>
-              </li>
-              <li className="flex gap-2 rounded py-1.5 pl-4">
-                <img src={calenderUrl} alt="" />
-                <Link
-                  to="/dashboard"
-                  className="font-poppins text-sm font-light leading-tight text-neutral-500"
-                >
-                  Scientific Calculator
-                </Link>
-              </li>
-              <li className="flex gap-2 rounded py-1.5 pl-4">
-                <img src={calenderUrl} alt="" />
-                <Link
-                  to="/dashboard"
-                  className="font-poppins text-sm font-light leading-tight text-neutral-500"
-                >
-                  Geometry Tool
-                </Link>
-              </li>
-            </ul>
+            <div className="space-y-5">
+              <ul className="space-y-4">
+                <li className="flex gap-2 rounded py-1.5 pl-4">
+                  <img src={calenderUrl} alt="" />
+                  <Link
+                    to="/dashboard"
+                    className="font-poppins text-sm font-light leading-tight text-neutral-500"
+                  >
+                    Graphing Calculator
+                  </Link>
+                </li>
+                <li className="flex gap-2 rounded py-1.5 pl-4">
+                  <img src={calenderUrl} alt="" />
+                  <Link
+                    to="/dashboard"
+                    className="font-poppins text-sm font-light leading-tight text-neutral-500"
+                  >
+                    Scientific Calculator
+                  </Link>
+                </li>
+                <li className="flex gap-2 rounded py-1.5 pl-4">
+                  <img src={calenderUrl} alt="" />
+                  <Link
+                    to="/dashboard"
+                    className="font-poppins text-sm font-light leading-tight text-neutral-500"
+                  >
+                    Geometry Tool
+                  </Link>
+                </li>
+              </ul>
+              <img src={lineUrl} alt="" />
+            </div>
+
             <ul className="space-y-4">
               <li className="flex gap-2 rounded py-1.5 pl-4">
                 <img src={calenderUrl} alt="" />
@@ -109,25 +111,9 @@ export default function Dashboard() {
             </ul>
           </nav>
         </div>
-        {/* </div> */}
-        {/* <div className="m-2 rounded-[10px] border-2 border-neutral-200 bg-white">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 py-1.5 pl-4">
-              <img src={homeUrl} alt="" />
-              <span className="font-poppins text-sm font-light leading-tight text-neutral-500">
-                Dashboard
-              </span>
-            </div>
-            <div className="flex gap-8">
-              <img src={homeUrl} alt="" />
-              <div>
-                <div>Maleek A</div>
-                <div>Free Account</div>
-              </div>
-              <img src={homeUrl} alt="" />
-            </div>
-          </div>
-        </div> */}
+        <div className="mx-[17px] mb-[14px] mt-[19px] flex flex-col rounded-[10px] border-2 border-neutral-200">
+          <Outlet />
+        </div>
       </div>
     </>
   );

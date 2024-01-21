@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-// import { OTPType } from "../utilities/types";
 
 interface Props {
   otp: string;

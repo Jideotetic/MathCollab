@@ -25,8 +25,7 @@ export default function FormFooter({ formType }: { formType: string }) {
           </div>
         </div>
       )}
-
-      {formType === "verify-otp" && (
+      {formType === "verify-email" && (
         <div className="text-center text-base font-normal leading-normal text-neutral-500">
           Already have an account?{" "}
           <Link to="/login" className="text-orange-500 hover:underline">
@@ -34,7 +33,6 @@ export default function FormFooter({ formType }: { formType: string }) {
           </Link>
         </div>
       )}
-
       {formType === "login" && (
         <div className="flex w-full max-w-[333px] flex-col items-center justify-center gap-4">
           <div className="flex justify-center text-sm font-normal leading-[21px] text-neutral-400">
@@ -55,7 +53,6 @@ export default function FormFooter({ formType }: { formType: string }) {
           </div>
         </div>
       )}
-
       {formType === "reset-password" && (
         <div className="text-center text-base font-normal leading-normal text-neutral-500">
           Don't have an account?{" "}
@@ -64,12 +61,20 @@ export default function FormFooter({ formType }: { formType: string }) {
           </Link>
         </div>
       )}
-
-      {formType === "confirm-reset" && (
+      {formType === "verify-password-reset" && (
         <div className="text-center text-base font-normal leading-normal text-neutral-500">
           Remember your password?{" "}
           <Link to="/login" className="text-orange-500 hover:underline">
             Sign In
+          </Link>
+        </div>
+      )}
+
+      {formType === "new-password" && (
+        <div className="text-center text-base font-normal leading-normal text-neutral-500">
+          Don't have an account?{" "}
+          <Link to="/" className="text-orange-500 hover:underline">
+            Sign Up
           </Link>
         </div>
       )}
