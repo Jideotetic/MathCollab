@@ -1,7 +1,7 @@
 import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
 import FormFooter from "./FormFooter";
-import Form from "./Form";
+import Form from "./CustomForm";
 
 const inputs = [
   { label: "Email", inputType: "email" },

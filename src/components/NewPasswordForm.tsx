@@ -1,11 +1,11 @@
 import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
 import FormFooter from "./FormFooter";
-import Form from "./Form";
+import Form from "./CustomForm";
 
 const inputs = [
   { label: "Enter new password", inputType: "password" },
-  { label: "Confirm new password", inputType: "password" },
+  { label: "Confirm new password", inputType: "confirm-password" },
 ];
 
 const headerContent = {

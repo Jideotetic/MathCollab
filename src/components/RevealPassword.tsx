@@ -10,13 +10,15 @@ export default function RevealPassword({
   return (
     <>
       {passwordVisible ? (
-        <button type="button" onClick={onRevealPassword}>
-          <EyeIcon className="absolute right-3 top-3.5 h-[17px] w-5" />
-        </button>
+        <EyeIcon
+          className="absolute right-3 top-3.5 h-[17px] w-5 cursor-pointer"
+          onClick={onRevealPassword}
+        />
       ) : (
-        <button type="button" onClick={onRevealPassword}>
-          <EyeSlashIcon className="absolute right-3 top-3.5 h-[17px] w-5" />
-        </button>
+        <EyeSlashIcon
+          className="absolute right-3 top-3.5 h-[17px] w-5 cursor-pointer"
+          onClick={onRevealPassword}
+        />
       )}
     </>
   );

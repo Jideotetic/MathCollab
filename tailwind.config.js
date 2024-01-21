@@ -10,6 +10,9 @@ export default {
       gridTemplateColumns: {
         layout: "250px 1fr",
       },
+      backgroundImage: {
+        image: "url('/src/assets/bg-image.png')",
+      },
     },
   },
   plugins: [formsPlugin],

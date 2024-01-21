@@ -1,7 +1,7 @@
 import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
 import FormFooter from "./FormFooter";
-import Form from "./Form";
+import CustomForm from "./CustomForm";
 
 const inputs = [
   { label: "Email", inputType: "email" },
@@ -19,7 +19,7 @@ export default function SignUpForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="signup" />
+      <CustomForm inputs={inputs} formType="signup" />
       <FormFooter formType="signup" />
     </FormWrapper>
   );

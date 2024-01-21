@@ -1,9 +1,22 @@
 import RevealPassword from "./RevealPassword";
-import { useState } from "react";
-import { Props } from "./Form";
+import React, { useState } from "react";
+import { Props } from "./CustomForm";
 
 export default function Inputs({ inputs }: { inputs: Props[] }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+    setEmail(e.target.value);
+  }
+  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(e.target.value);
+  }
+  function handleChangeConfirmPassword(e: React.ChangeEvent<HTMLInputElement>) {
+    setConfirmPassword(e.target.value);
+  }
 
   function handleRevealPassword() {
     setPasswordVisible(!passwordVisible);
@@ -22,6 +35,24 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
                   : "password"
             }
             name={input.inputType}
+            value={
+              input.inputType === "email"
+                ? email
+                : input.inputType === "password"
+                  ? password
+                  : input.inputType === "confirm-password"
+                    ? confirmPassword
+                    : ""
+            }
+            onChange={
+              input.inputType === "email"
+                ? handleChangeEmail
+                : input.inputType === "password"
+                  ? handleChangePassword
+                  : input.inputType === "confirm-password"
+                    ? handleChangeConfirmPassword
+                    : null
+            }
             required
             id={input.inputType}
             placeholder={input.label}
