@@ -1,29 +1,119 @@
-import { useNavigate, Link, Form } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export interface Props {
   label: string;
   inputType: string;
 }
 
-export default function CustomForm({
+export default function Form({
   inputs,
   formType,
+  // loginFormOpen,
+  setLoginFormOpen,
+  // signUpFormOpen,
+  setSignUpFormOpen,
+  resetPasswordFormOpen,
+  setResetPasswordFormOpen,
+  // verifyEmailOTPFormOpen,
+  setVerifyEmailOTPFormOpen,
+  verifyPasswordResetOTPFormOpen,
+  setVerifyPasswordResetOTPFormOpen,
+  // newPasswordFormOpen,
+  setNewPasswordFormOpen,
 }: {
   inputs: Props[];
   formType: string;
+  // loginFormOpen: boolean;
+  setLoginFormOpen: Dispatch<SetStateAction<boolean>>;
+  // signUpFormOpen: boolean;
+  setSignUpFormOpen: Dispatch<SetStateAction<boolean>>;
+  resetPasswordFormOpen: boolean;
+  setResetPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
+  // verifyEmailOTPFormOpen: boolean;
+  setVerifyEmailOTPFormOpen: Dispatch<SetStateAction<boolean>>;
+  verifyPasswordResetOTPFormOpen: boolean;
+  setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
+  // newPasswordFormOpen: boolean;
+  setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [otp, setOtp] = useState("");
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   function onChange(value: string) {
     setOtp(value);
   }
+
+  function signIn() {
+    setLoginFormOpen(false);
+    navigate("/dashboard");
+  }
+
+  function forgotPassword() {
+    setLoginFormOpen(false);
+    setResetPasswordFormOpen(true);
+  }
+
+  function resetPassword() {
+    setResetPasswordFormOpen(false);
+    setVerifyPasswordResetOTPFormOpen(true);
+  }
+
+  function createFreeAccount() {
+    setSignUpFormOpen(false);
+    setVerifyEmailOTPFormOpen(true);
+  }
+
+  function verifyEmailOTP() {
+    setLoginFormOpen(true);
+    setVerifyEmailOTPFormOpen(false);
+  }
+
+  function verifyResetPasswordOTP() {
+    setVerifyPasswordResetOTPFormOpen(false);
+    setNewPasswordFormOpen(true);
+  }
+
+  function createNewPassword() {
+    setNewPasswordFormOpen(false);
+    setLoginFormOpen(true);
+  }
+
+  function goToSignInPage() {
+    if (resetPasswordFormOpen) {
+      setResetPasswordFormOpen(false);
+    }
+
+    if (verifyPasswordResetOTPFormOpen) {
+      setVerifyPasswordResetOTPFormOpen(false);
+    }
+
+    setLoginFormOpen(true);
+  }
+
   return (
     <>
-      <Form className="flex w-full flex-col gap-8">
+      <form
+        className="flex w-full flex-col gap-8"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        {formType === "login" && (
+          <div className="flex flex-col">
+            <div className="flex flex-col gap-8">
+              <Inputs inputs={inputs} />
+            </div>
+            <Link
+              to="#"
+              onClick={forgotPassword}
+              className="mt-2 self-end text-base font-normal leading-normal text-orange-500 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+        )}
+
         {formType === "signup" && (
           <div className="flex flex-col gap-8">
             <Inputs inputs={inputs} />
@@ -68,20 +158,6 @@ export default function CustomForm({
           </div>
         )}
 
-        {formType === "login" && (
-          <div className="flex flex-col">
-            <div className="flex flex-col gap-8">
-              <Inputs inputs={inputs} />
-            </div>
-            <Link
-              to="/reset-password"
-              className="mt-2 self-end text-base font-normal leading-normal text-orange-500 hover:underline"
-            >
-              Forgot Password?
-            </Link>
-          </div>
-        )}
-
         {formType === "reset-password" && (
           <div className="flex flex-col gap-8">
             <Inputs inputs={inputs} />
@@ -110,21 +186,21 @@ export default function CustomForm({
 
         <button
           type="submit"
-          // onClick={() => {
-          //   formType === "signup"
-          //     ? navigate("/verify-email")
-          //     : formType === "verify-email"
-          //       ? navigate("/login")
-          //       : formType === "login"
-          //         ? navigate("/dashboard")
-          //         : formType === "reset-password"
-          //           ? navigate("/verify-password-reset")
-          //           : formType === "verify-password-reset"
-          //             ? navigate("/new-password")
-          //             : formType === "new-password"
-          //               ? navigate("/login")
-          //               : "";
-          // }}
+          onClick={() => {
+            formType === "login"
+              ? signIn()
+              : formType === "verify-email"
+                ? verifyEmailOTP()
+                : formType === "signup"
+                  ? createFreeAccount()
+                  : formType === "reset-password"
+                    ? resetPassword()
+                    : formType === "verify-password-reset"
+                      ? verifyResetPasswordOTP()
+                      : formType === "new-password"
+                        ? createNewPassword()
+                        : "";
+          }}
           className="mx-auto w-[202px] rounded-lg bg-slate-950 py-[13px] text-center text-sm font-medium text-white hover:bg-slate-800"
         >
           {formType === "signup"
@@ -144,7 +220,8 @@ export default function CustomForm({
 
         {formType === "reset-password" && (
           <Link
-            to="/login"
+            to="#"
+            onClick={goToSignInPage}
             className="text-center font-normal leading-normal text-orange-500"
           >
             Remember Password?
@@ -153,13 +230,14 @@ export default function CustomForm({
 
         {formType === "new-password" && (
           <Link
-            to="/login"
+            to="#"
+            onClick={goToSignInPage}
             className="text-center font-normal leading-normal text-orange-500"
           >
             Remember Password?
           </Link>
         )}
-      </Form>
+      </form>
     </>
   );
 }

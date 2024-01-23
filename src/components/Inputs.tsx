@@ -1,6 +1,6 @@
 import RevealPassword from "./RevealPassword";
 import React, { useState } from "react";
-import { Props } from "./CustomForm";
+import { Props } from "./Form";
 
 export default function Inputs({ inputs }: { inputs: Props[] }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -34,6 +34,7 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
                   ? "text"
                   : "password"
             }
+            autoComplete="off"
             name={input.inputType}
             value={
               input.inputType === "email"
