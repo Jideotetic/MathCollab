@@ -18,10 +18,6 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
     setConfirmPassword(e.target.value);
   }
 
-  function handleRevealPassword() {
-    setPasswordVisible(!passwordVisible);
-  }
-
   return (
     <>
       {inputs.map((input) => (
@@ -69,7 +65,7 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
           {input.inputType === "password" && (
             <RevealPassword
               passwordVisible={passwordVisible}
-              onRevealPassword={handleRevealPassword}
+              setPasswordVisible={setPasswordVisible}
             />
           )}
         </div>

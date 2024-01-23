@@ -1,23 +1,23 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import { MouseEventHandler } from "react";
+import { Dispatch, SetStateAction } from "react";
 export default function RevealPassword({
   passwordVisible,
-  onRevealPassword,
+  setPasswordVisible,
 }: {
   passwordVisible: boolean;
-  onRevealPassword: MouseEventHandler<HTMLButtonElement>;
+  setPasswordVisible: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <>
       {passwordVisible ? (
         <EyeIcon
           className="absolute right-3 top-3.5 h-[17px] w-5 cursor-pointer"
-          onClick={onRevealPassword}
+          onClick={() => setPasswordVisible(!passwordVisible)}
         />
       ) : (
         <EyeSlashIcon
           className="absolute right-3 top-3.5 h-[17px] w-5 cursor-pointer"
-          onClick={onRevealPassword}
+          onClick={() => setPasswordVisible(!passwordVisible)}
         />
       )}
     </>
