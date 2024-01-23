@@ -22,7 +22,7 @@ export default function HomePage() {
 
   return (
     <>
-      <header className="mx-auto flex h-[101px] max-w-[1280px] items-center justify-between bg-white px-20 py-6 shadow-md shadow-black">
+      <header className="mx-auto flex h-[101px] max-w-[1280px] items-center justify-between bg-white px-20 py-6">
         <MathCollab />
 
         <nav>
@@ -296,7 +296,7 @@ export default function HomePage() {
         </Transition>
         {/* AUTHENTICATION FLOW SCREEN ENDS */}
       </header>
-      <main className="mx-auto max-w-[1280px] text-center">
+      <main className="mx-auto max-w-[1280px] px-20 text-center">
         <div className="h-[calc(100vh-101px)] bg-image bg-cover bg-center bg-no-repeat pt-[64px]">
           <div className="mx-auto flex max-w-[838px] flex-col gap-8">
             <h2 className="mx-auto max-w-[291px] rounded-3xl border border-neutral-200 bg-white px-[21px] py-[9px] text-base font-bold leading-normal text-orange-500">

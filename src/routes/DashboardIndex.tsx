@@ -2,7 +2,10 @@ import homeUrl from "../assets/home.svg";
 import notificationUrl from "../assets/notification.svg";
 import userImageUrl from "../assets/user-image.png";
 import arrowRightIconUrl from "../assets/Icon.svg";
-// import { Bars3Icon } from "@heroicons/react/24/solid";
+import DashboardEmpty from "../components/DashboardEmpty";
+import gridIconUrl from "../assets/grid_icon.svg";
+import { Bars3Icon } from "@heroicons/react/24/solid";
+import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
 
 export default function DashboardIndex() {
   return (
@@ -34,38 +37,38 @@ export default function DashboardIndex() {
           </div>
         </div>
       </div>
-      <div className="flex h-16 items-center border-2 border-neutral-200 px-4">
-        Content
-      </div>
-      <div className="flex flex-grow items-center justify-center border-2 border-neutral-200 text-center">
-        <div className="flex max-w-[551px] flex-col items-center justify-center gap-8 border-2 border-red-200">
-          <div></div>
-          <div className="flex max-w-[365px] flex-col gap-8 border-2 border-blue-200">
-            <div>
-              <p className="text-xl font-semibold leading-[30px] text-neutral-700">
-                Start by creating or joining a class
-              </p>
-              <p className="text-base font-normal leading-normal text-neutral-500">
-                Create or join class to get started
-              </p>
-            </div>
-            <div>
-              <button
-                type="button"
-                className="w-[141px] rounded border border-slate-950 py-1.5 text-sm font-normal leading-[21px]"
-              >
-                Create a class
-              </button>
-              <button
-                type="button"
-                className="w-[141px] py-1.5 text-sm font-normal leading-[21px] text-orange-500 "
-              >
-                Join a class
-              </button>
-            </div>
+      <div className="flex h-16 items-center justify-between border-2 border-neutral-200 px-4">
+        <div className="flex items-center gap-[14px]">
+          <div className="text-center text-xl font-semibold leading-[30px] text-neutral-700">
+            Classes
+          </div>
+          <div className="flex bg-white">
+            <button
+              type="button"
+              className="rounded-s-[47px] border border-stone-500 border-opacity-30 px-2"
+            >
+              <Bars3Icon className="h-7 w-7" />
+            </button>
+            <button
+              type="button"
+              className="rounded-e-[47px] border border-stone-500 border-opacity-30 bg-gray-200 px-2"
+            >
+              <img src={gridIconUrl} alt="" className="h-7 w-7" />
+            </button>
           </div>
         </div>
+
+        <form action="#" method="get">
+          <input
+            type="search"
+            className="flex-1 rounded-[47px] border border-stone-500 border-opacity-30 bg-white px-2"
+            placeholder="Search"
+          />
+        </form>
+
+        <CreateOrJoinClassButton />
       </div>
+      <DashboardEmpty />
     </>
   );
 }
