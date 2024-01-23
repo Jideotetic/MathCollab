@@ -1,5 +1,5 @@
 import RevealPassword from "./RevealPassword";
-import React, { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Props } from "./Form";
 
 export default function Inputs({ inputs }: { inputs: Props[] }) {
@@ -8,13 +8,13 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeEmail(e: ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
   }
-  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangePassword(e: ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value);
   }
-  function handleChangeConfirmPassword(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeConfirmPassword(e: ChangeEvent<HTMLInputElement>) {
     setConfirmPassword(e.target.value);
   }
 
@@ -46,9 +46,7 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
                 ? handleChangeEmail
                 : input.inputType === "password"
                   ? handleChangePassword
-                  : input.inputType === "confirm-password"
-                    ? handleChangeConfirmPassword
-                    : null
+                  : handleChangeConfirmPassword
             }
             required
             id={input.inputType}

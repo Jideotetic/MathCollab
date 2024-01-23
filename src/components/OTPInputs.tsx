@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { ChangeEvent, KeyboardEvent, FocusEvent, useMemo } from "react";
 
 interface Props {
   otp: string;
@@ -44,7 +44,7 @@ export default function OTPInputs({ otp, otpLength, onChange }: Props) {
     }
   }
 
-  function inputOnChange(e: React.ChangeEvent<HTMLInputElement>, id: number) {
+  function inputOnChange(e: ChangeEvent<HTMLInputElement>, id: number) {
     const target = e.target;
     let targetValue = target.value;
     const isTargetValueDigit = DIGITS.test(targetValue);
@@ -75,7 +75,7 @@ export default function OTPInputs({ otp, otpLength, onChange }: Props) {
     }
   }
 
-  function inputOnKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  function inputOnKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     const { key } = e;
     const target = e.target as HTMLInputElement;
 
@@ -99,7 +99,7 @@ export default function OTPInputs({ otp, otpLength, onChange }: Props) {
     focusToPrevInput(target);
   }
 
-  function inputOnFocus(e: React.FocusEvent<HTMLInputElement>) {
+  function inputOnFocus(e: FocusEvent<HTMLInputElement>) {
     const { target } = e;
 
     const prevInputEl =
