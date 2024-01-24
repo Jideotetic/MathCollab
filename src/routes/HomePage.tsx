@@ -85,28 +85,7 @@ export default function HomePage() {
             </Transition.Child>
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-5 text-center">
-                <LoginForm
-                  loginFormOpen={loginFormOpen}
-                  setLoginFormOpen={setLoginFormOpen}
-                  signUpFormOpen={signUpFormOpen}
-                  setSignUpFormOpen={setSignUpFormOpen}
-                  resetPasswordFormOpen={resetPasswordFormOpen}
-                  setResetPasswordFormOpen={setResetPasswordFormOpen}
-                  verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                  setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                  verifyPasswordResetOTPFormOpen={
-                    verifyPasswordResetOTPFormOpen
-                  }
-                  setVerifyPasswordResetOTPFormOpen={
-                    setVerifyPasswordResetOTPFormOpen
-                  }
-                  newPasswordFormOpen={newPasswordFormOpen}
-                  setNewPasswordFormOpen={setNewPasswordFormOpen}
-                  // createClassFormOpen={createClassFormOpen}
-                  // setCreateClassFormOpen={setCreateClassFormOpen}
-                  // joinClassFormOpen={joinClassFormOpen}
-                  // setJoinClassFormOpen={setJoinClassFormOpen}
-                />
+                <LoginForm />
               </div>
             </div>
           </Dialog>
@@ -129,28 +108,7 @@ export default function HomePage() {
             </Transition.Child>
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-5 text-center">
-                <SignUpForm
-                  loginFormOpen={loginFormOpen}
-                  setLoginFormOpen={setLoginFormOpen}
-                  signUpFormOpen={signUpFormOpen}
-                  setSignUpFormOpen={setSignUpFormOpen}
-                  resetPasswordFormOpen={resetPasswordFormOpen}
-                  setResetPasswordFormOpen={setResetPasswordFormOpen}
-                  verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                  setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                  verifyPasswordResetOTPFormOpen={
-                    verifyPasswordResetOTPFormOpen
-                  }
-                  setVerifyPasswordResetOTPFormOpen={
-                    setVerifyPasswordResetOTPFormOpen
-                  }
-                  newPasswordFormOpen={newPasswordFormOpen}
-                  setNewPasswordFormOpen={setNewPasswordFormOpen}
-                  // createClassFormOpen={createClassFormOpen}
-                  // setCreateClassFormOpen={setCreateClassFormOpen}
-                  // joinClassFormOpen={joinClassFormOpen}
-                  // setJoinClassFormOpen={setJoinClassFormOpen}
-                />
+                <SignUpForm />
               </div>
             </div>
           </Dialog>
@@ -173,28 +131,7 @@ export default function HomePage() {
             </Transition.Child>
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-5 text-center">
-                <VerifyEmailOTPForm
-                  loginFormOpen={loginFormOpen}
-                  setLoginFormOpen={setLoginFormOpen}
-                  signUpFormOpen={signUpFormOpen}
-                  setSignUpFormOpen={setSignUpFormOpen}
-                  resetPasswordFormOpen={resetPasswordFormOpen}
-                  setResetPasswordFormOpen={setResetPasswordFormOpen}
-                  verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                  setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                  verifyPasswordResetOTPFormOpen={
-                    verifyPasswordResetOTPFormOpen
-                  }
-                  setVerifyPasswordResetOTPFormOpen={
-                    setVerifyPasswordResetOTPFormOpen
-                  }
-                  newPasswordFormOpen={newPasswordFormOpen}
-                  setNewPasswordFormOpen={setNewPasswordFormOpen}
-                  // createClassFormOpen={createClassFormOpen}
-                  // setCreateClassFormOpen={setCreateClassFormOpen}
-                  // joinClassFormOpen={joinClassFormOpen}
-                  // setJoinClassFormOpen={setJoinClassFormOpen}
-                />
+                <VerifyEmailOTPForm />
               </div>
             </div>
           </Dialog>
@@ -217,28 +154,7 @@ export default function HomePage() {
             </Transition.Child>
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-5 text-center">
-                <ResetPasswordForm
-                  loginFormOpen={loginFormOpen}
-                  setLoginFormOpen={setLoginFormOpen}
-                  signUpFormOpen={signUpFormOpen}
-                  setSignUpFormOpen={setSignUpFormOpen}
-                  resetPasswordFormOpen={resetPasswordFormOpen}
-                  setResetPasswordFormOpen={setResetPasswordFormOpen}
-                  verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                  setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                  verifyPasswordResetOTPFormOpen={
-                    verifyPasswordResetOTPFormOpen
-                  }
-                  setVerifyPasswordResetOTPFormOpen={
-                    setVerifyPasswordResetOTPFormOpen
-                  }
-                  newPasswordFormOpen={newPasswordFormOpen}
-                  setNewPasswordFormOpen={setNewPasswordFormOpen}
-                  // createClassFormOpen={createClassFormOpen}
-                  // setCreateClassFormOpen={setCreateClassFormOpen}
-                  // joinClassFormOpen={joinClassFormOpen}
-                  // setJoinClassFormOpen={setJoinClassFormOpen}
-                />
+                <ResetPasswordForm />
               </div>
             </div>
           </Dialog>
@@ -261,28 +177,7 @@ export default function HomePage() {
             </Transition.Child>
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-5 text-center">
-                <VerifyPasswordResetOTPForm
-                  loginFormOpen={loginFormOpen}
-                  setLoginFormOpen={setLoginFormOpen}
-                  signUpFormOpen={signUpFormOpen}
-                  setSignUpFormOpen={setSignUpFormOpen}
-                  resetPasswordFormOpen={resetPasswordFormOpen}
-                  setResetPasswordFormOpen={setResetPasswordFormOpen}
-                  verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                  setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                  verifyPasswordResetOTPFormOpen={
-                    verifyPasswordResetOTPFormOpen
-                  }
-                  setVerifyPasswordResetOTPFormOpen={
-                    setVerifyPasswordResetOTPFormOpen
-                  }
-                  newPasswordFormOpen={newPasswordFormOpen}
-                  setNewPasswordFormOpen={setNewPasswordFormOpen}
-                  // createClassFormOpen={createClassFormOpen}
-                  // setCreateClassFormOpen={setCreateClassFormOpen}
-                  // joinClassFormOpen={joinClassFormOpen}
-                  // setJoinClassFormOpen={setJoinClassFormOpen}
-                />
+                <VerifyPasswordResetOTPForm />
               </div>
             </div>
           </Dialog>
@@ -305,28 +200,7 @@ export default function HomePage() {
             </Transition.Child>
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-5 text-center">
-                <NewPasswordForm
-                  loginFormOpen={loginFormOpen}
-                  setLoginFormOpen={setLoginFormOpen}
-                  signUpFormOpen={signUpFormOpen}
-                  setSignUpFormOpen={setSignUpFormOpen}
-                  resetPasswordFormOpen={resetPasswordFormOpen}
-                  setResetPasswordFormOpen={setResetPasswordFormOpen}
-                  verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                  setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                  verifyPasswordResetOTPFormOpen={
-                    verifyPasswordResetOTPFormOpen
-                  }
-                  setVerifyPasswordResetOTPFormOpen={
-                    setVerifyPasswordResetOTPFormOpen
-                  }
-                  newPasswordFormOpen={newPasswordFormOpen}
-                  setNewPasswordFormOpen={setNewPasswordFormOpen}
-                  // createClassFormOpen={createClassFormOpen}
-                  // setCreateClassFormOpen={setCreateClassFormOpen}
-                  // joinClassFormOpen={joinClassFormOpen}
-                  // setJoinClassFormOpen={setJoinClassFormOpen}
-                />
+                <NewPasswordForm />
               </div>
             </div>
           </Dialog>
