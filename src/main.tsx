@@ -5,7 +5,7 @@ import ErrorPage from "./ErrorPage";
 import DashboardLayout from "./routes/DashboardLayout";
 import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
-import App from "./components/App";
+import FormBooleanValueContextProvider from "./components/FormBooleanValueContextProvider";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -29,8 +29,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App>
+    <FormBooleanValueContextProvider>
       <RouterProvider router={router} />
-    </App>
+    </FormBooleanValueContextProvider>
   </React.StrictMode>,
 );

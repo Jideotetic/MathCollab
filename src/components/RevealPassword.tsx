@@ -1,5 +1,6 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { Dispatch, SetStateAction } from "react";
+
 export default function RevealPassword({
   passwordVisible,
   setPasswordVisible,

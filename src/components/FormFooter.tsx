@@ -1,45 +1,29 @@
 import { Link } from "react-router-dom";
 import lineUrl from "../assets/line.svg";
 import googleLogoUrl from "../assets/Google-logo.svg";
-import { Dispatch, SetStateAction } from "react";
+import { useContext } from "react";
+import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
+import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 
-export default function FormFooter({
-  formType,
-  loginFormOpen,
-  setLoginFormOpen,
-  signUpFormOpen,
-  setSignUpFormOpen,
-  resetPasswordFormOpen,
-  setResetPasswordFormOpen,
-  verifyEmailOTPFormOpen,
-  setVerifyEmailOTPFormOpen,
-  verifyPasswordResetOTPFormOpen,
-  setVerifyPasswordResetOTPFormOpen,
-  newPasswordFormOpen,
-  setNewPasswordFormOpen,
-  // createClassFormOpen,
-  // setCreateClassFormOpen,
-  // joinClassFormOpen,
-  // setJoinClassFormOpen,
-}: {
-  formType: string;
-  loginFormOpen: boolean;
-  setLoginFormOpen: Dispatch<SetStateAction<boolean>>;
-  signUpFormOpen: boolean;
-  setSignUpFormOpen: Dispatch<SetStateAction<boolean>>;
-  resetPasswordFormOpen: boolean;
-  setResetPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
-  verifyEmailOTPFormOpen: boolean;
-  setVerifyEmailOTPFormOpen: Dispatch<SetStateAction<boolean>>;
-  verifyPasswordResetOTPFormOpen: boolean;
-  setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
-  newPasswordFormOpen: boolean;
-  setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
-  // createClassFormOpen: boolean;
-  // setCreateClassFormOpen: Dispatch<SetStateAction<boolean>>;
-  // joinClassFormOpen: boolean;
-  // setJoinClassFormOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function FormFooter({ formType }: { formType: string }) {
+  const {
+    loginFormOpen,
+    setLoginFormOpen,
+    signUpFormOpen,
+    setSignUpFormOpen,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
+    verifyEmailOTPFormOpen,
+    setVerifyEmailOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    newPasswordFormOpen,
+    setNewPasswordFormOpen,
+    // createClassFormOpen,
+    // setCreateClassFormOpen,
+    // joinClassFormOpen,
+    // setJoinClassFormOpen,
+  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
   function goToSignUpPage() {
     if (loginFormOpen) {
       setLoginFormOpen(false);

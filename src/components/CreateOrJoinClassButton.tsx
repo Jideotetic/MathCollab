@@ -12,18 +12,6 @@ import JoinClassForm from "./JoinClassForm";
 
 export default function CreateOrJoinClassButton() {
   const {
-    loginFormOpen,
-    setLoginFormOpen,
-    signUpFormOpen,
-    setSignUpFormOpen,
-    resetPasswordFormOpen,
-    setResetPasswordFormOpen,
-    verifyEmailOTPFormOpen,
-    setVerifyEmailOTPFormOpen,
-    verifyPasswordResetOTPFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
-    newPasswordFormOpen,
-    setNewPasswordFormOpen,
     createClassFormOpen,
     setCreateClassFormOpen,
     joinClassFormOpen,
@@ -81,26 +69,7 @@ export default function CreateOrJoinClassButton() {
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-5 text-center">
-              <CreateClassForm
-                loginFormOpen={loginFormOpen}
-                setLoginFormOpen={setLoginFormOpen}
-                signUpFormOpen={signUpFormOpen}
-                setSignUpFormOpen={setSignUpFormOpen}
-                resetPasswordFormOpen={resetPasswordFormOpen}
-                setResetPasswordFormOpen={setResetPasswordFormOpen}
-                verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                verifyPasswordResetOTPFormOpen={verifyPasswordResetOTPFormOpen}
-                setVerifyPasswordResetOTPFormOpen={
-                  setVerifyPasswordResetOTPFormOpen
-                }
-                newPasswordFormOpen={newPasswordFormOpen}
-                setNewPasswordFormOpen={setNewPasswordFormOpen}
-                // createClassFormOpen={createClassFormOpen}
-                // setCreateClassFormOpen={setCreateClassFormOpen}
-                // joinClassFormOpen={joinClassFormOpen}
-                // setJoinClassFormOpen={setJoinClassFormOpen}
-              />
+              <CreateClassForm />
             </div>
           </div>
         </Dialog>
@@ -123,26 +92,7 @@ export default function CreateOrJoinClassButton() {
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-5 text-center">
-              <JoinClassForm
-                loginFormOpen={loginFormOpen}
-                setLoginFormOpen={setLoginFormOpen}
-                signUpFormOpen={signUpFormOpen}
-                setSignUpFormOpen={setSignUpFormOpen}
-                resetPasswordFormOpen={resetPasswordFormOpen}
-                setResetPasswordFormOpen={setResetPasswordFormOpen}
-                verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
-                setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
-                verifyPasswordResetOTPFormOpen={verifyPasswordResetOTPFormOpen}
-                setVerifyPasswordResetOTPFormOpen={
-                  setVerifyPasswordResetOTPFormOpen
-                }
-                newPasswordFormOpen={newPasswordFormOpen}
-                setNewPasswordFormOpen={setNewPasswordFormOpen}
-                // createClassFormOpen={createClassFormOpen}
-                // setCreateClassFormOpen={setCreateClassFormOpen}
-                // joinClassFormOpen={joinClassFormOpen}
-                // setJoinClassFormOpen={setJoinClassFormOpen}
-              />
+              <JoinClassForm />
             </div>
           </div>
         </Dialog>

@@ -1,7 +1,9 @@
 import { useNavigate, Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState, useContext } from "react";
+import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
+import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 
 export interface Props {
   label: string;
@@ -11,42 +13,21 @@ export interface Props {
 export default function Form({
   inputs,
   formType,
-  // loginFormOpen,
-  setLoginFormOpen,
-  // signUpFormOpen,
-  setSignUpFormOpen,
-  resetPasswordFormOpen,
-  setResetPasswordFormOpen,
-  // verifyEmailOTPFormOpen,
-  setVerifyEmailOTPFormOpen,
-  verifyPasswordResetOTPFormOpen,
-  setVerifyPasswordResetOTPFormOpen,
-  // newPasswordFormOpen,
-  setNewPasswordFormOpen,
-  // createClassFormOpen,
-  // setCreateClassFormOpen,
-  // joinClassFormOpen,
-  // setJoinClassFormOpen,
 }: {
   inputs: Props[];
   formType: string;
-  // loginFormOpen: boolean;
-  setLoginFormOpen: Dispatch<SetStateAction<boolean>>;
-  // signUpFormOpen: boolean;
-  setSignUpFormOpen: Dispatch<SetStateAction<boolean>>;
-  resetPasswordFormOpen: boolean;
-  setResetPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
-  // verifyEmailOTPFormOpen: boolean;
-  setVerifyEmailOTPFormOpen: Dispatch<SetStateAction<boolean>>;
-  verifyPasswordResetOTPFormOpen: boolean;
-  setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
-  // newPasswordFormOpen: boolean;
-  setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
-  // createClassFormOpen: boolean;
-  // setCreateClassFormOpen: Dispatch<SetStateAction<boolean>>;
-  // joinClassFormOpen: boolean;
-  // setJoinClassFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const {
+    setLoginFormOpen,
+    setSignUpFormOpen,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
+    setVerifyEmailOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    setNewPasswordFormOpen,
+  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
@@ -192,6 +173,43 @@ export default function Form({
           </div>
         )}
 
+        {formType === "join-class" && (
+          <div className="mb-8">
+            <Inputs inputs={inputs} />
+          </div>
+        )}
+
+        {formType === "create-class" && (
+          <div className=" flex flex-col gap-8">
+            <Inputs inputs={inputs} />
+            <div className="flex flex-col items-start gap-2">
+              <label htmlFor="collaborators">
+                Invite Collaborators/Students
+              </label>
+              <textarea
+                name="collaborators"
+                id="collaborators"
+                className="form-textarea inline-block self-stretch rounded-sm border-neutral-300 text-slate-950 shadow-sm hover:text-slate-800 focus:ring-slate-950 hover:focus:ring-slate-800"
+              ></textarea>
+              <div className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  name="notify"
+                  id="notify"
+                  required
+                  className="form-checkbox ml-1 mt-1 inline-block cursor-pointer rounded-sm border-neutral-300 text-slate-950 shadow-sm hover:text-slate-800 focus:ring-slate-950 hover:focus:ring-slate-800"
+                />
+                <label
+                  htmlFor="notify"
+                  className="text-base font-normal leading-normal"
+                >
+                  Notify
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
+
         <button
           type="submit"
           onClick={() => {
@@ -223,7 +241,11 @@ export default function Form({
                     ? "Verify"
                     : formType === "new-password"
                       ? "Reset Password"
-                      : ""}
+                      : formType === "create-class"
+                        ? "Create"
+                        : formType === "join-class"
+                          ? "Join a class"
+                          : ""}
         </button>
 
         {formType === "reset-password" && (
