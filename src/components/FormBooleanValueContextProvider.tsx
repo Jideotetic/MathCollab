@@ -1,7 +1,11 @@
 import { ReactNode, useState } from "react";
 import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 
-export default function App({ children }: { children: ReactNode }) {
+export default function FormBooleanValueContextProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [loginFormOpen, setLoginFormOpen] = useState(false);
   const [signUpFormOpen, setSignUpFormOpen] = useState(false);
   const [resetPasswordFormOpen, setResetPasswordFormOpen] = useState(false);
