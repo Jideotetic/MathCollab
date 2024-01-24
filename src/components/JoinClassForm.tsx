@@ -4,15 +4,15 @@ import FormFooter from "./FormFooter";
 import Form from "./Form";
 import { Dispatch, SetStateAction } from "react";
 
-const inputs = [{ label: "Email", inputType: "email" }];
+const inputs = [{ label: "Enter/Paste Invite link", inputType: "url" }];
 
 const headerContent = {
-  title: "Reset Password",
-  description: "Provide your registered email to reset your password",
+  title: "Join a class",
+  description: "Provide your class information below",
   email: "",
 };
 
-export default function ResetPasswordForm({
+export default function JoinClassForm({
   loginFormOpen,
   setLoginFormOpen,
   signUpFormOpen,
@@ -52,8 +52,7 @@ export default function ResetPasswordForm({
       <FormHeader headerContent={headerContent} />
       <Form
         inputs={inputs}
-        formType="reset-password"
-        // loginFormOpen={loginFormOpen}
+        formType="create-class" // loginFormOpen={loginFormOpen}
         setLoginFormOpen={setLoginFormOpen}
         // signUpFormOpen={signUpFormOpen}
         setSignUpFormOpen={setSignUpFormOpen}
@@ -71,7 +70,7 @@ export default function ResetPasswordForm({
         // setJoinClassFormOpen={setJoinClassFormOpen}
       />
       <FormFooter
-        formType="reset-password"
+        formType="create-class"
         loginFormOpen={loginFormOpen}
         setLoginFormOpen={setLoginFormOpen}
         signUpFormOpen={signUpFormOpen}

@@ -5,6 +5,7 @@ import ErrorPage from "./ErrorPage";
 import DashboardLayout from "./routes/DashboardLayout";
 import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
+import App from "./components/App";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -28,6 +29,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <App>
+      <RouterProvider router={router} />
+    </App>
   </React.StrictMode>,
 );

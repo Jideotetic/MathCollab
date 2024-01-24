@@ -29,6 +29,10 @@ export default function SignUpForm({
   setVerifyPasswordResetOTPFormOpen,
   newPasswordFormOpen,
   setNewPasswordFormOpen,
+  // createClassFormOpen,
+  // setCreateClassFormOpen,
+  // joinClassFormOpen,
+  // setJoinClassFormOpen,
 }: {
   loginFormOpen: boolean;
   setLoginFormOpen: Dispatch<SetStateAction<boolean>>;
@@ -42,6 +46,10 @@ export default function SignUpForm({
   setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
   newPasswordFormOpen: boolean;
   setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
+  // createClassFormOpen: boolean;
+  // setCreateClassFormOpen: Dispatch<SetStateAction<boolean>>;
+  // joinClassFormOpen: boolean;
+  // setJoinClassFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <FormWrapper>
@@ -61,6 +69,10 @@ export default function SignUpForm({
         setVerifyPasswordResetOTPFormOpen={setVerifyPasswordResetOTPFormOpen}
         // newPasswordFormOpen={newPasswordFormOpen}
         setNewPasswordFormOpen={setNewPasswordFormOpen}
+        // createClassFormOpen={createClassFormOpen}
+        // setCreateClassFormOpen={setCreateClassFormOpen}
+        // joinClassFormOpen={joinClassFormOpen}
+        // setJoinClassFormOpen={setJoinClassFormOpen}
       />
       <FormFooter
         formType="signup"
@@ -76,6 +88,10 @@ export default function SignUpForm({
         setVerifyPasswordResetOTPFormOpen={setVerifyPasswordResetOTPFormOpen}
         newPasswordFormOpen={newPasswordFormOpen}
         setNewPasswordFormOpen={setNewPasswordFormOpen}
+        // createClassFormOpen={createClassFormOpen}
+        // setCreateClassFormOpen={setCreateClassFormOpen}
+        // joinClassFormOpen={joinClassFormOpen}
+        // setJoinClassFormOpen={setJoinClassFormOpen}
       />
     </FormWrapper>
   );

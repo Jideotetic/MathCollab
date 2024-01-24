@@ -17,6 +17,10 @@ export default function FormFooter({
   setVerifyPasswordResetOTPFormOpen,
   newPasswordFormOpen,
   setNewPasswordFormOpen,
+  // createClassFormOpen,
+  // setCreateClassFormOpen,
+  // joinClassFormOpen,
+  // setJoinClassFormOpen,
 }: {
   formType: string;
   loginFormOpen: boolean;
@@ -31,6 +35,10 @@ export default function FormFooter({
   setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
   newPasswordFormOpen: boolean;
   setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
+  // createClassFormOpen: boolean;
+  // setCreateClassFormOpen: Dispatch<SetStateAction<boolean>>;
+  // joinClassFormOpen: boolean;
+  // setJoinClassFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   function goToSignUpPage() {
     if (loginFormOpen) {

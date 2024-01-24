@@ -23,6 +23,10 @@ export default function Form({
   setVerifyPasswordResetOTPFormOpen,
   // newPasswordFormOpen,
   setNewPasswordFormOpen,
+  // createClassFormOpen,
+  // setCreateClassFormOpen,
+  // joinClassFormOpen,
+  // setJoinClassFormOpen,
 }: {
   inputs: Props[];
   formType: string;
@@ -38,6 +42,10 @@ export default function Form({
   setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
   // newPasswordFormOpen: boolean;
   setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
+  // createClassFormOpen: boolean;
+  // setCreateClassFormOpen: Dispatch<SetStateAction<boolean>>;
+  // joinClassFormOpen: boolean;
+  // setJoinClassFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();

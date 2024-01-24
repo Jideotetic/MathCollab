@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Fragment, useState } from "react";
+import { Fragment, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import MathCollab from "../components/MathCollab";
 import LoginForm from "../components/LoginForm";
@@ -8,21 +8,34 @@ import ResetPasswordForm from "../components/ResetPasswordForm";
 import VerifyEmailOTPForm from "../components/VerifyEmailOTPForm";
 import VerifyPasswordResetOTPForm from "../components/VerifyPasswordResetOTPForm";
 import NewPasswordForm from "../components/NewPasswordForm";
+import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
+import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
 
 const links = ["Home", "Pricing", "FAQ", "Blog"];
 
 export default function HomePage() {
-  const [loginFormOpen, setLoginFormOpen] = useState(false);
-  const [signUpFormOpen, setSignUpFormOpen] = useState(false);
-  const [resetPasswordFormOpen, setResetPasswordFormOpen] = useState(false);
-  const [verifyEmailOTPFormOpen, setVerifyEmailOTPFormOpen] = useState(false);
-  const [verifyPasswordResetOTPFormOpen, setVerifyPasswordResetOTPFormOpen] =
-    useState(false);
-  const [newPasswordFormOpen, setNewPasswordFormOpen] = useState(false);
+  const {
+    loginFormOpen,
+    setLoginFormOpen,
+    signUpFormOpen,
+    setSignUpFormOpen,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
+    verifyEmailOTPFormOpen,
+    setVerifyEmailOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    newPasswordFormOpen,
+    setNewPasswordFormOpen,
+    // createClassFormOpen,
+    // setCreateClassFormOpen,
+    // joinClassFormOpen,
+    // setJoinClassFormOpen,
+  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
 
   return (
     <>
-      <header className="mx-auto flex h-[101px] max-w-[1280px] items-center justify-between bg-white px-20 py-6 shadow-md shadow-black">
+      <header className="mx-auto flex h-[101px] max-w-[1280px] items-center justify-between bg-white px-20 py-6">
         <MathCollab />
 
         <nav>
@@ -89,6 +102,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -129,6 +146,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -169,6 +190,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -209,6 +234,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -249,6 +278,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -289,6 +322,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -296,7 +333,7 @@ export default function HomePage() {
         </Transition>
         {/* AUTHENTICATION FLOW SCREEN ENDS */}
       </header>
-      <main className="mx-auto max-w-[1280px] text-center">
+      <main className="mx-auto max-w-[1280px] px-20 text-center">
         <div className="h-[calc(100vh-101px)] bg-image bg-cover bg-center bg-no-repeat pt-[64px]">
           <div className="mx-auto flex max-w-[838px] flex-col gap-8">
             <h2 className="mx-auto max-w-[291px] rounded-3xl border border-neutral-200 bg-white px-[21px] py-[9px] text-base font-bold leading-normal text-orange-500">
