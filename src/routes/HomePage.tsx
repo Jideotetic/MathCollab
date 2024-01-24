@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Fragment, useState } from "react";
+import { Fragment, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import MathCollab from "../components/MathCollab";
 import LoginForm from "../components/LoginForm";
@@ -8,17 +8,30 @@ import ResetPasswordForm from "../components/ResetPasswordForm";
 import VerifyEmailOTPForm from "../components/VerifyEmailOTPForm";
 import VerifyPasswordResetOTPForm from "../components/VerifyPasswordResetOTPForm";
 import NewPasswordForm from "../components/NewPasswordForm";
+import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
+import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
 
 const links = ["Home", "Pricing", "FAQ", "Blog"];
 
 export default function HomePage() {
-  const [loginFormOpen, setLoginFormOpen] = useState(false);
-  const [signUpFormOpen, setSignUpFormOpen] = useState(false);
-  const [resetPasswordFormOpen, setResetPasswordFormOpen] = useState(false);
-  const [verifyEmailOTPFormOpen, setVerifyEmailOTPFormOpen] = useState(false);
-  const [verifyPasswordResetOTPFormOpen, setVerifyPasswordResetOTPFormOpen] =
-    useState(false);
-  const [newPasswordFormOpen, setNewPasswordFormOpen] = useState(false);
+  const {
+    loginFormOpen,
+    setLoginFormOpen,
+    signUpFormOpen,
+    setSignUpFormOpen,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
+    verifyEmailOTPFormOpen,
+    setVerifyEmailOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    newPasswordFormOpen,
+    setNewPasswordFormOpen,
+    // createClassFormOpen,
+    // setCreateClassFormOpen,
+    // joinClassFormOpen,
+    // setJoinClassFormOpen,
+  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
 
   return (
     <>
@@ -89,6 +102,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -129,6 +146,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -169,6 +190,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -209,6 +234,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -249,6 +278,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>
@@ -289,6 +322,10 @@ export default function HomePage() {
                   }
                   newPasswordFormOpen={newPasswordFormOpen}
                   setNewPasswordFormOpen={setNewPasswordFormOpen}
+                  // createClassFormOpen={createClassFormOpen}
+                  // setCreateClassFormOpen={setCreateClassFormOpen}
+                  // joinClassFormOpen={joinClassFormOpen}
+                  // setJoinClassFormOpen={setJoinClassFormOpen}
                 />
               </div>
             </div>

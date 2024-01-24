@@ -1,11 +1,34 @@
-import { Popover, Transition } from "@headlessui/react";
+import { Popover, Transition, Dialog } from "@headlessui/react";
 import {
   ChevronDownIcon,
   PlusIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
+import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
+import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
+import { useContext, Fragment } from "react";
+import CreateClassForm from "./CreateClassForm";
+import JoinClassForm from "./JoinClassForm";
 
 export default function CreateOrJoinClassButton() {
+  const {
+    loginFormOpen,
+    setLoginFormOpen,
+    signUpFormOpen,
+    setSignUpFormOpen,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
+    verifyEmailOTPFormOpen,
+    setVerifyEmailOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    newPasswordFormOpen,
+    setNewPasswordFormOpen,
+    createClassFormOpen,
+    setCreateClassFormOpen,
+    joinClassFormOpen,
+    setJoinClassFormOpen,
+  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
   return (
     <>
       <Popover className="relative">
@@ -25,12 +48,14 @@ export default function CreateOrJoinClassButton() {
             <button
               type="button"
               className="flex items-center gap-2 rounded px-4 py-1.5 hover:bg-black hover:text-white"
+              onClick={() => setCreateClassFormOpen(true)}
             >
               <PlusIcon className="h-4 w-4" /> Create class
             </button>
             <button
               type="button"
               className="flex items-center gap-2 rounded px-4 py-1.5 hover:bg-black hover:text-white"
+              onClick={() => setJoinClassFormOpen(true)}
             >
               <UserPlusIcon className="h-4 w-4" />
               Join class
@@ -38,6 +63,90 @@ export default function CreateOrJoinClassButton() {
           </Popover.Panel>
         </Transition>
       </Popover>
+      <Transition show={createClassFormOpen} as={Fragment}>
+        <Dialog
+          className="relative z-10"
+          onClose={() => setCreateClassFormOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-5 text-center">
+              <CreateClassForm
+                loginFormOpen={loginFormOpen}
+                setLoginFormOpen={setLoginFormOpen}
+                signUpFormOpen={signUpFormOpen}
+                setSignUpFormOpen={setSignUpFormOpen}
+                resetPasswordFormOpen={resetPasswordFormOpen}
+                setResetPasswordFormOpen={setResetPasswordFormOpen}
+                verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
+                setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
+                verifyPasswordResetOTPFormOpen={verifyPasswordResetOTPFormOpen}
+                setVerifyPasswordResetOTPFormOpen={
+                  setVerifyPasswordResetOTPFormOpen
+                }
+                newPasswordFormOpen={newPasswordFormOpen}
+                setNewPasswordFormOpen={setNewPasswordFormOpen}
+                // createClassFormOpen={createClassFormOpen}
+                // setCreateClassFormOpen={setCreateClassFormOpen}
+                // joinClassFormOpen={joinClassFormOpen}
+                // setJoinClassFormOpen={setJoinClassFormOpen}
+              />
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+      <Transition show={joinClassFormOpen} as={Fragment}>
+        <Dialog
+          className="relative z-10"
+          onClose={() => setJoinClassFormOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-5 text-center">
+              <JoinClassForm
+                loginFormOpen={loginFormOpen}
+                setLoginFormOpen={setLoginFormOpen}
+                signUpFormOpen={signUpFormOpen}
+                setSignUpFormOpen={setSignUpFormOpen}
+                resetPasswordFormOpen={resetPasswordFormOpen}
+                setResetPasswordFormOpen={setResetPasswordFormOpen}
+                verifyEmailOTPFormOpen={verifyEmailOTPFormOpen}
+                setVerifyEmailOTPFormOpen={setVerifyEmailOTPFormOpen}
+                verifyPasswordResetOTPFormOpen={verifyPasswordResetOTPFormOpen}
+                setVerifyPasswordResetOTPFormOpen={
+                  setVerifyPasswordResetOTPFormOpen
+                }
+                newPasswordFormOpen={newPasswordFormOpen}
+                setNewPasswordFormOpen={setNewPasswordFormOpen}
+                // createClassFormOpen={createClassFormOpen}
+                // setCreateClassFormOpen={setCreateClassFormOpen}
+                // joinClassFormOpen={joinClassFormOpen}
+                // setJoinClassFormOpen={setJoinClassFormOpen}
+              />
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </>
   );
 }
