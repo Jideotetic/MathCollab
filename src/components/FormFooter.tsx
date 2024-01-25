@@ -19,11 +19,8 @@ export default function FormFooter({ formType }: { formType: string }) {
     setVerifyPasswordResetOTPFormOpen,
     newPasswordFormOpen,
     setNewPasswordFormOpen,
-    // createClassFormOpen,
-    // setCreateClassFormOpen,
-    // joinClassFormOpen,
-    // setJoinClassFormOpen,
   } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+
   function goToSignUpPage() {
     if (loginFormOpen) {
       setLoginFormOpen(false);
@@ -105,7 +102,7 @@ export default function FormFooter({ formType }: { formType: string }) {
             </span>
           </button>
           <div className="text-center text-base font-normal leading-normal text-neutral-500">
-            Dont't have an account?{" "}
+            Don't have an account?{" "}
             <Link
               to="#"
               className="text-orange-500 hover:underline"
