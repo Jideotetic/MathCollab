@@ -1,5 +1,9 @@
+import { createContext } from "react";
 import { ReactNode, useState } from "react";
-import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
+import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
+
+export const FormBooleanValueContext =
+  createContext<FormBooleanValueContextTypes | null>(null);
 
 export default function FormBooleanValueContextProvider({
   children,

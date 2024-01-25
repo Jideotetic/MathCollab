@@ -1,4 +1,7 @@
 import MathCollab from "./MathCollab";
+import { InputValueContextTypes } from "../@types/inputValueContextTypes";
+import { InputValueContext } from "../contexts/InputValueContext";
+import { useContext } from "react";
 
 interface HeaderContentProps {
   title: string;
@@ -11,6 +14,7 @@ export default function FormHeader({
 }: {
   headerContent: HeaderContentProps;
 }) {
+  const { email } = useContext(InputValueContext) as InputValueContextTypes;
   return (
     <div className="flex max-w-[359px] flex-col items-center justify-center text-center">
       <MathCollab />
@@ -24,8 +28,10 @@ export default function FormHeader({
 
         {headerContent.description && (
           <p className="text-base font-normal leading-normal">
-            {headerContent.description}{" "}
-            <span className="font-semibold">{headerContent.email}</span>
+            {headerContent.description} <br />
+            {headerContent.email && (
+              <span className="font-semibold">{email}</span>
+            )}
           </p>
         )}
       </div>

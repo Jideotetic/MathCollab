@@ -5,7 +5,8 @@ import ErrorPage from "./ErrorPage";
 import DashboardLayout from "./routes/DashboardLayout";
 import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
-import FormBooleanValueContextProvider from "./components/FormBooleanValueContextProvider";
+import FormBooleanValueContextProvider from "./contexts/FormBooleansValueContext";
+import InputValueContextProvider from "./contexts/InputValueContext";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -30,7 +31,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <FormBooleanValueContextProvider>
-      <RouterProvider router={router} />
+      <InputValueContextProvider>
+        <RouterProvider router={router} />
+      </InputValueContextProvider>
     </FormBooleanValueContextProvider>
   </React.StrictMode>,
 );

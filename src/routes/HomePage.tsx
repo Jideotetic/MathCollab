@@ -41,7 +41,7 @@ export default function HomePage() {
           {({ open }) => (
             <>
               <div className="relative">
-                <Popover.Button className="absolute -top-[100%] right-0 z-50 -translate-y-[50%]">
+                <Popover.Button className="absolute -top-[100%] right-0 -translate-y-[50%]">
                   {open ? (
                     <XMarkIcon className="h-10 w-10" />
                   ) : (
@@ -72,7 +72,7 @@ export default function HomePage() {
               >
                 <Popover.Panel
                   as="nav"
-                  className="fixed left-0 top-0 h-screen w-[50%] bg-white px-4 py-6"
+                  className="fixed left-0 top-0 h-screen w-[75%] bg-white px-4 py-6 sm:w-[50%]"
                 >
                   {({ close }) => (
                     <>

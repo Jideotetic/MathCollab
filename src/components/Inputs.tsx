@@ -1,12 +1,28 @@
 import RevealPassword from "./RevealPassword";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Props } from "./Form";
 
-export default function Inputs({ inputs }: { inputs: Props[] }) {
+export default function Inputs({
+  inputs,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  confirmPassword,
+  setConfirmPassword,
+}: {
+  inputs: Props[];
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+  password: string;
+  setPassword: Dispatch<SetStateAction<string>>;
+  confirmPassword: string;
+  setConfirmPassword: Dispatch<SetStateAction<string>>;
+}) {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
 
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);

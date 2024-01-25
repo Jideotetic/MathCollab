@@ -1,9 +1,16 @@
 import { useNavigate, Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { useState, useContext } from "react";
+import { useState, useContext, FormEvent } from "react";
 import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
 import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
+import { InputValueContextTypes } from "../@types/inputValueContextTypes";
+import { InputValueContext } from "../contexts/InputValueContext";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../firebase";
 
 export interface Props {
   label: string;
@@ -18,15 +25,28 @@ export default function Form({
   formType: string;
 }) {
   const {
+    loginFormOpen,
     setLoginFormOpen,
+    signUpFormOpen,
     setSignUpFormOpen,
     resetPasswordFormOpen,
     setResetPasswordFormOpen,
+    verifyEmailOTPFormOpen,
     setVerifyEmailOTPFormOpen,
     verifyPasswordResetOTPFormOpen,
     setVerifyPasswordResetOTPFormOpen,
+    newPasswordFormOpen,
     setNewPasswordFormOpen,
   } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+  } = useContext(InputValueContext) as InputValueContextTypes;
 
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
@@ -35,63 +55,94 @@ export default function Form({
     setOtp(value);
   }
 
-  function signIn() {
-    setLoginFormOpen(false);
-    navigate("/dashboard");
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (signUpFormOpen) {
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+
+          setSignUpFormOpen(false);
+          setVerifyEmailOTPFormOpen(true);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+          // ..
+        });
+    } else if (loginFormOpen) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          navigate("/dashboard");
+          console.log(user);
+
+          setLoginFormOpen(false);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+    } else if (verifyEmailOTPFormOpen) {
+      setVerifyEmailOTPFormOpen(false);
+      setEmail("");
+      setPassword("");
+      navigate("/dashboard");
+    } else if (resetPasswordFormOpen) {
+      setResetPasswordFormOpen(false);
+      setVerifyPasswordResetOTPFormOpen(true);
+    } else if (verifyPasswordResetOTPFormOpen) {
+      setVerifyPasswordResetOTPFormOpen(false);
+      setNewPasswordFormOpen(true);
+    } else if (newPasswordFormOpen) {
+      setNewPasswordFormOpen(false);
+      setLoginFormOpen(true);
+    }
   }
 
   function forgotPassword() {
     setLoginFormOpen(false);
     setResetPasswordFormOpen(true);
-  }
-
-  function resetPassword() {
-    setResetPasswordFormOpen(false);
-    setVerifyPasswordResetOTPFormOpen(true);
-  }
-
-  function createFreeAccount() {
-    setSignUpFormOpen(false);
-    setVerifyEmailOTPFormOpen(true);
-  }
-
-  function verifyEmailOTP() {
-    setLoginFormOpen(true);
-    setVerifyEmailOTPFormOpen(false);
-  }
-
-  function verifyResetPasswordOTP() {
-    setVerifyPasswordResetOTPFormOpen(false);
-    setNewPasswordFormOpen(true);
-  }
-
-  function createNewPassword() {
-    setNewPasswordFormOpen(false);
-    setLoginFormOpen(true);
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   }
 
   function goToSignInPage() {
     if (resetPasswordFormOpen) {
       setResetPasswordFormOpen(false);
     }
-
-    if (verifyPasswordResetOTPFormOpen) {
-      setVerifyPasswordResetOTPFormOpen(false);
+    if (newPasswordFormOpen) {
+      setNewPasswordFormOpen(false);
     }
 
     setLoginFormOpen(true);
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   }
 
   return (
     <>
-      <form
-        className="flex w-full flex-col gap-8"
-        onSubmit={(e) => e.preventDefault()}
-      >
+      <form className="flex w-full flex-col gap-8" onSubmit={handleSubmit}>
         {formType === "login" && (
           <div className="flex flex-col">
             <div className="flex flex-col gap-8">
-              <Inputs inputs={inputs} />
+              <Inputs
+                inputs={inputs}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+              />
             </div>
             <Link
               to="#"
@@ -105,7 +156,15 @@ export default function Form({
 
         {formType === "signup" && (
           <div className="flex flex-col gap-8">
-            <Inputs inputs={inputs} />
+            <Inputs
+              inputs={inputs}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+            />
             <div className="flex items-start gap-2">
               <input
                 type="checkbox"
@@ -149,7 +208,15 @@ export default function Form({
 
         {formType === "reset-password" && (
           <div className="flex flex-col gap-8">
-            <Inputs inputs={inputs} />
+            <Inputs
+              inputs={inputs}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+            />
           </div>
         )}
 
@@ -169,19 +236,43 @@ export default function Form({
 
         {formType === "new-password" && (
           <div className="flex flex-col gap-8">
-            <Inputs inputs={inputs} />
+            <Inputs
+              inputs={inputs}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+            />
           </div>
         )}
 
         {formType === "join-class" && (
           <div className="mb-8">
-            <Inputs inputs={inputs} />
+            <Inputs
+              inputs={inputs}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+            />
           </div>
         )}
 
         {formType === "create-class" && (
           <div className=" flex flex-col gap-8">
-            <Inputs inputs={inputs} />
+            <Inputs
+              inputs={inputs}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+            />
             <div className="flex flex-col items-start gap-2">
               <label htmlFor="collaborators">
                 Invite Collaborators/Students
@@ -212,21 +303,6 @@ export default function Form({
 
         <button
           type="submit"
-          onClick={() => {
-            formType === "login"
-              ? signIn()
-              : formType === "verify-email"
-                ? verifyEmailOTP()
-                : formType === "signup"
-                  ? createFreeAccount()
-                  : formType === "reset-password"
-                    ? resetPassword()
-                    : formType === "verify-password-reset"
-                      ? verifyResetPasswordOTP()
-                      : formType === "new-password"
-                        ? createNewPassword()
-                        : "";
-          }}
           className="mx-auto w-[202px] rounded-lg bg-slate-950 py-[13px] text-center text-sm font-medium text-white hover:bg-slate-800"
         >
           {formType === "signup"

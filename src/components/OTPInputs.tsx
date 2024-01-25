@@ -125,6 +125,7 @@ export default function OTPInputs({ otp, otpLength, onChange }: Props) {
           onKeyDown={inputOnKeyDown}
           onFocus={inputOnFocus}
           key={id}
+          required
           maxLength={otpLength}
           className="w-12 rounded-lg border-neutral-200 bg-white text-center text-lg font-extrabold shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
