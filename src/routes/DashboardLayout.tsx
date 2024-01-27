@@ -1,5 +1,6 @@
 import MathCollab from "../components/MathCollab";
-import { NavLink, Link, Outlet } from "react-router-dom";
+import { NavLink, Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";
@@ -8,6 +9,22 @@ import helpUrl from "../assets/help.svg";
 import signOutUrl from "../assets/sign-out.svg";
 
 export default function DashboardLayout() {
+  const handleLogout = () => {
+    sessionStorage.removeItem("Auth Token");
+    navigate("/login");
+  };
+  const navigate = useNavigate();
+  useEffect(() => {
+    const authToken = sessionStorage.getItem("Auth Token");
+
+    if (authToken) {
+      navigate("/dashboard");
+    }
+
+    if (!authToken) {
+      navigate("/");
+    }
+  }, [navigate]);
   return (
     <>
       <div className="mx-auto grid min-h-screen max-w-[1280px] grid-cols-layout bg-white">
@@ -102,7 +119,8 @@ export default function DashboardLayout() {
               <li className="flex gap-2 rounded py-1.5 pl-4">
                 <img src={signOutUrl} alt="" />
                 <Link
-                  to="/dashboard"
+                  to="/"
+                  onClick={handleLogout}
                   className="font-poppins text-sm font-light leading-tight text-neutral-500"
                 >
                   Sign Out

@@ -45,13 +45,13 @@ export default function DashboardIndex() {
           <div className="flex bg-white">
             <button
               type="button"
-              className="rounded-s-[47px] border border-stone-500 border-opacity-30 px-2"
+              className="shrink-0 rounded-s-[47px] border border-stone-500 border-opacity-30 px-2"
             >
               <Bars3Icon className="h-7 w-7" />
             </button>
             <button
               type="button"
-              className="rounded-e-[47px] border border-stone-500 border-opacity-30 bg-gray-200 px-2"
+              className="shrink-0 rounded-e-[47px] border border-stone-500 border-opacity-30 bg-gray-200 px-2"
             >
               <img src={gridIconUrl} alt="" className="h-7 w-7" />
             </button>
