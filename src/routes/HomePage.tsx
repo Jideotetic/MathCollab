@@ -10,8 +10,17 @@ import VerifyPasswordResetOTPForm from "../components/VerifyPasswordResetOTPForm
 import NewPasswordForm from "../components/NewPasswordForm";
 import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  ArrowLongLeftIcon,
+  ArrowLongRightIcon,
+} from "@heroicons/react/24/outline";
 import listDashboardUrl from "../assets/List_dashboard.png";
+import testimonialImageUrl from "../assets/Ellipse 1.png";
+import quoteUrl from "../assets/“.svg";
+import filledStarUrl from "../assets/star.svg";
+import emptyStarUrl from "../assets/star (1).svg";
 
 const links = ["Home", "Pricing", "FAQ", "Blog"];
 
@@ -94,12 +103,10 @@ export default function HomePage() {
                             <NavLink
                               to={link === "Home" ? "/" : link}
                               onClick={() => close()}
-                              className={({ isActive, isPending }) =>
+                              className={({ isActive }) =>
                                 isActive
                                   ? "rounded-3xl bg-purple-200 px-[15px] py-1.5 hover:bg-purple-500 hover:text-white"
-                                  : isPending
-                                    ? ""
-                                    : "rounded-3xl px-[15px] py-1.5 hover:bg-purple-500 hover:text-white"
+                                  : "rounded-3xl px-[15px] py-1.5 hover:bg-purple-500 hover:text-white"
                               }
                             >
                               {link}
@@ -132,12 +139,10 @@ export default function HomePage() {
               >
                 <NavLink
                   to={link === "Home" ? "/" : link}
-                  className={({ isActive, isPending }) =>
+                  className={({ isActive }) =>
                     isActive
                       ? "rounded-3xl bg-purple-200 px-[15px] py-1.5  hover:bg-purple-500 hover:text-white"
-                      : isPending
-                        ? ""
-                        : "rounded-3xl px-[15px] py-1.5 hover:bg-purple-500 hover:text-white"
+                      : "rounded-3xl px-[15px] py-1.5 hover:bg-purple-500 hover:text-white"
                   }
                 >
                   {link}
@@ -154,6 +159,7 @@ export default function HomePage() {
         >
           Sign In
         </button>
+
         {/* AUTHENTICATION SCREENS FLOW STARTS */}
         <Transition show={loginFormOpen} as={Fragment}>
           <Dialog
@@ -295,6 +301,7 @@ export default function HomePage() {
         </Transition>
         {/* AUTHENTICATION FLOW SCREEN ENDS */}
       </header>
+
       <main className="mx-auto max-w-[1280px] px-4 text-center">
         <div className="mb-10 flex flex-col items-center gap-8 bg-image bg-cover bg-center bg-no-repeat pt-8">
           <h2 className="max-w-[291px] rounded-3xl border border-neutral-200 bg-white px-[19px] py-[9px] text-base font-bold leading-normal text-orange-500">
@@ -321,11 +328,58 @@ export default function HomePage() {
         <div className="mb-10">
           <img src={listDashboardUrl} className="w-full" alt="" />
         </div>
-        <div className="flex flex-col items-center justify-center">
-          <h3 className="text-clamp2 max-w-[802px] font-bold leading-[64px] text-slate-950">
+        <div className="mb-10 flex flex-col items-center justify-center pb-10">
+          <h3 className="text-clamp2 max-w-[802px] pb-10 font-bold leading-[64px] text-slate-950">
             What People Say About Math<span className="text-orange-500">C</span>
             ollab
           </h3>
+          <div className="flex max-w-[1054px] flex-col gap-8 md:flex-row md:items-center md:justify-center">
+            <img src={testimonialImageUrl} alt="" className="mx-auto w-[80%]" />
+            <div className="mx-auto flex max-w-[568px] flex-col gap-8 text-left">
+              <div className="flex justify-between">
+                <img src={quoteUrl} alt="" />
+                <div className="flex">
+                  <img src={filledStarUrl} alt="" />
+                  <img src={filledStarUrl} alt="" />
+                  <img src={filledStarUrl} alt="" />
+                  <img src={filledStarUrl} alt="" />
+                  <img src={emptyStarUrl} alt="" />
+                </div>
+              </div>
+              <p className="text-lg font-normal leading-[27px] text-neutral-700">
+                There are many variations of passages of Lorem Ipsum available,
+                but the majority have suffered alteration in some form, by
+                injected humour, or randomised words which don't look even
+                slightly believable. If you are going to use a passage of Lorem.
+                fered alteration in some form, by injected humour, or randomised
+                words which don't look even slightly believable. If you are
+                going to use a passage of Lorem.
+              </p>
+              <div className="flex gap-2">
+                <button type="button">
+                  <ArrowLongLeftIcon className="h-10 w-10 rounded-[89.66px] bg-stone-300 text-white" />
+                </button>
+                <button type="button">
+                  <ArrowLongRightIcon className="h-10 w-10 rounded-[89.66px] bg-black text-white" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mb-10 flex flex-col items-center justify-center gap-6">
+          <h3 className="text-clamp2 max-w-[799px] font-bold leading-[64px] text-slate-950">
+            All Your Math Collaboration tools in one place
+          </h3>
+          <p className="max-w-[515px] text-center text-lg font-normal leading-[27px] text-neutral-700">
+            MathCollab, a real-time interactive math collaboration app, can help
+            you bring your success dream to life.
+          </p>
+          <button
+            type="button"
+            className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+          >
+            Get Started Now
+          </button>
         </div>
       </main>
     </>
