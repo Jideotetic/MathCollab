@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-import { Fragment, useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Fragment, useContext, useEffect } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import MathCollab from "../components/MathCollab";
 import LoginForm from "../components/LoginForm";
@@ -30,6 +30,15 @@ export default function HomePage() {
     newPasswordFormOpen,
     setNewPasswordFormOpen,
   } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const authToken = sessionStorage.getItem("Auth Token");
+
+    if (authToken) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   return (
     <>

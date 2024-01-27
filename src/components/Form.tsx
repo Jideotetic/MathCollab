@@ -11,6 +11,8 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export interface Props {
   label: string;
@@ -60,9 +62,10 @@ export default function Form({
     if (signUpFormOpen) {
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
+          // Signed up
           const user = userCredential.user;
           console.log(user);
+          sessionStorage.setItem("Auth Token", user.uid);
 
           setSignUpFormOpen(false);
           setVerifyEmailOTPFormOpen(true);
@@ -72,13 +75,16 @@ export default function Form({
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
-          // ..
+          if (error.code === "auth/email-already-in-use") {
+            toast.error("Email Already in Use");
+          }
         });
     } else if (loginFormOpen) {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          sessionStorage.setItem("Auth Token", user.uid);
           navigate("/dashboard");
           console.log(user);
 
@@ -88,6 +94,20 @@ export default function Form({
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
+          if (error.code === "auth/wrong-password") {
+            toast.error("Please check the Password");
+          }
+          if (error.code === "auth/invalid-credential") {
+            toast.error("Invalid credential");
+          }
+          if (error.code === "auth/too-many-requests") {
+            toast.error(
+              "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+            );
+          }
+          if (error.code === "auth/user-not-found") {
+            toast.error("Please check the Email");
+          }
         });
     } else if (verifyEmailOTPFormOpen) {
       setVerifyEmailOTPFormOpen(false);
@@ -131,6 +151,7 @@ export default function Form({
   return (
     <>
       <form className="flex w-full flex-col gap-8" onSubmit={handleSubmit}>
+        <ToastContainer />
         {formType === "login" && (
           <div className="flex flex-col">
             <div className="flex flex-col gap-8">
