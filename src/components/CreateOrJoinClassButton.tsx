@@ -9,6 +9,8 @@ import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextT
 import { useContext, Fragment } from "react";
 import CreateClassForm from "./CreateClassForm";
 import JoinClassForm from "./JoinClassForm";
+import { InputValueContextTypes } from "../@types/inputValueContextTypes";
+import { InputValueContext } from "../contexts/InputValueContext";
 
 export default function CreateOrJoinClassButton() {
   const {
@@ -17,6 +19,10 @@ export default function CreateOrJoinClassButton() {
     joinClassFormOpen,
     setJoinClassFormOpen,
   } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+
+  const { setClassName, setClassUrl } = useContext(
+    InputValueContext,
+  ) as InputValueContextTypes;
   return (
     <>
       <Popover className="relative">
@@ -38,7 +44,8 @@ export default function CreateOrJoinClassButton() {
               className="flex items-center gap-2 rounded px-4 py-1.5 hover:bg-black hover:text-white"
               onClick={() => setCreateClassFormOpen(true)}
             >
-              <PlusIcon className="h-4 w-4" /> Create class
+              <PlusIcon className="h-4 w-4" />
+              Create class
             </button>
             <button
               type="button"
@@ -54,7 +61,10 @@ export default function CreateOrJoinClassButton() {
       <Transition show={createClassFormOpen} as={Fragment}>
         <Dialog
           className="relative z-10"
-          onClose={() => setCreateClassFormOpen(false)}
+          onClose={() => {
+            setCreateClassFormOpen(false);
+            setClassName("");
+          }}
         >
           <Transition.Child
             as={Fragment}
@@ -77,7 +87,10 @@ export default function CreateOrJoinClassButton() {
       <Transition show={joinClassFormOpen} as={Fragment}>
         <Dialog
           className="relative z-10"
-          onClose={() => setJoinClassFormOpen(false)}
+          onClose={() => {
+            setJoinClassFormOpen(false);
+            setClassUrl("");
+          }}
         >
           <Transition.Child
             as={Fragment}

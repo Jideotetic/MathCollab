@@ -15,6 +15,7 @@ export default function FormHeader({
   headerContent: HeaderContentProps;
 }) {
   const { email } = useContext(InputValueContext) as InputValueContextTypes;
+
   return (
     <div className="flex max-w-[359px] flex-col items-center justify-center text-center">
       <MathCollab />

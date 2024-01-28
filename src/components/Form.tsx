@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { useState, useContext, FormEvent } from "react";
+import { useState, useContext, FormEvent, ChangeEvent } from "react";
 import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
 import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 import { InputValueContextTypes } from "../@types/inputValueContextTypes";
@@ -13,6 +13,8 @@ import {
 import { auth } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ClassListType } from "../@types/classListType";
+import { ClassListContext } from "../contexts/ClassListContext";
 
 export interface Props {
   label: string;
@@ -39,15 +41,25 @@ export default function Form({
     setVerifyPasswordResetOTPFormOpen,
     newPasswordFormOpen,
     setNewPasswordFormOpen,
+    createClassFormOpen,
+    setCreateClassFormOpen,
+    joinClassFormOpen,
+    setJoinClassFormOpen,
   } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+
+  const { classList, setClassList } = useContext(
+    ClassListContext,
+  ) as ClassListType;
 
   const {
     email,
-    setEmail,
     password,
+    className,
+    setEmail,
     setPassword,
-    confirmPassword,
     setConfirmPassword,
+    collaborators,
+    setCollaborators,
   } = useContext(InputValueContext) as InputValueContextTypes;
 
   const [otp, setOtp] = useState("");
@@ -57,24 +69,21 @@ export default function Form({
     setOtp(value);
   }
 
+  function handleCollaboratorsChange(e: ChangeEvent<HTMLInputElement>) {
+    setCollaborators(e.target.value);
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (signUpFormOpen) {
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed up
           const user = userCredential.user;
-          console.log(user);
           sessionStorage.setItem("Auth Token", user.uid);
-
           setSignUpFormOpen(false);
           setVerifyEmailOTPFormOpen(true);
-          // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
           if (error.code === "auth/email-already-in-use") {
             toast.error("Email Already in Use");
           }
@@ -82,18 +91,15 @@ export default function Form({
     } else if (loginFormOpen) {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
           sessionStorage.setItem("Auth Token", user.uid);
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
           navigate("/dashboard");
-          console.log(user);
-
           setLoginFormOpen(false);
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
           if (error.code === "auth/wrong-password") {
             toast.error("Please check the Password");
           }
@@ -111,8 +117,6 @@ export default function Form({
         });
     } else if (verifyEmailOTPFormOpen) {
       setVerifyEmailOTPFormOpen(false);
-      setEmail("");
-      setPassword("");
       navigate("/dashboard");
     } else if (resetPasswordFormOpen) {
       setResetPasswordFormOpen(false);
@@ -123,15 +127,26 @@ export default function Form({
     } else if (newPasswordFormOpen) {
       setNewPasswordFormOpen(false);
       setLoginFormOpen(true);
+    } else if (createClassFormOpen) {
+      setCreateClassFormOpen(false);
+      setClassList([
+        ...classList,
+        {
+          className,
+          dateCreated: new Date().toLocaleDateString(),
+          owner: "Abdulbasit Yusuf",
+          people: [collaborators],
+          status: "online",
+        },
+      ]);
+    } else if (joinClassFormOpen) {
+      setJoinClassFormOpen(false);
     }
   }
 
   function forgotPassword() {
     setLoginFormOpen(false);
     setResetPasswordFormOpen(true);
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
   }
 
   function goToSignInPage() {
@@ -143,9 +158,6 @@ export default function Form({
     }
 
     setLoginFormOpen(true);
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
   }
 
   return (
@@ -155,15 +167,7 @@ export default function Form({
         {formType === "login" && (
           <div className="flex flex-col">
             <div className="flex flex-col gap-8">
-              <Inputs
-                inputs={inputs}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-              />
+              <Inputs inputs={inputs} />
             </div>
             <Link
               to="#"
@@ -177,16 +181,8 @@ export default function Form({
 
         {formType === "signup" && (
           <div className="flex flex-col gap-8">
-            <Inputs
-              inputs={inputs}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-            />
-            <div className="flex items-start gap-2">
+            <Inputs inputs={inputs} />
+            <div className="flex items-start gap-2 text-left">
               <input
                 type="checkbox"
                 name="terms-of-use"
@@ -229,15 +225,7 @@ export default function Form({
 
         {formType === "reset-password" && (
           <div className="flex flex-col gap-8">
-            <Inputs
-              inputs={inputs}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-            />
+            <Inputs inputs={inputs} />
           </div>
         )}
 
@@ -257,52 +245,33 @@ export default function Form({
 
         {formType === "new-password" && (
           <div className="flex flex-col gap-8">
-            <Inputs
-              inputs={inputs}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-            />
+            <Inputs inputs={inputs} />
           </div>
         )}
 
         {formType === "join-class" && (
           <div className="mb-8">
-            <Inputs
-              inputs={inputs}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-            />
+            <Inputs inputs={inputs} />
           </div>
         )}
 
         {formType === "create-class" && (
           <div className=" flex flex-col gap-8">
-            <Inputs
-              inputs={inputs}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-            />
+            <Inputs inputs={inputs} />
             <div className="flex flex-col items-start gap-2">
               <label htmlFor="collaborators">
                 Invite Collaborators/Students
               </label>
-              <textarea
+              <input
+                type="email"
                 name="collaborators"
                 id="collaborators"
-                className="form-textarea inline-block self-stretch rounded-sm border-neutral-300 text-slate-950 shadow-sm hover:text-slate-800 focus:ring-slate-950 hover:focus:ring-slate-800"
-              ></textarea>
+                multiple
+                required
+                value={collaborators}
+                onChange={handleCollaboratorsChange}
+                className="form-input  inline-block h-20 w-full rounded-lg border-neutral-200 bg-white pb-3 pr-8 pt-3 text-sm placeholder-transparent shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
+              ></input>
               <div className="flex items-start gap-2">
                 <input
                   type="checkbox"

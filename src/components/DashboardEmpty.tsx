@@ -1,18 +1,12 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useContext, Fragment } from "react";
+import { useContext } from "react";
 import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
 import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
-import { Transition, Dialog } from "@headlessui/react";
-import CreateClassForm from "./CreateClassForm";
-import JoinClassForm from "./JoinClassForm";
 
 export default function DashboardEmpty() {
-  const {
-    createClassFormOpen,
-    setCreateClassFormOpen,
-    joinClassFormOpen,
-    setJoinClassFormOpen,
-  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+  const { setCreateClassFormOpen, setJoinClassFormOpen } = useContext(
+    FormBooleanValueContext,
+  ) as FormBooleanValueContextTypes;
   return (
     <>
       <div className="flex flex-grow items-center justify-center border-2 border-neutral-200 text-center">
@@ -44,52 +38,6 @@ export default function DashboardEmpty() {
                 Join a class
               </button>
             </div>
-            <Transition show={createClassFormOpen} as={Fragment}>
-              <Dialog
-                className="relative z-10"
-                onClose={() => setCreateClassFormOpen(false)}
-              >
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div className="fixed inset-0 bg-black/25" />
-                </Transition.Child>
-                <div className="fixed inset-0 overflow-y-auto">
-                  <div className="flex min-h-full items-center justify-center p-5 text-center">
-                    <CreateClassForm />
-                  </div>
-                </div>
-              </Dialog>
-            </Transition>
-            <Transition show={joinClassFormOpen} as={Fragment}>
-              <Dialog
-                className="relative z-10"
-                onClose={() => setJoinClassFormOpen(false)}
-              >
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div className="fixed inset-0 bg-black/25" />
-                </Transition.Child>
-                <div className="fixed inset-0 overflow-y-auto">
-                  <div className="flex min-h-full items-center justify-center p-5 text-center">
-                    <JoinClassForm />
-                  </div>
-                </div>
-              </Dialog>
-            </Transition>
           </div>
         </div>
       </div>

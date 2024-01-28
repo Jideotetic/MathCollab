@@ -6,8 +6,16 @@ import DashboardEmpty from "../components/DashboardEmpty";
 import gridIconUrl from "../assets/grid_icon.svg";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
+import { useOutletContext } from "react-router-dom";
+import { ClassListType } from "../@types/classListType";
+import ClassList from "../components/ClassList";
+import ClassGrid from "../components/ClassGrid";
+import { useState } from "react";
 
 export default function DashboardIndex() {
+  const { classList } = useOutletContext<ClassListType>();
+  const [gridView, setGridView] = useState(false);
+
   return (
     <>
       <div className="flex h-[69px] items-center justify-between border-2 border-neutral-200 px-4">
@@ -45,13 +53,19 @@ export default function DashboardIndex() {
           <div className="flex bg-white">
             <button
               type="button"
-              className="shrink-0 rounded-s-[47px] border border-stone-500 border-opacity-30 px-2"
+              onClick={() => setGridView(false)}
+              className={`shrink-0 rounded-s-[47px] border border-stone-500 border-opacity-30 ${
+                gridView ? "" : "bg-gray-200"
+              } px-2`}
             >
               <Bars3Icon className="h-7 w-7" />
             </button>
             <button
               type="button"
-              className="shrink-0 rounded-e-[47px] border border-stone-500 border-opacity-30 bg-gray-200 px-2"
+              onClick={() => setGridView(true)}
+              className={`shrink-0 rounded-e-[47px] border border-stone-500 border-opacity-30 ${
+                gridView ? "bg-gray-200" : ""
+              } px-2`}
             >
               <img src={gridIconUrl} alt="" className="h-7 w-7" />
             </button>
@@ -63,12 +77,19 @@ export default function DashboardIndex() {
             type="search"
             className="flex-1 rounded-[47px] border border-stone-500 border-opacity-30 bg-white px-2"
             placeholder="Search"
+            name="search"
           />
         </form>
 
         <CreateOrJoinClassButton />
       </div>
-      <DashboardEmpty />
+      {classList.length === 0 ? (
+        <DashboardEmpty />
+      ) : gridView ? (
+        <ClassGrid />
+      ) : (
+        <ClassList />
+      )}
     </>
   );
 }

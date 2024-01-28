@@ -7,6 +7,7 @@ import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
 import FormBooleanValueContextProvider from "./contexts/FormBooleansValueContext";
 import InputValueContextProvider from "./contexts/InputValueContext";
+import ClassListContextProvider from "./contexts/ClassListContext";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -31,9 +32,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <FormBooleanValueContextProvider>
-      <InputValueContextProvider>
-        <RouterProvider router={router} />
-      </InputValueContextProvider>
+      <ClassListContextProvider>
+        <InputValueContextProvider>
+          <RouterProvider router={router} />
+        </InputValueContextProvider>
+      </ClassListContextProvider>
     </FormBooleanValueContextProvider>
   </React.StrictMode>,
 );

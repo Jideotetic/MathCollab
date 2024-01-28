@@ -10,6 +10,8 @@ import VerifyPasswordResetOTPForm from "../components/VerifyPasswordResetOTPForm
 import NewPasswordForm from "../components/NewPasswordForm";
 import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
+import { InputValueContext } from "../contexts/InputValueContext";
+import { InputValueContextTypes } from "../@types/inputValueContextTypes";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -39,6 +41,11 @@ export default function HomePage() {
     newPasswordFormOpen,
     setNewPasswordFormOpen,
   } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+
+  const { setEmail, setPassword, setConfirmPassword } = useContext(
+    InputValueContext,
+  ) as InputValueContextTypes;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -164,7 +171,12 @@ export default function HomePage() {
         <Transition show={loginFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
-            onClose={() => setLoginFormOpen(false)}
+            onClose={() => {
+              setLoginFormOpen(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
           >
             <Transition.Child
               as={Fragment}
@@ -187,7 +199,12 @@ export default function HomePage() {
         <Transition show={signUpFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
-            onClose={() => setSignUpFormOpen(false)}
+            onClose={() => {
+              setSignUpFormOpen(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
           >
             <Transition.Child
               as={Fragment}
@@ -210,7 +227,12 @@ export default function HomePage() {
         <Transition show={verifyEmailOTPFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
-            onClose={() => setVerifyEmailOTPFormOpen(false)}
+            onClose={() => {
+              setVerifyEmailOTPFormOpen(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
           >
             <Transition.Child
               as={Fragment}
@@ -233,7 +255,12 @@ export default function HomePage() {
         <Transition show={resetPasswordFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
-            onClose={() => setResetPasswordFormOpen(false)}
+            onClose={() => {
+              setResetPasswordFormOpen(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
           >
             <Transition.Child
               as={Fragment}
@@ -256,7 +283,12 @@ export default function HomePage() {
         <Transition show={verifyPasswordResetOTPFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
-            onClose={() => setVerifyPasswordResetOTPFormOpen(false)}
+            onClose={() => {
+              setVerifyPasswordResetOTPFormOpen(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
           >
             <Transition.Child
               as={Fragment}
@@ -279,7 +311,12 @@ export default function HomePage() {
         <Transition show={newPasswordFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
-            onClose={() => setNewPasswordFormOpen(false)}
+            onClose={() => {
+              setNewPasswordFormOpen(false);
+              setEmail("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
           >
             <Transition.Child
               as={Fragment}
