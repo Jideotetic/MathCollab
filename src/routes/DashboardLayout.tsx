@@ -1,19 +1,27 @@
 import MathCollab from "../components/MathCollab";
 import { NavLink, Link, Outlet, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";
 import settingsUrl from "../assets/settings.svg";
 import helpUrl from "../assets/help.svg";
 import signOutUrl from "../assets/sign-out.svg";
+import { ClassListType } from "../@types/classListType";
+import { ClassListContext } from "../contexts/ClassListContext";
 
 export default function DashboardLayout() {
+  const { classList, setClassList } = useContext(
+    ClassListContext,
+  ) as ClassListType;
+
   const handleLogout = () => {
     sessionStorage.removeItem("Auth Token");
     navigate("/login");
   };
+
   const navigate = useNavigate();
+
   useEffect(() => {
     const authToken = sessionStorage.getItem("Auth Token");
 
@@ -25,6 +33,7 @@ export default function DashboardLayout() {
       navigate("/");
     }
   }, [navigate]);
+
   return (
     <>
       <div className="mx-auto grid min-h-screen max-w-[1280px] grid-cols-layout bg-white">
@@ -130,7 +139,7 @@ export default function DashboardLayout() {
           </nav>
         </div>
         <div className="mx-[17px] mb-[14px] mt-[19px] flex flex-col rounded-[10px] border-2 border-neutral-200">
-          <Outlet />
+          <Outlet context={{ classList, setClassList }} />
         </div>
       </div>
     </>

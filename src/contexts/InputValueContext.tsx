@@ -13,6 +13,9 @@ export default function InputValueContextProvider({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [className, setClassName] = useState("");
+  const [classUrl, setClassUrl] = useState("");
+  const [collaborators, setCollaborators] = useState("");
   return (
     <>
       <InputValueContext.Provider
@@ -23,6 +26,12 @@ export default function InputValueContextProvider({
           setPassword,
           confirmPassword,
           setConfirmPassword,
+          className,
+          setClassName,
+          classUrl,
+          setClassUrl,
+          collaborators,
+          setCollaborators,
         }}
       >
         {children}
