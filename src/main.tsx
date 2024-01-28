@@ -9,6 +9,7 @@ import FormBooleanValueContextProvider from "./contexts/FormBooleansValueContext
 import InputValueContextProvider from "./contexts/InputValueContext";
 import ClassListContextProvider from "./contexts/ClassListContext";
 import "./index.css";
+import Canvas from "./components/Canvas";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +25,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <DashboardIndex />,
+        errorElement: <ErrorPage />,
       },
     ],
+  },
+  {
+    path: "canvas",
+    element: <Canvas />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
