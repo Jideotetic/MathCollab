@@ -9,6 +9,7 @@ export default {
       },
       gridTemplateColumns: {
         layout: "250px 1fr",
+        canvasLayout: "240px 2fr 240px",
       },
       backgroundImage: {
         image: "url('/src/assets/bg-image.png')",

@@ -141,6 +141,7 @@ export default function Form({
       ]);
     } else if (joinClassFormOpen) {
       setJoinClassFormOpen(false);
+      navigate("/canvas");
     }
   }
 
