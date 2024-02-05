@@ -5,17 +5,24 @@ import ErrorPage from "./ErrorPage";
 import DashboardLayout from "./routes/DashboardLayout";
 import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
-import FormBooleanValueContextProvider from "./contexts/FormBooleansValueContext";
-import InputValueContextProvider from "./contexts/InputValueContext";
-import ClassListContextProvider from "./contexts/ClassListContext";
+import FormsContextProvider from "./contexts/FormsContext";
+import InputsContextProvider from "./contexts/InputsContext";
+// import ClassListContextProvider from "./contexts/ClassListContext";
 import "./index.css";
 import Canvas from "./components/Canvas";
+import AuthProvider from "./contexts/AuthContext";
+import HomePageIndex from "./routes/HomePageIndex";
+import ExplorePage from "./routes/ExplorePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
     errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <HomePageIndex /> },
+      { path: "explore", element: <ExplorePage /> },
+    ],
   },
   {
     path: "dashboard",
@@ -38,12 +45,14 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <FormBooleanValueContextProvider>
-      <ClassListContextProvider>
-        <InputValueContextProvider>
+    <AuthProvider>
+      <FormsContextProvider>
+        {/* <ClassListContextProvider> */}
+        <InputsContextProvider>
           <RouterProvider router={router} />
-        </InputValueContextProvider>
-      </ClassListContextProvider>
-    </FormBooleanValueContextProvider>
+        </InputsContextProvider>
+        {/* </ClassListContextProvider> */}
+      </FormsContextProvider>
+    </AuthProvider>
   </React.StrictMode>,
 );

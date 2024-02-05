@@ -17,6 +17,9 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import Collaborators from "./Collaborators";
+import ClassChat from "./ClassChat";
 
 const penTools = [
   arrowUrl,
@@ -45,6 +48,7 @@ const shapes = [
 ];
 
 export default function Canvas() {
+  const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   return (
     <>
       <div></div>
@@ -178,7 +182,31 @@ export default function Canvas() {
             </button>
           </div>
         </div>
-        <div className="rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm"></div>
+        <div className="rounded-lg border  border-neutral-200 bg-white p-2 shadow-sm">
+          <div className="mb-2 flex justify-between text-base font-medium leading-normal text-neutral-700">
+            <button
+              type="button"
+              onClick={() => setCollaboratorsViewActive(true)}
+              className={`${
+                collaboratorsViewActive ? "border-b-4 border-black" : ""
+              }`}
+            >
+              Collaborators
+            </button>
+            <button
+              type="button"
+              onClick={() => setCollaboratorsViewActive(false)}
+              className={`${
+                collaboratorsViewActive ? "" : "border-b-4 border-black"
+              }`}
+            >
+              Class Chat
+            </button>
+          </div>
+          <div>
+            {collaboratorsViewActive ? <Collaborators /> : <ClassChat />}
+          </div>
+        </div>
       </div>
     </>
   );

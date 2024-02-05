@@ -7,32 +7,34 @@ import calenderUrl from "../assets/calender.svg";
 import settingsUrl from "../assets/settings.svg";
 import helpUrl from "../assets/help.svg";
 import signOutUrl from "../assets/sign-out.svg";
-import { ClassListType } from "../@types/classListType";
-import { ClassListContext } from "../contexts/ClassListContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+// import { ClassListType } from "../@types/classListType";
+// import { ClassListContext } from "../contexts/ClassListContext";
 
 export default function DashboardLayout() {
-  const { classList, setClassList } = useContext(
-    ClassListContext,
-  ) as ClassListType;
+  //   const { classList, setClassList } = useContext(
+  //     ClassListContext,
+  //   ) as ClassListType;
 
   const handleLogout = () => {
-    sessionStorage.removeItem("Auth Token");
-    navigate("/login");
+    // navigate("/login");
+    signOut(auth);
   };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const authToken = sessionStorage.getItem("Auth Token");
+  // useEffect(() => {
+  //   const authToken = sessionStorage.getItem("Auth Token");
 
-    if (authToken) {
-      navigate("/dashboard");
-    }
+  //   if (authToken) {
+  //     navigate("/dashboard");
+  //   }
 
-    if (!authToken) {
-      navigate("/");
-    }
-  }, [navigate]);
+  //   if (!authToken) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
 
   return (
     <>
@@ -139,7 +141,9 @@ export default function DashboardLayout() {
           </nav>
         </div>
         <div className="mx-[17px] mb-[14px] mt-[19px] flex flex-col rounded-[10px] border-2 border-neutral-200">
-          <Outlet context={{ classList, setClassList }} />
+          <Outlet
+          //   context={{ classList, setClassList }}
+          />
         </div>
       </div>
     </>

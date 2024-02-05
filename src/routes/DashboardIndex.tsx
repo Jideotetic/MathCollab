@@ -2,19 +2,21 @@ import homeUrl from "../assets/home.svg";
 import notificationUrl from "../assets/notification.svg";
 import userImageUrl from "../assets/user-image.png";
 import arrowRightIconUrl from "../assets/Icon.svg";
-import DashboardEmpty from "../components/DashboardEmpty";
+// import DashboardEmpty from "../components/DashboardEmpty";
 import gridIconUrl from "../assets/grid_icon.svg";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
-import { useOutletContext } from "react-router-dom";
-import { ClassListType } from "../@types/classListType";
-import ClassList from "../components/ClassList";
-import ClassGrid from "../components/ClassGrid";
-import { useState } from "react";
+// import { useOutletContext } from "react-router-dom";
+// import { ClassListType } from "../@types/classListType";
+// import ClassList from "../components/ClassList";
+// import ClassGrid from "../components/ClassGrid";
+import { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function DashboardIndex() {
-  const { classList } = useOutletContext<ClassListType>();
+  // const { classList } = useOutletContext<ClassListType>();
   const [gridView, setGridView] = useState(false);
+  const currentUser = useContext(AuthContext);
 
   return (
     <>
@@ -32,11 +34,13 @@ export default function DashboardIndex() {
           <div className="flex items-center justify-center gap-2">
             <div className="flex gap-4">
               <div className="text-sm leading-[21px]">
-                <div className=" font-semibold text-slate-950">Maleek A.</div>
+                <div className=" font-semibold text-slate-950">
+                  {currentUser?.displayName}.
+                </div>
                 <div className="font-normal text-neutral-500">Free Account</div>
               </div>
               <img
-                src={userImageUrl}
+                src={currentUser?.photoURL || userImageUrl}
                 className="h-10 w-10 rounded-full"
                 alt=""
               />
@@ -83,13 +87,13 @@ export default function DashboardIndex() {
 
         <CreateOrJoinClassButton />
       </div>
-      {classList.length === 0 ? (
+      {/* {classList.length === 0 ? (
         <DashboardEmpty />
       ) : gridView ? (
         <ClassGrid />
       ) : (
         <ClassList />
-      )}
+      )} */}
     </>
   );
 }

@@ -1,25 +1,29 @@
 import { Link } from "react-router-dom";
 import lineUrl from "../assets/line.svg";
 import googleLogoUrl from "../assets/Google-logo.svg";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { useContext } from "react";
-import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
-import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
 
 export default function FormFooter({ formType }: { formType: string }) {
+  const { setEmail, setPassword, setLastName, setFirstName } = useContext(
+    InputsContext,
+  ) as InputsContextType;
+
   const {
     loginFormOpen,
     setLoginFormOpen,
     signUpFormOpen,
     setSignUpFormOpen,
-    resetPasswordFormOpen,
-    setResetPasswordFormOpen,
     verifyEmailOTPFormOpen,
     setVerifyEmailOTPFormOpen,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
     verifyPasswordResetOTPFormOpen,
     setVerifyPasswordResetOTPFormOpen,
     newPasswordFormOpen,
     setNewPasswordFormOpen,
-  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+  } = useContext(FormsContext) as FormsContextType;
 
   function goToSignUpPage() {
     if (loginFormOpen) {
@@ -35,12 +39,17 @@ export default function FormFooter({ formType }: { formType: string }) {
     }
 
     setSignUpFormOpen(true);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
   }
 
   function goToSignInPage() {
     if (signUpFormOpen) {
       setSignUpFormOpen(false);
     }
+
     if (verifyEmailOTPFormOpen) {
       setVerifyEmailOTPFormOpen(false);
     }
@@ -48,7 +57,12 @@ export default function FormFooter({ formType }: { formType: string }) {
     if (verifyPasswordResetOTPFormOpen) {
       setVerifyPasswordResetOTPFormOpen(false);
     }
+
     setLoginFormOpen(true);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
   }
 
   return (
