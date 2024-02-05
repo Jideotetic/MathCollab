@@ -85,7 +85,7 @@ export default function DashboardIndex() {
           />
         </form>
 
-        <CreateOrJoinClassButton otpValue={otpValue} />
+        <CreateOrJoinClassButton />
       </div>
       {/* {classList.length === 0 ? (
         <DashboardEmpty />
