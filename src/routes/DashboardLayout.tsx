@@ -1,6 +1,6 @@
 import MathCollab from "../components/MathCollab";
-import { NavLink, Link, Outlet, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { NavLink, Link, Outlet } from "react-router-dom";
+// import { useContext, useEffect } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";

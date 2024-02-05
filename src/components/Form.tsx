@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import emailjs from "emailjs-com";
+import { OtpContext, OtpContextType } from "../contexts/OtpContext";
 
 export interface Props {
   label: string;
@@ -22,13 +23,13 @@ export interface Props {
 export default function Form({
   inputs,
   formType,
-  otpValue,
 }: {
   inputs: Props[];
   formType: string;
-  otpValue: string;
 }) {
   const [otp, setOtp] = useState("");
+
+  const { otpValue } = useContext(OtpContext) as OtpContextType;
 
   // const otpValue = useMemo(() => {
   //   return Math.floor(Math.random() * 10000).toFixed();
@@ -37,7 +38,6 @@ export default function Form({
   // const [timeActive, setTimeActive] = useState(false);
 
   const navigate = useNavigate();
-  console.log(otp, otpValue);
 
   const {
     email,

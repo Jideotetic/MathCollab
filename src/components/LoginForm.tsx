@@ -15,11 +15,11 @@ const headerContent = {
   email: "",
 };
 
-export default function LoginForm({ otpValue }: { otpValue: string }) {
+export default function LoginForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="login" otpValue={otpValue} />
+      <Form inputs={inputs} formType="login" />
       <FormFooter formType="login" />
     </FormWrapper>
   );

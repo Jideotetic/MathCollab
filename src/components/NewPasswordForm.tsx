@@ -14,11 +14,11 @@ const headerContent = {
   email: "",
 };
 
-export default function NewPasswordForm({ otpValue }: { otpValue: string }) {
+export default function NewPasswordForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="new-password" otpValue={otpValue} />
+      <Form inputs={inputs} formType="new-password" />
       <FormFooter formType="new-password" />
     </FormWrapper>
   );
