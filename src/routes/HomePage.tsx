@@ -192,7 +192,12 @@ export default function HomePage() {
 
       <div className="bg-[#06031E]">
         <footer className="mx-auto h-[338px] w-[1280px] max-w-full border-2 border-red-400 p-4 text-center">
-          <div></div>
+          <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
           <div className="text-center text-[#696974]">
             <hr className="mb-[18px]" />
             <p>© 2024 MathCollab, Inc. All rights reserved.</p>
