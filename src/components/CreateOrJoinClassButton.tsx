@@ -4,13 +4,11 @@ import {
   PlusIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
-import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
 import { useContext, Fragment } from "react";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+
 import CreateClassForm from "./CreateClassForm";
 import JoinClassForm from "./JoinClassForm";
-import { InputValueContextTypes } from "../@types/inputValueContextTypes";
-import { InputValueContext } from "../contexts/InputValueContext";
 
 export default function CreateOrJoinClassButton() {
   const {
@@ -18,11 +16,8 @@ export default function CreateOrJoinClassButton() {
     setCreateClassFormOpen,
     joinClassFormOpen,
     setJoinClassFormOpen,
-  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+  } = useContext(FormsContext) as FormsContextType;
 
-  const { setClassName, setClassUrl } = useContext(
-    InputValueContext,
-  ) as InputValueContextTypes;
   return (
     <>
       <Popover className="relative">
@@ -63,7 +58,6 @@ export default function CreateOrJoinClassButton() {
           className="relative z-10"
           onClose={() => {
             setCreateClassFormOpen(false);
-            setClassName("");
           }}
         >
           <Transition.Child
@@ -89,7 +83,6 @@ export default function CreateOrJoinClassButton() {
           className="relative z-10"
           onClose={() => {
             setJoinClassFormOpen(false);
-            setClassUrl("");
           }}
         >
           <Transition.Child

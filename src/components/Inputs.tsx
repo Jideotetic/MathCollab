@@ -1,24 +1,31 @@
 import RevealPassword from "./RevealPassword";
-import { ChangeEvent, useState, useContext } from "react";
-import { InputValueContextTypes } from "../@types/inputValueContextTypes";
-import { InputValueContext } from "../contexts/InputValueContext";
+import { ChangeEvent, useContext, useState } from "react";
 import { Props } from "./Form";
+import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 
 export default function Inputs({ inputs }: { inputs: Props[] }) {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   const {
     email,
     setEmail,
     password,
     setPassword,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
     confirmPassword,
     setConfirmPassword,
-    className,
-    setClassName,
-    classUrl,
-    setClassUrl,
-  } = useContext(InputValueContext) as InputValueContextTypes;
+  } = useContext(InputsContext) as InputsContextType;
 
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  function handleChangeFirstName(e: ChangeEvent<HTMLInputElement>) {
+    setFirstName(e.target.value);
+  }
+
+  function handleChangeLastName(e: ChangeEvent<HTMLInputElement>) {
+    setLastName(e.target.value);
+  }
 
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
@@ -32,58 +39,58 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
     setConfirmPassword(e.target.value);
   }
 
-  function handleChangeClassName(e: ChangeEvent<HTMLInputElement>) {
-    setClassName(e.target.value);
-  }
+  // function handleChangeClassName(e: ChangeEvent<HTMLInputElement>) {
+  //   setClassName(e.target.value);
+  // }
 
-  function handleChangeClassUrl(e: ChangeEvent<HTMLInputElement>) {
-    setClassUrl(e.target.value);
-  }
+  // function handleChangeClassUrl(e: ChangeEvent<HTMLInputElement>) {
+  //   setClassUrl(e.target.value);
+  // }
 
   return (
     <>
       {inputs.map((input) => (
-        <div className="relative" key={input.inputType}>
+        <div className="relative" key={input.label}>
           <input
             type={
               input.inputType === "email"
                 ? "email"
                 : input.inputType === "text"
                   ? "text"
-                  : input.inputType === "url"
-                    ? "url"
-                    : passwordVisible
-                      ? "text"
-                      : "password"
+                  : passwordVisible
+                    ? "text"
+                    : "password"
             }
             autoComplete="off"
-            name={input.inputType}
+            name={input.label}
             value={
-              input.inputType === "email"
+              input.label === "Email"
                 ? email
-                : input.inputType === "password"
+                : input.label === "Password" ||
+                    input.label === "Enter new password"
                   ? password
-                  : input.inputType === "confirm-password"
+                  : input.label === "Confirm new password"
                     ? confirmPassword
-                    : input.inputType === "text"
-                      ? className
-                      : classUrl
+                    : input.label === "First Name"
+                      ? firstName
+                      : lastName
             }
             onChange={
-              input.inputType === "email"
+              input.label === "Email"
                 ? handleChangeEmail
-                : input.inputType === "password"
+                : input.label === "Password" ||
+                    input.label === "Enter new password"
                   ? handleChangePassword
-                  : input.inputType === "confirm-password"
+                  : input.label === "Confirm new password"
                     ? handleChangeConfirmPassword
-                    : input.inputType === "text"
-                      ? handleChangeClassName
-                      : handleChangeClassUrl
+                    : input.label === "First Name"
+                      ? handleChangeFirstName
+                      : handleChangeLastName
             }
             required
             id={input.label}
             placeholder={input.label}
-            minLength={input.inputType === "password" ? 8 : 0}
+            minLength={input.label === "Password" ? 8 : 0}
             className="peer w-full rounded-lg border-neutral-200 bg-white pb-3 pr-8 pt-3 text-sm placeholder-transparent shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
           />
           <label

@@ -14,11 +14,11 @@ const headerContent = {
   email: "Jideotetic@gmail.com",
 };
 
-export default function VerifyEmailOTPForm() {
+export default function VerifyEmailOTPForm({ otpValue }: { otpValue: string }) {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="verify-email" />
+      <Form inputs={inputs} formType="verify-email" otpValue={otpValue} />
       <FormFooter formType="verify-email" />
     </FormWrapper>
   );

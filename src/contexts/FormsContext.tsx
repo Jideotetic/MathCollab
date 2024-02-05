@@ -1,11 +1,29 @@
 import { createContext } from "react";
 import { ReactNode, useState } from "react";
-import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
+import { Dispatch, SetStateAction } from "react";
 
-export const FormBooleanValueContext =
-  createContext<FormBooleanValueContextTypes | null>(null);
+export interface FormsContextType {
+  loginFormOpen: boolean;
+  setLoginFormOpen: Dispatch<SetStateAction<boolean>>;
+  signUpFormOpen: boolean;
+  setSignUpFormOpen: Dispatch<SetStateAction<boolean>>;
+  resetPasswordFormOpen: boolean;
+  setResetPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
+  verifyEmailOTPFormOpen: boolean;
+  setVerifyEmailOTPFormOpen: Dispatch<SetStateAction<boolean>>;
+  verifyPasswordResetOTPFormOpen: boolean;
+  setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
+  newPasswordFormOpen: boolean;
+  setNewPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
+  joinClassFormOpen: boolean;
+  setJoinClassFormOpen: Dispatch<SetStateAction<boolean>>;
+  createClassFormOpen: boolean;
+  setCreateClassFormOpen: Dispatch<SetStateAction<boolean>>;
+}
 
-export default function FormBooleanValueContextProvider({
+export const FormsContext = createContext<FormsContextType | null>(null);
+
+export default function FormsContextProvider({
   children,
 }: {
   children: ReactNode;
@@ -21,7 +39,7 @@ export default function FormBooleanValueContextProvider({
   const [createClassFormOpen, setCreateClassFormOpen] = useState(false);
   return (
     <>
-      <FormBooleanValueContext.Provider
+      <FormsContext.Provider
         value={{
           loginFormOpen,
           setLoginFormOpen,
@@ -42,7 +60,7 @@ export default function FormBooleanValueContextProvider({
         }}
       >
         {children}
-      </FormBooleanValueContext.Provider>
+      </FormsContext.Provider>
     </>
   );
 }

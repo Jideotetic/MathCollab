@@ -1,20 +1,18 @@
 import { useNavigate, Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { useState, useContext, FormEvent, ChangeEvent } from "react";
-import { FormBooleanValueContextTypes } from "../@types/formBooleanValueContextTypes";
-import { FormBooleanValueContext } from "../contexts/FormBooleansValueContext";
-import { InputValueContextTypes } from "../@types/inputValueContextTypes";
-import { InputValueContext } from "../contexts/InputValueContext";
+import { useState, useContext, FormEvent } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ClassListType } from "../@types/classListType";
-import { ClassListContext } from "../contexts/ClassListContext";
+import { InputsContext, InputsContextType } from "../contexts/InputsContext";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import emailjs from "emailjs-com";
 
 export interface Props {
   label: string;
@@ -24,87 +22,72 @@ export interface Props {
 export default function Form({
   inputs,
   formType,
+  otpValue,
 }: {
   inputs: Props[];
   formType: string;
+  otpValue: string;
 }) {
-  const {
-    loginFormOpen,
-    setLoginFormOpen,
-    signUpFormOpen,
-    setSignUpFormOpen,
-    resetPasswordFormOpen,
-    setResetPasswordFormOpen,
-    verifyEmailOTPFormOpen,
-    setVerifyEmailOTPFormOpen,
-    verifyPasswordResetOTPFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
-    newPasswordFormOpen,
-    setNewPasswordFormOpen,
-    createClassFormOpen,
-    setCreateClassFormOpen,
-    joinClassFormOpen,
-    setJoinClassFormOpen,
-  } = useContext(FormBooleanValueContext) as FormBooleanValueContextTypes;
+  const [otp, setOtp] = useState("");
 
-  const { classList, setClassList } = useContext(
-    ClassListContext,
-  ) as ClassListType;
+  // const otpValue = useMemo(() => {
+  //   return Math.floor(Math.random() * 10000).toFixed();
+  // }, []);
+  // const [time, setTime] = useState(60);
+  // const [timeActive, setTimeActive] = useState(false);
+
+  const navigate = useNavigate();
+  console.log(otp, otpValue);
 
   const {
     email,
     password,
-    className,
     setEmail,
     setPassword,
+    firstName,
+    lastName,
+    setFirstName,
+    setLastName,
     setConfirmPassword,
-    collaborators,
-    setCollaborators,
-  } = useContext(InputValueContext) as InputValueContextTypes;
+  } = useContext(InputsContext) as InputsContextType;
 
-  const [otp, setOtp] = useState("");
-  const navigate = useNavigate();
+  const {
+    loginFormOpen,
+    setLoginFormOpen,
+    setResetPasswordFormOpen,
+    signUpFormOpen,
+    setSignUpFormOpen,
+    setVerifyEmailOTPFormOpen,
+    verifyEmailOTPFormOpen,
+    resetPasswordFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setNewPasswordFormOpen,
+    newPasswordFormOpen,
+  } = useContext(FormsContext) as FormsContextType;
 
   function onChange(value: string) {
     setOtp(value);
   }
 
-  function handleCollaboratorsChange(e: ChangeEvent<HTMLInputElement>) {
-    setCollaborators(e.target.value);
-  }
-
+  // function handleCollaboratorsChange(e: ChangeEvent<HTMLInputElement>) {
+  //   setCollaborators(e.target.value);
+  // }
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (signUpFormOpen) {
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          sessionStorage.setItem("Auth Token", user.uid);
-          setSignUpFormOpen(false);
-          setVerifyEmailOTPFormOpen(true);
-        })
-        .catch((error) => {
-          if (error.code === "auth/email-already-in-use") {
-            toast.error("Email Already in Use");
-          }
-        });
-    } else if (loginFormOpen) {
+    if (loginFormOpen) {
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          sessionStorage.setItem("Auth Token", user.uid);
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          navigate("/dashboard");
+        .then(() => {
           setLoginFormOpen(false);
+          navigate("/dashboard");
         })
         .catch((error) => {
+          console.error(error);
           if (error.code === "auth/wrong-password") {
             toast.error("Please check the Password");
           }
           if (error.code === "auth/invalid-credential") {
-            toast.error("Invalid credential");
+            toast.error("Password or Email invalid");
           }
           if (error.code === "auth/too-many-requests") {
             toast.error(
@@ -115,45 +98,74 @@ export default function Form({
             toast.error("Please check the Email");
           }
         });
+    } else if (signUpFormOpen) {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      updateProfile(userCredential.user, {
+        displayName: firstName + " " + lastName.slice(0, 1),
+      })
+        .then(() => {
+          setSignUpFormOpen(false);
+          setVerifyEmailOTPFormOpen(true);
+          sendOTP();
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            toast.error("Email Already in Use");
+          } else if (error.code === "auth/invalid-email") {
+            toast.error("Invalid email");
+          }
+        });
     } else if (verifyEmailOTPFormOpen) {
+      if (otp !== otpValue) {
+        alert("Invalid OTP");
+        return;
+      }
       setVerifyEmailOTPFormOpen(false);
       navigate("/dashboard");
     } else if (resetPasswordFormOpen) {
       setResetPasswordFormOpen(false);
       setVerifyPasswordResetOTPFormOpen(true);
+      sendOTP();
     } else if (verifyPasswordResetOTPFormOpen) {
+      if (otp !== otpValue) {
+        alert("Invalid OTP");
+        return;
+      }
       setVerifyPasswordResetOTPFormOpen(false);
       setNewPasswordFormOpen(true);
     } else if (newPasswordFormOpen) {
       setNewPasswordFormOpen(false);
-      setLoginFormOpen(true);
-    } else if (createClassFormOpen) {
-      setCreateClassFormOpen(false);
-      setClassList([
-        ...classList,
-        {
-          className,
-          dateCreated: new Date().toLocaleDateString(),
-          owner: "Abdulbasit Yusuf",
-          people: [collaborators],
-          status: "online",
-        },
-      ]);
-    } else if (joinClassFormOpen) {
-      setJoinClassFormOpen(false);
-      navigate("/canvas");
+      navigate("/dashboard");
+      toast.success("Password reset successfully");
     }
+
+    // setEmail("");
+    // setPassword("");
+    // setConfirmPassword("");
+    // setFirstName("");
+    // setLastName("");
   }
 
   function forgotPassword() {
     setLoginFormOpen(false);
     setResetPasswordFormOpen(true);
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setFirstName("");
+    setLastName("");
   }
 
   function goToSignInPage() {
     if (resetPasswordFormOpen) {
       setResetPasswordFormOpen(false);
     }
+
     if (newPasswordFormOpen) {
       setNewPasswordFormOpen(false);
     }
@@ -161,9 +173,60 @@ export default function Form({
     setLoginFormOpen(true);
   }
 
+  function sendOTP() {
+    const templateParams = {
+      to_email: email,
+      to_name: firstName,
+      message: otpValue,
+    };
+
+    emailjs
+      .send(
+        "service_gmfhpbo",
+        "template_q4nt0w6",
+        templateParams,
+        "ATX_F8kDIENLslJVM",
+      )
+      .then((response) => {
+        console.log("Email sent successfully:", response);
+        alert("Email sent successfully!");
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+        alert("Failed to send email. Check console for details.");
+      });
+  }
+
+  // function resendOTP() {
+  //   sendEmailVerification(auth.currentUser)
+  //     .then(() => {
+  //       setTimeActive(true);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.message);
+  //     });
+  // }
+
+  // useEffect(() => {
+  //   let interval = null;
+  //   if (timeActive && time !== 0) {
+  //     interval = setInterval(() => {
+  //       setTime((time) => time - 1);
+  //     }, 1000);
+  //   } else if (time === 0) {
+  //     setTimeActive(false);
+  //     setTime(60);
+  //     clearInterval(interval);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [timeActive, time]);
+
   return (
     <>
-      <form className="flex w-full flex-col gap-8" onSubmit={handleSubmit}>
+      <form
+        className="flex w-full min-w-[202px] flex-col gap-8"
+        onSubmit={handleSubmit}
+      >
         <ToastContainer />
         {formType === "login" && (
           <div className="flex flex-col">
@@ -216,10 +279,17 @@ export default function Form({
               <OTPInputs otp={otp} otpLength={4} onChange={onChange} />
             </div>
             <div className="text-center text-base text-orange-500">
-              Resend OTP{" "}
-              <span className="text-lg font-normal leading-[27px] text-stone-300">
-                00:00
-              </span>
+              <button
+                type="button"
+                // onClick={resendOTP}
+                // disabled={timeActive}
+                className="w-[141px] rounded border border-orange-500 py-1.5 text-sm font-normal leading-[21px] text-orange-500 hover:bg-orange-500 hover:text-white disabled:cursor-not-allowed"
+              >
+                Resend OTP{" "}
+              </button>
+              <div className="text-lg font-normal leading-[27px] text-stone-300">
+                {/* {timeActive ? time : "01:00"} */}
+              </div>
             </div>
           </div>
         )}
@@ -269,8 +339,8 @@ export default function Form({
                 id="collaborators"
                 multiple
                 required
-                value={collaborators}
-                onChange={handleCollaboratorsChange}
+                // value={collaborators}
+                // onChange={handleCollaboratorsChange}
                 className="form-input  inline-block h-20 w-full rounded-lg border-neutral-200 bg-white pb-3 pr-8 pt-3 text-sm placeholder-transparent shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
               ></input>
               <div className="flex items-start gap-2">
