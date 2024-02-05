@@ -11,11 +11,11 @@ const headerContent = {
   email: "",
 };
 
-export default function JoinClassForm() {
+export default function JoinClassForm({ otpValue }: { otpValue: string }) {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="join-class" />
+      <Form inputs={inputs} formType="join-class" otpValue={otpValue} />
       <FormFooter formType="join-class" />
     </FormWrapper>
   );

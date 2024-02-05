@@ -14,11 +14,19 @@ const headerContent = {
   email: "Jideotetic@gmail.com",
 };
 
-export default function VerifyPasswordResetOTPForm() {
+export default function VerifyPasswordResetOTPForm({
+  otpValue,
+}: {
+  otpValue: string;
+}) {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="verify-password-reset" />
+      <Form
+        inputs={inputs}
+        formType="verify-password-reset"
+        otpValue={otpValue}
+      />
       <FormFooter formType="verify-password-reset" />
     </FormWrapper>
   );

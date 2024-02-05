@@ -4,10 +4,13 @@ import {
 } from "@heroicons/react/24/outline";
 import ellipsisIconUrl from "../assets/Ellipse.svg";
 import listDashboardUrl from "../assets/List_dashboard.png";
-import testimonialImageUrl from "../assets/Ellipse 1.png";
+import testimonialImageUrl from "../assets/Mask group.png";
 import quoteUrl from "../assets/“.svg";
 import filledStarUrl from "../assets/star.svg";
 import emptyStarUrl from "../assets/star (1).svg";
+import joinUrl from "../assets/Join.png";
+import createUrl from "../assets/Create.png";
+import canvasUrl from "../assets/Canvas.png";
 import { useContext } from "react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { Link } from "react-router-dom";
@@ -70,11 +73,7 @@ export default function HomePageIndex() {
       </div>
 
       <div className="mx-auto mb-[72px] flex w-[1068px] max-w-full flex-col gap-[48px] lg:flex-row lg:justify-between lg:gap-0">
-        <img
-          src={listDashboardUrl}
-          className="h-auto w-[450px] max-w-full"
-          alt=""
-        />
+        <img src={joinUrl} className="h-auto w-[450px] max-w-full" alt="" />
         <div className="flex w-[550px] max-w-full flex-col gap-[48px]">
           <div className="flex flex-col gap-[10px] text-left">
             <h3 className="text-clamp1 font-bold leading-snug text-slate-950 sm:leading-[64px]">
@@ -114,19 +113,11 @@ export default function HomePageIndex() {
             Get Started
           </button>
         </div>
-        <img
-          src={listDashboardUrl}
-          className="h-auto w-[450px] max-w-full"
-          alt=""
-        />
+        <img src={createUrl} className="h-auto w-[450px] max-w-full" alt="" />
       </div>
 
       <div className="mx-auto mb-[72px] flex w-[1068px] max-w-full flex-col gap-[48px] lg:flex-row lg:justify-between lg:gap-0">
-        <img
-          src={listDashboardUrl}
-          className="h-auto w-[450px] max-w-full"
-          alt=""
-        />
+        <img src={canvasUrl} className="h-auto w-[450px] max-w-full" alt="" />
         <div className="flex w-[550px] max-w-full flex-col gap-[48px]">
           <div className="flex flex-col gap-[10px] text-left">
             <h3 className="text-clamp1 font-bold leading-snug text-slate-950 sm:leading-[64px]">
