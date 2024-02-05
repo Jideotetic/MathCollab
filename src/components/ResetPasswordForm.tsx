@@ -11,11 +11,11 @@ const headerContent = {
   email: "",
 };
 
-export default function ResetPasswordForm() {
+export default function ResetPasswordForm({ otpValue }: { otpValue: string }) {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="reset-password" />
+      <Form inputs={inputs} formType="reset-password" otpValue={otpValue} />
       <FormFooter formType="reset-password" />
     </FormWrapper>
   );

@@ -11,11 +11,11 @@ const headerContent = {
   email: "",
 };
 
-export default function CreateClassForm() {
+export default function CreateClassForm({ otpValue }: { otpValue: string }) {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="create-class" />
+      <Form inputs={inputs} formType="create-class" otpValue={otpValue} />
       <FormFooter formType="create-class" />
     </FormWrapper>
   );

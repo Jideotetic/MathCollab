@@ -138,7 +138,7 @@ export default function HomePage() {
               setLoginFormOpen(false);
             }}
           >
-            <LoginForm />
+            <LoginForm otpValue={otpValue} />
           </Dialog>
         </Transition>
         <Transition show={signUpFormOpen} as={Fragment}>
@@ -168,7 +168,7 @@ export default function HomePage() {
               setResetPasswordFormOpen(false);
             }}
           >
-            <ResetPasswordForm />
+            <ResetPasswordForm otpValue={otpValue} />
           </Dialog>
         </Transition>
         <Transition show={verifyPasswordResetOTPFormOpen} as={Fragment}>
@@ -178,7 +178,7 @@ export default function HomePage() {
               setVerifyPasswordResetOTPFormOpen(false);
             }}
           >
-            <VerifyPasswordResetOTPForm />
+            <VerifyPasswordResetOTPForm otpValue={otpValue} />
           </Dialog>
         </Transition>
         <Transition show={newPasswordFormOpen} as={Fragment}>
@@ -188,7 +188,7 @@ export default function HomePage() {
               setNewPasswordFormOpen(false);
             }}
           >
-            <NewPasswordForm />
+            <NewPasswordForm otpValue={otpValue} />
           </Dialog>
         </Transition>
         {/* AUTHENTICATION FLOW SCREEN ENDS */}
