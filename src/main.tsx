@@ -13,6 +13,7 @@ import Canvas from "./components/Canvas";
 import AuthProvider from "./contexts/AuthContext";
 import HomePageIndex from "./routes/HomePageIndex";
 import ExplorePage from "./routes/ExplorePage";
+import OtpContextProvider from "./contexts/OtpContext";
 
 const router = createBrowserRouter([
   {
@@ -47,11 +48,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
       <FormsContextProvider>
-        {/* <ClassListContextProvider> */}
-        <InputsContextProvider>
-          <RouterProvider router={router} />
-        </InputsContextProvider>
-        {/* </ClassListContextProvider> */}
+        <OtpContextProvider>
+          {/* <ClassListContextProvider> */}
+          <InputsContextProvider>
+            <RouterProvider router={router} />
+          </InputsContextProvider>
+          {/* </ClassListContextProvider> */}
+        </OtpContextProvider>
       </FormsContextProvider>
     </AuthProvider>
   </React.StrictMode>,

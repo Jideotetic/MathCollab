@@ -17,11 +17,11 @@ const headerContent = {
   email: "",
 };
 
-export default function SignUpForm({ otpValue }: { otpValue: string }) {
+export default function SignUpForm() {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="signup" otpValue={otpValue} />
+      <Form inputs={inputs} formType="signup" />
       <FormFooter formType="signup" />
     </FormWrapper>
   );

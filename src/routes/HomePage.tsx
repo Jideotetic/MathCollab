@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import MathCollab from "../components/MathCollab";
 import LoginForm from "../components/LoginForm";
@@ -28,12 +28,6 @@ export default function HomePage() {
     newPasswordFormOpen,
     setNewPasswordFormOpen,
   } = useContext(FormsContext) as FormsContextType;
-
-  const [otpValue] = useState(
-    Math.floor(Math.random() * 10000)
-      .toFixed()
-      .padEnd(4, "0"),
-  );
 
   // const navigate = useNavigate();
 
@@ -138,7 +132,7 @@ export default function HomePage() {
               setLoginFormOpen(false);
             }}
           >
-            <LoginForm otpValue={otpValue} />
+            <LoginForm />
           </Dialog>
         </Transition>
         <Transition show={signUpFormOpen} as={Fragment}>
@@ -148,7 +142,7 @@ export default function HomePage() {
               setSignUpFormOpen(false);
             }}
           >
-            <SignUpForm otpValue={otpValue} />
+            <SignUpForm />
           </Dialog>
         </Transition>
         <Transition show={verifyEmailOTPFormOpen} as={Fragment}>
@@ -158,7 +152,7 @@ export default function HomePage() {
               setVerifyEmailOTPFormOpen(false);
             }}
           >
-            <VerifyEmailOTPForm otpValue={otpValue} />
+            <VerifyEmailOTPForm />
           </Dialog>
         </Transition>
         <Transition show={resetPasswordFormOpen} as={Fragment}>
@@ -168,7 +162,7 @@ export default function HomePage() {
               setResetPasswordFormOpen(false);
             }}
           >
-            <ResetPasswordForm otpValue={otpValue} />
+            <ResetPasswordForm />
           </Dialog>
         </Transition>
         <Transition show={verifyPasswordResetOTPFormOpen} as={Fragment}>
@@ -178,7 +172,7 @@ export default function HomePage() {
               setVerifyPasswordResetOTPFormOpen(false);
             }}
           >
-            <VerifyPasswordResetOTPForm otpValue={otpValue} />
+            <VerifyPasswordResetOTPForm />
           </Dialog>
         </Transition>
         <Transition show={newPasswordFormOpen} as={Fragment}>
@@ -188,16 +182,22 @@ export default function HomePage() {
               setNewPasswordFormOpen(false);
             }}
           >
-            <NewPasswordForm otpValue={otpValue} />
+            <NewPasswordForm />
           </Dialog>
         </Transition>
         {/* AUTHENTICATION FLOW SCREEN ENDS */}
       </header>
 
       <Outlet />
+
       <div className="bg-[#06031E]">
         <footer className="mx-auto h-[338px] w-[1280px] max-w-full border-2 border-red-400 p-4 text-center">
-          <div></div>
+          <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
           <div className="text-center text-[#696974]">
             <hr className="mb-[18px]" />
             <p>© 2024 MathCollab, Inc. All rights reserved.</p>
