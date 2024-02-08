@@ -11,7 +11,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import "react-toastify/dist/ReactToastify.css";
 import NavBar from "../components/NavBar";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+import { InputsContext, InputsContextType } from "../contexts/InputsContext";
+import facebookIconUrl from "../assets/Facebook.svg";
+import twitterIconUrl from "../assets/Twitter.svg";
+import instagramIconUrl from "../assets/Instagram.svg";
 
 export default function HomePage() {
   const {
@@ -29,19 +33,13 @@ export default function HomePage() {
     setNewPasswordFormOpen,
   } = useContext(FormsContext) as FormsContextType;
 
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const authToken = sessionStorage.getItem("Auth Token");
-
-  //   if (authToken) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [navigate]);
+  const { setEmail, setPassword } = useContext(
+    InputsContext,
+  ) as InputsContextType;
 
   return (
     <>
-      <header className="mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6">
+      <header className="mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6 text-sm xl:px-20">
         <MathCollab />
 
         {/* MOBILE NAV STARTS */}
@@ -81,13 +79,13 @@ export default function HomePage() {
                 >
                   {({ close }) => (
                     <>
-                      <ul className="flex flex-col gap-8">
+                      <ul className="space-y-8">
                         <NavBar />
                         <li>
                           <button
                             type="button"
                             onClick={() => setLoginFormOpen(true)}
-                            className="rounded-lg border border-slate-950 px-7 py-3 text-sm font-medium leading-[21px] text-slate-950 hover:bg-slate-950 hover:text-white"
+                            className="rounded-lg border border-slate-950 px-7 py-3 font-semibold text-slate-950 hover:bg-slate-950 hover:text-white"
                           >
                             Sign In
                           </button>
@@ -115,21 +113,21 @@ export default function HomePage() {
             <NavBar />
           </ul>
         </nav>
-
         <button
           type="button"
           onClick={() => setLoginFormOpen(true)}
-          className="hidden rounded-lg border border-slate-950 px-7 py-3 text-sm font-medium leading-[21px] text-slate-950 hover:bg-slate-950 hover:text-white lg:block"
+          className="hidden rounded-lg border border-slate-950 px-7 py-3 font-semibold text-slate-950 hover:bg-slate-950 hover:text-white lg:block"
         >
           Sign In
         </button>
-
         {/* AUTHENTICATION SCREENS FLOW STARTS */}
         <Transition show={loginFormOpen} as={Fragment}>
           <Dialog
             className="relative z-10"
             onClose={() => {
               setLoginFormOpen(false);
+              setEmail("");
+              setPassword("");
             }}
           >
             <LoginForm />
@@ -160,6 +158,7 @@ export default function HomePage() {
             className="relative z-10"
             onClose={() => {
               setResetPasswordFormOpen(false);
+              setEmail("");
             }}
           >
             <ResetPasswordForm />
@@ -170,6 +169,7 @@ export default function HomePage() {
             className="relative z-10"
             onClose={() => {
               setVerifyPasswordResetOTPFormOpen(false);
+              setEmail("");
             }}
           >
             <VerifyPasswordResetOTPForm />
@@ -190,20 +190,85 @@ export default function HomePage() {
 
       <Outlet />
 
-      <div className="bg-[#06031E]">
-        <footer className="mx-auto h-[338px] w-[1280px] max-w-full border-2 border-red-400 p-4 text-center">
-          <div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+      <footer className="mx-auto w-[1280px] max-w-full bg-[#06031E] p-4 text-start text-base text-white">
+        <div className="mx-auto w-[1200px] max-w-full space-y-[43px]">
+          <div className="flex flex-col gap-8 md:flex-row md:justify-between">
+            <div className="space-y-8 self-start">
+              <h3 className="text-[28px] font-bold leading-[32px] text-white">
+                Math<span className="text-[#FD632F]">C</span>ollab
+              </h3>
+              <div className="flex justify-between">
+                <img src={facebookIconUrl} alt="" />
+                <img src={instagramIconUrl} alt="" />
+                <img src={twitterIconUrl} alt="" />
+              </div>
+            </div>
+
+            <div className="space-y-[16px]">
+              <h3 className="text-lg font-normal text-[#696974]">LINKS</h3>
+              <nav>
+                <ul className="space-y-4">
+                  <li>
+                    <Link to="about">About Us</Link>
+                  </li>
+                  <li>
+                    <Link to="tools">Tools</Link>
+                  </li>
+                  <li>
+                    <Link to="classes">Classes</Link>
+                  </li>
+                  <li>
+                    <Link to="blog">Blogs & Resources</Link>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+
+            <div className="space-y-[16px]">
+              <h3 className="text-lg font-normal text-[#696974]">CONTACTS</h3>
+              <address className="space-y-4">
+                <div>24, mobolaje street, Aja, lagos</div>
+                <div>mathcolab@customercare.com</div>
+                <div>+234-906-594-1182</div>
+              </address>
+            </div>
+
+            <div className="space-y-[22px] self-start">
+              <div className="space-y-[16px]">
+                <h3 className="text-lg font-normal">
+                  Sign Up To Our Newsletter
+                </h3>
+                <p className="text-sm">
+                  Be the first to get the latest Updates, tips from our blogs
+                </p>
+              </div>
+              <form action="#" method="post">
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    id=""
+                    className="w-full rounded-full pr-[120px] text-[#06031E]"
+                    autoComplete="off"
+                    placeholder="Enter Your Email"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-1 top-[50%] -translate-y-[50%] rounded-[21.28px] bg-[#06031E] px-[20px] py-[5px]"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
+
           <div className="text-center text-[#696974]">
             <hr className="mb-[18px]" />
             <p>© 2024 MathCollab, Inc. All rights reserved.</p>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </>
   );
 }
