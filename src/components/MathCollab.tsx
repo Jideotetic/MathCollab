@@ -1,8 +1,8 @@
 export default function MathCollab() {
   return (
-    <h1 className="text-[28px] font-bold leading-loose">
+    <h1 className="text-[28px] font-bold leading-[32px] text-[#3A383C]">
       Math
-      <span className="text-orange-500">C</span>
+      <span className="text-[#FD632F]">C</span>
       ollab
     </h1>
   );

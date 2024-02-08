@@ -31,25 +31,13 @@ export default function Form({
 
   const { otpValue } = useContext(OtpContext) as OtpContextType;
 
-  // const otpValue = useMemo(() => {
-  //   return Math.floor(Math.random() * 10000).toFixed();
-  // }, []);
   // const [time, setTime] = useState(60);
   // const [timeActive, setTimeActive] = useState(false);
 
   const navigate = useNavigate();
 
-  const {
-    email,
-    password,
-    setEmail,
-    setPassword,
-    firstName,
-    lastName,
-    setFirstName,
-    setLastName,
-    setConfirmPassword,
-  } = useContext(InputsContext) as InputsContextType;
+  const { email, password, setEmail, setPassword, firstName, lastName } =
+    useContext(InputsContext) as InputsContextType;
 
   const {
     loginFormOpen,
@@ -156,9 +144,6 @@ export default function Form({
     setResetPasswordFormOpen(true);
     setEmail("");
     setPassword("");
-    setConfirmPassword("");
-    setFirstName("");
-    setLastName("");
   }
 
   function goToSignInPage() {
@@ -187,13 +172,11 @@ export default function Form({
         templateParams,
         "ATX_F8kDIENLslJVM",
       )
-      .then((response) => {
-        console.log("Email sent successfully:", response);
+      .then(() => {
         alert("Email sent successfully!");
       })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-        alert("Failed to send email. Check console for details.");
+      .catch(() => {
+        alert("Error sending email contact administrator");
       });
   }
 
@@ -306,10 +289,17 @@ export default function Form({
               <OTPInputs otp={otp} otpLength={4} onChange={onChange} />
             </div>
             <div className="text-center text-base text-orange-500">
-              Resend OTP{" "}
-              <span className="text-lg font-normal leading-[27px] text-stone-300">
-                00:00
-              </span>
+              <button
+                type="button"
+                // onClick={resendOTP}
+                // disabled={timeActive}
+                className="w-[141px] rounded border border-orange-500 py-1.5 text-sm font-normal leading-[21px] text-orange-500 hover:bg-orange-500 hover:text-white disabled:cursor-not-allowed"
+              >
+                Resend OTP{" "}
+              </button>
+              <div className="text-lg font-normal leading-[27px] text-stone-300">
+                {/* {timeActive ? time : "01:00"} */}
+              </div>
             </div>
           </div>
         )}
