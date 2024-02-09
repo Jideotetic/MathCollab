@@ -10,6 +10,8 @@ export default {
       gridTemplateColumns: {
         layout: "250px 1fr",
         canvasLayout: "240px 2fr 240px",
+        classes: "repeat(auto-fit, minmax(200px, 1fr))",
+        classe1: "repeat(auto-fit, minmax(300px, 1fr))",
       },
       backgroundImage: {
         image: "url('/src/assets/bg-image.png')",

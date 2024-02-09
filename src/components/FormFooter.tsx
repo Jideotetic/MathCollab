@@ -4,6 +4,8 @@ import googleLogoUrl from "../assets/Google-logo.svg";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { useContext } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function FormFooter({ formType }: { formType: string }) {
   const { setEmail, setPassword, setLastName, setFirstName } = useContext(
@@ -43,6 +45,7 @@ export default function FormFooter({ formType }: { formType: string }) {
     setLastName("");
     setEmail("");
     setPassword("");
+    signOut(auth);
   }
 
   function goToSignInPage() {
@@ -63,6 +66,7 @@ export default function FormFooter({ formType }: { formType: string }) {
     setLastName("");
     setEmail("");
     setPassword("");
+    signOut(auth);
   }
 
   return (

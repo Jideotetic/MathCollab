@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,6 +15,7 @@ import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import emailjs from "emailjs-com";
 import { OtpContext, OtpContextType } from "../contexts/OtpContext";
+// import { signOut } from "firebase/auth";
 
 export interface Props {
   label: string;
@@ -61,6 +63,7 @@ export default function Form({
   // function handleCollaboratorsChange(e: ChangeEvent<HTMLInputElement>) {
   //   setCollaborators(e.target.value);
   // }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (loginFormOpen) {
@@ -116,9 +119,15 @@ export default function Form({
       setVerifyEmailOTPFormOpen(false);
       navigate("/dashboard");
     } else if (resetPasswordFormOpen) {
-      setResetPasswordFormOpen(false);
-      setVerifyPasswordResetOTPFormOpen(true);
-      sendOTP();
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          // setResetPasswordFormOpen(false);
+          // setVerifyPasswordResetOTPFormOpen(true);
+          sendOTP();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else if (verifyPasswordResetOTPFormOpen) {
       if (otp !== otpValue) {
         alert("Invalid OTP");

@@ -3,7 +3,6 @@ import {
   ArrowLongRightIcon,
 } from "@heroicons/react/24/outline";
 import ellipsisIconUrl from "../assets/Ellipse.svg";
-import listDashboardUrl from "../assets/List_dashboard.png";
 import testimonialImageUrl from "../assets/Mask group.png";
 import quoteUrl from "../assets/“.svg";
 import filledStarUrl from "../assets/star.svg";
@@ -14,6 +13,7 @@ import canvasUrl from "../assets/Canvas.png";
 import thorusUrl from "../assets/Thorus 2.svg";
 import groupUrl from "../assets/Group 48096042.svg";
 import iconUrl from "../assets/1_3.svg";
+import dashboardUrl from "../assets/Dashboard.png";
 import { useContext } from "react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { Link } from "react-router-dom";
@@ -23,7 +23,7 @@ export default function HomePageIndex() {
 
   return (
     <main className="mx-auto w-[1280px] max-w-full text-center">
-      <div className="mb-[107px] bg-white/30 bg-image bg-cover bg-top bg-no-repeat pt-[33px]">
+      <div className="mb-[48px] bg-white/30 bg-image bg-cover bg-top bg-no-repeat pt-[33px]">
         <div className="mx-auto w-[1068px] max-w-full space-y-[48px] px-4">
           <div className="mx-auto w-[838px] max-w-full space-y-[32px]">
             <div className="mx-auto w-[291px] max-w-full rounded-3xl border border-neutral-200 bg-white">
@@ -51,33 +51,46 @@ export default function HomePageIndex() {
                   learning of math and other applied math courses.
                 </p>
               </div>
-
-              <div className="mx-auto flex w-[375px] max-w-full flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-0">
-                <button
-                  onClick={() => setSignUpFormOpen(true)}
-                  type="button"
-                  className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
-                >
-                  Get Started
-                </button>
-
-                <Link
-                  to="explore"
-                  className="w-[175px] rounded-lg border border-slate-950 bg-white py-[13px] text-sm font-semibold leading-tight text-slate-950 hover:border-slate-950 hover:bg-slate-950 hover:text-white"
-                >
-                  Preview the classes
-                </Link>
-              </div>
             </div>
           </div>
 
-          <div className="w-full">
-            <img src={listDashboardUrl} className="max-w-full" alt="" />
+          <div className="w-full space-y-[48px]">
+            <iframe
+              width="640"
+              height="360"
+              src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
+              title="Firebase Authentication Tutorial #1 - Introduction"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="mx-auto max-w-full"
+            ></iframe>
+            <div className="mx-auto flex w-[375px] max-w-full flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-0">
+              <button
+                onClick={() => setSignUpFormOpen(true)}
+                type="button"
+                className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+              >
+                Get Started
+              </button>
+
+              <Link
+                to="explore"
+                className="w-[175px] rounded-lg border border-slate-950 bg-white py-[13px] text-sm font-semibold leading-tight text-slate-950 hover:border-slate-950 hover:bg-slate-950 hover:text-white"
+              >
+                View More Classes
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="shadow-customInner relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-[#00AAF81A]">
+      <div className="mb-[48px]">
+        <h3 className="text-clamp1 font-bold text-slate-950">
+          What We <span className="text-orange-500">Offer</span>
+        </h3>
+      </div>
+
+      <div className="relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-customInner shadow-[#00AAF81A]">
         <img
           src={thorusUrl}
           alt=""
@@ -116,7 +129,7 @@ export default function HomePageIndex() {
         </div>
       </div>
 
-      <div className="shadow-customInner relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-[#00AAF81A]">
+      <div className="relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-customInner shadow-[#00AAF81A]">
         <img
           src={thorusUrl}
           alt=""
@@ -155,7 +168,7 @@ export default function HomePageIndex() {
         </div>
       </div>
 
-      <div className="shadow-customInner1 relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-[#3130330D]">
+      <div className="relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-customInner1 shadow-[#3130330D]">
         <img
           src={thorusUrl}
           alt=""
@@ -210,7 +223,40 @@ export default function HomePageIndex() {
         </div>
       </div>
 
-      <div className="mb-[107px] space-y-[48px] px-4">
+      <div className="mx-auto mb-[107px] w-[1120px] max-w-full space-y-[48px] px-4">
+        <div className="mx-auto w-[722px] max-w-full space-y-[48px]">
+          <div className="space-y-[10px]">
+            <h3 className="mx-auto w-[600px] max-w-full text-clamp1 font-bold text-slate-950">
+              Access Your Own Math<span className="text-orange-500">C</span>
+              ollab Classes Now
+            </h3>
+
+            <p className="mx-auto w-[515px] max-w-full text-lg font-normal text-neutral-700">
+              Imagine having your very own access to math collaborative tools.
+              MathCollab can help with all aspects of collaboration.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setSignUpFormOpen(true)}
+            type="button"
+            className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+          >
+            Get Started Now
+          </button>
+        </div>
+
+        <div className="mx-auto w-full">
+          <img src={dashboardUrl} className="mx-auto max-w-full" alt="" />
+        </div>
+      </div>
+
+      <div className="relative mb-[107px] space-y-[48px] px-4">
+        <img
+          src={iconUrl}
+          alt=""
+          className="absolute -top-6 left-[50%] right-[50%]"
+        />
         <h3 className="mx-auto w-[658px] max-w-full text-clamp1 font-bold text-slate-950">
           What People Say About Math<span className="text-orange-500">C</span>
           ollab
@@ -255,7 +301,7 @@ export default function HomePageIndex() {
         </div>
       </div>
 
-      <div className="shadow-customInner1 relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-[#3130330D]">
+      <div className="relative mb-[107px] rounded-[50px] px-4 py-[107px] shadow-customInner1 shadow-[#3130330D]">
         <img
           src={thorusUrl}
           alt=""
