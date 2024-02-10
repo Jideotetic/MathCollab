@@ -14,6 +14,7 @@ import AuthProvider from "./contexts/AuthContext";
 import HomePageIndex from "./routes/HomePageIndex";
 import ExplorePage from "./routes/ExplorePage";
 import OtpContextProvider from "./contexts/OtpContext";
+import Classes from "./routes/Classes";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePageIndex /> },
-      { path: "explore", element: <ExplorePage /> },
+      { path: "classes", element: <ExplorePage /> },
+      { path: "classes/:class", element: <Classes /> },
     ],
   },
   {

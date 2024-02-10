@@ -2,13 +2,11 @@ import groupUrl from "../assets/Group 1000001948.svg";
 import bgImagerightUrl from "../assets/bg-image-right.png";
 import bgImageleftUrl from "../assets/bg-image-left.png";
 import searchIconUrl from "../assets/ic_Search.svg";
-import creator1Url from "../assets/creator-1.png";
-import creator2Url from "../assets/creator-2.png";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
-import findXUrl from "../assets/find-x.png";
-import pythagorasUrl from "../assets/pythagoras-img.png";
+import { Link } from "react-router-dom";
+import { classes } from "../data/classes";
 
 export default function ExplorePage() {
   return (
@@ -41,7 +39,7 @@ export default function ExplorePage() {
         <div className="mx-auto w-[668px] max-w-full gap-2 space-y-4 sm:flex sm:space-y-0">
           <form action="#" className="relative w-full sm:w-[251px]">
             <input
-              type="search"
+              type="text"
               name=""
               id=""
               placeholder="Search"
@@ -83,147 +81,114 @@ export default function ExplorePage() {
         </div>
       </div>
       <div className="grid-cols-classes sm:grid-cols-classe1 mx-auto grid w-[1135px] max-w-full gap-x-2 gap-y-8 py-[15px] text-left">
-        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
-          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
-          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center justify-between">
-              <p className="text-base font-medium text-black">
-                <span className="font-semibold">Preview</span>:Square root math
-                simplification
-              </p>
-              <div className="flex items-center gap-1">
-                <img src={heartIconUrl} alt="" />
-                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+        {classes.map((lesson) => (
+          <Link to={lesson.link} key={lesson.id}>
+            <div className="flex h-full flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+              <img
+                src={lesson.video}
+                alt=""
+                className="h-[203px] w-full bg-white"
+              />
+              <img
+                src={lesson.creatorImage}
+                alt=""
+                className="h-[46px] w-[46px]"
+              />
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center justify-between">
+                  {lesson.status === "ongoing" ? (
+                    <p className="text-base font-medium text-black">
+                      <span className="font-semibold">Preview</span>:
+                      {lesson.title}
+                    </p>
+                  ) : (
+                    <p className="text-base font-medium text-black">
+                      {lesson.title}
+                    </p>
+                  )}
+
+                  <div className="flex items-center gap-1">
+                    <img src={heartIconUrl} alt="" />
+                    <span className="text-lg font-normal text-[#616161]">
+                      {lesson.likes}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap justify-between gap-3">
+                  <div className="text-lg font-normal text-[#616161]">
+                    <p>{lesson.creator}</p>
+                    <div className="flex items-center gap-1">
+                      <EyeIcon className="h-[13px] w-[13px]" />
+
+                      <span className="shrink-0 text-xs font-normal text-[#616161]">
+                        {lesson.views}
+                      </span>
+
+                      <img src={ellipseIconUrl} alt="" className="" />
+                      {lesson.status === "ongoing" ? (
+                        <span className="shrink-0 text-xs font-semibold text-[#06031E]">
+                          {lesson.status}
+                        </span>
+                      ) : (
+                        <span className="shrink-0 text-xs font-normal text-[#616161]">
+                          {lesson.status}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {lesson.status === "ongoing" ? (
+                    <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                      Join
+                    </button>
+                  ) : (
+                    <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                      Share
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex flex-wrap justify-between gap-3">
-              <div className="text-lg font-normal text-[#616161]">
-                <p>Amanda Chisom</p>
+          </Link>
+        ))}
+
+        {/* <Link to="square-root-simplification">
+          <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+            <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+            <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between">
+                <p className="text-base font-medium text-black">
+                  <span className="font-semibold">Preview</span>:Square root
+                  math simplification
+                </p>
                 <div className="flex items-center gap-1">
-                  <EyeIcon className="h-[13px] w-[13px]" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    8.8K Views
-                  </span>
-                  <img src={ellipseIconUrl} alt="" className="" />
-                  <span className="shrink-0 text-xs font-semibold text-[#06031E]">
-                    Upcoming
+                  <img src={heartIconUrl} alt="" />
+                  <span className="text-lg font-normal text-[#616161]">
+                    8.8K
                   </span>
                 </div>
               </div>
-              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                Join
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
-          <img
-            src={pythagorasUrl}
-            alt=""
-            className="h-[203px] w-full bg-white"
-          />
-          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center justify-between">
-              <p className="text-base font-medium text-black">
-                Pythagorean Theorem made easy
-              </p>
-              <div className="flex items-center gap-1">
-                <img src={heartIconUrl} alt="" />
-                <span className="text-lg font-normal text-[#616161]">8.8K</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-between gap-3">
-              <div className="text-lg font-normal text-[#616161]">
-                <p>Amanda Chisom</p>
-                <div className="flex items-center gap-1">
-                  <EyeIcon className="h-[13px] w-[13px]" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    8.8K Views
-                  </span>
-                  <img src={ellipseIconUrl} alt="" className="" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    2wks ago
-                  </span>
+              <div className="flex flex-wrap justify-between gap-3">
+                <div className="text-lg font-normal text-[#616161]">
+                  <p>Amanda Chisom</p>
+                  <div className="flex items-center gap-1">
+                    <EyeIcon className="h-[13px] w-[13px]" />
+                    <span className="shrink-0 text-xs font-normal text-[#616161]">
+                      8.8K Views
+                    </span>
+                    <img src={ellipseIconUrl} alt="" className="" />
+                    <span className="shrink-0 text-xs font-semibold text-[#06031E]">
+                      Upcoming
+                    </span>
+                  </div>
                 </div>
+                <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                  Join
+                </button>
               </div>
-              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                Share
-              </button>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
-          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
-          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center justify-between">
-              <p className="text-base font-medium text-black">
-                Square root math simplification
-              </p>
-              <div className="flex items-center gap-1">
-                <img src={heartIconUrl} alt="" />
-                <span className="text-lg font-normal text-[#616161]">8.8K</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-between gap-3">
-              <div className="text-lg font-normal text-[#616161]">
-                <p>Amanda Chisom</p>
-                <div className="flex items-center gap-1">
-                  <EyeIcon className="h-[13px] w-[13px]" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    8.8K Views
-                  </span>
-                  <img src={ellipseIconUrl} alt="" className="" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    2wks ago
-                  </span>
-                </div>
-              </div>
-              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                Share
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
-          <img
-            src={pythagorasUrl}
-            alt=""
-            className="h-[203px] w-full bg-white"
-          />
-          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
-          <div className="space-y-2 ">
-            <div className="flex flex-wrap items-center justify-between">
-              <p className="text-base font-medium text-black">
-                Pythagorean Theorem made easy
-              </p>
-              <div className="flex items-center gap-1">
-                <img src={heartIconUrl} alt="" />
-                <span className="text-lg font-normal text-[#616161]">8.8K</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-between gap-3">
-              <div className="text-lg font-normal text-[#616161]">
-                <p>Amanda Chisom</p>
-                <div className="flex items-center gap-1">
-                  <EyeIcon className="h-[13px] w-[13px]" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    8.8K Views
-                  </span>
-                  <img src={ellipseIconUrl} alt="" className="" />
-                  <span className="shrink-0 text-xs font-normal text-[#616161]">
-                    2wks ago
-                  </span>
-                </div>
-              </div>
-              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                Share
-              </button>
-            </div>
-          </div>
-        </div>
+        </Link>
         <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
           <img
             src={pythagorasUrl}
@@ -264,7 +229,7 @@ export default function ExplorePage() {
         <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
           <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
           <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
-          <div className="space-y-2 ">
+          <div className="space-y-2">
             <div className="flex flex-wrap items-center justify-between">
               <p className="text-base font-medium text-black">
                 Square root math simplification
@@ -338,7 +303,7 @@ export default function ExplorePage() {
             className="h-[203px] w-full bg-white"
           />
           <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
-          <div className="space-y-2 ">
+          <div className="space-y-2">
             <div className="flex flex-wrap items-center justify-between">
               <p className="text-base font-medium text-black">
                 Pythagorean Theorem made easy
@@ -615,148 +580,112 @@ export default function ExplorePage() {
             </div>
           </div>
         </div>
-        {/* <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
-        </div>
-        <div className="border-2 border-red-500">
-          <iframe
-            // width="640"
-            // height="360"
-            src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-            title="Firebase Authentication Tutorial #1 - Introduction"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="w-full"
-          ></iframe>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Square root math simplification
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
         </div> */}
       </div>
       <div className="mx-auto w-[516px] max-w-full border-2 border-red-500 py-[15px]"></div>

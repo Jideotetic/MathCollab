@@ -15,7 +15,6 @@ import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import emailjs from "emailjs-com";
 import { OtpContext, OtpContextType } from "../contexts/OtpContext";
-// import { signOut } from "firebase/auth";
 
 export interface Props {
   label: string;

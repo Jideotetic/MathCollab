@@ -74,7 +74,7 @@ export default function HomePageIndex() {
               </button>
 
               <Link
-                to="explore"
+                to="classes"
                 className="w-[175px] rounded-lg border border-slate-950 bg-white py-[13px] text-sm font-semibold leading-tight text-slate-950 hover:border-slate-950 hover:bg-slate-950 hover:text-white"
               >
                 View More Classes

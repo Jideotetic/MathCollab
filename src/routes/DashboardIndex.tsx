@@ -12,6 +12,14 @@ import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
 // import ClassGrid from "../components/ClassGrid";
 import { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import creator1Url from "../assets/creator-1.png";
+import creator2Url from "../assets/creator-2.png";
+import heartIconUrl from "../assets/heart.png";
+import { EyeIcon } from "@heroicons/react/24/solid";
+import ellipseIconUrl from "../assets/Ellipse 1779.png";
+import findXUrl from "../assets/find-x.png";
+import pythagorasUrl from "../assets/pythagoras-img.png";
+import { Link } from "react-router-dom";
 
 export default function DashboardIndex() {
   // const { classList } = useOutletContext<ClassListType>();
@@ -94,6 +102,545 @@ export default function DashboardIndex() {
       ) : (
         <ClassList />
       )} */}
+
+      {/* <div className="grid-cols-classes sm:grid-cols-classe1 mx-auto grid w-[1135px] max-w-full gap-x-2 gap-y-8 py-[15px] text-left">
+        <Link to="square-root-simplification">
+          <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+            <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+            <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between">
+                <p className="text-base font-medium text-black">
+                  <span className="font-semibold">Preview</span>:Square root
+                  math simplification
+                </p>
+                <div className="flex items-center gap-1">
+                  <img src={heartIconUrl} alt="" />
+                  <span className="text-lg font-normal text-[#616161]">
+                    8.8K
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-wrap justify-between gap-3">
+                <div className="text-lg font-normal text-[#616161]">
+                  <p>Amanda Chisom</p>
+                  <div className="flex items-center gap-1">
+                    <EyeIcon className="h-[13px] w-[13px]" />
+                    <span className="shrink-0 text-xs font-normal text-[#616161]">
+                      8.8K Views
+                    </span>
+                    <img src={ellipseIconUrl} alt="" className="" />
+                    <span className="shrink-0 text-xs font-semibold text-[#06031E]">
+                      Upcoming
+                    </span>
+                  </div>
+                </div>
+                <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                  Join
+                </button>
+              </div>
+            </div>
+          </div>
+        </Link>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Square root math simplification
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Square root math simplification
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Square root math simplification
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Square root math simplification
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img
+            src={pythagorasUrl}
+            alt=""
+            className="h-[203px] w-full bg-white"
+          />
+          <img src={creator1Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Pythagorean Theorem made easy
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+          <img src={findXUrl} alt="" className="h-[203px] w-full bg-white" />
+          <img src={creator2Url} alt="" className="h-[46px] w-[46px]" />
+          <div className="space-y-2 ">
+            <div className="flex flex-wrap items-center justify-between">
+              <p className="text-base font-medium text-black">
+                Square root math simplification
+              </p>
+              <div className="flex items-center gap-1">
+                <img src={heartIconUrl} alt="" />
+                <span className="text-lg font-normal text-[#616161]">8.8K</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-3">
+              <div className="text-lg font-normal text-[#616161]">
+                <p>Amanda Chisom</p>
+                <div className="flex items-center gap-1">
+                  <EyeIcon className="h-[13px] w-[13px]" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    8.8K Views
+                  </span>
+                  <img src={ellipseIconUrl} alt="" className="" />
+                  <span className="shrink-0 text-xs font-normal text-[#616161]">
+                    2wks ago
+                  </span>
+                </div>
+              </div>
+              <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+      </div> */}
     </>
   );
 }
