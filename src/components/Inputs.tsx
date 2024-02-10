@@ -17,6 +17,8 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
     setLastName,
     confirmPassword,
     setConfirmPassword,
+    className,
+    setClassName,
   } = useContext(InputsContext) as InputsContextType;
 
   function handleChangeFirstName(e: ChangeEvent<HTMLInputElement>) {
@@ -39,9 +41,9 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
     setConfirmPassword(e.target.value);
   }
 
-  // function handleChangeClassName(e: ChangeEvent<HTMLInputElement>) {
-  //   setClassName(e.target.value);
-  // }
+  function handleChangeClassName(e: ChangeEvent<HTMLInputElement>) {
+    setClassName(e.target.value);
+  }
 
   // function handleChangeClassUrl(e: ChangeEvent<HTMLInputElement>) {
   //   setClassUrl(e.target.value);
@@ -73,7 +75,9 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
                     ? confirmPassword
                     : input.label === "First Name"
                       ? firstName
-                      : lastName
+                      : input.label === "Last Name"
+                        ? lastName
+                        : className
             }
             onChange={
               input.label === "Email"
@@ -85,7 +89,9 @@ export default function Inputs({ inputs }: { inputs: Props[] }) {
                     ? handleChangeConfirmPassword
                     : input.label === "First Name"
                       ? handleChangeFirstName
-                      : handleChangeLastName
+                      : input.label === "First Name"
+                        ? handleChangeLastName
+                        : handleChangeClassName
             }
             required
             id={input.label}
