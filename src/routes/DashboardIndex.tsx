@@ -12,14 +12,6 @@ import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
 // import ClassGrid from "../components/ClassGrid";
 import { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import creator1Url from "../assets/creator-1.png";
-import creator2Url from "../assets/creator-2.png";
-import heartIconUrl from "../assets/heart.png";
-import { EyeIcon } from "@heroicons/react/24/solid";
-import ellipseIconUrl from "../assets/Ellipse 1779.png";
-import findXUrl from "../assets/find-x.png";
-import pythagorasUrl from "../assets/pythagoras-img.png";
-import { Link } from "react-router-dom";
 
 export default function DashboardIndex() {
   // const { classList } = useOutletContext<ClassListType>();

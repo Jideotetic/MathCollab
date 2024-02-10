@@ -10,19 +10,13 @@ import signOutUrl from "../assets/sign-out.svg";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 // import { ClassListType } from "../@types/classListType";
-import searchIconUrl from "../assets/ic_Search.svg";
-import notificationUrl from "../assets/notification.svg";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import userImageUrl from "../assets/user-image.png";
-import arrowRightIconUrl from "../assets/Icon.svg";
+
 // import { ClassListContext } from "../contexts/ClassListContext";
 
 export default function DashboardLayout() {
   //   const { classList, setClassList } = useContext(
   //     ClassListContext,
   //   ) as ClassListType;
-  const currentUser = useContext(AuthContext);
 
   const handleLogout = () => {
     // navigate("/login");
