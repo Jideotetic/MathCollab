@@ -18,7 +18,7 @@ export default function ErrorPage() {
 
   return (
     <div className="flex h-screen flex-col justify-center gap-4 text-center">
-      <p className="text-clamp3">{errorCode}</p>
+      <p className="text-clamp1 font-bold">{errorCode}</p>
       <p>{errorMessage}</p>
       <p>
         <Link to="/" className="underline hover:no-underline">

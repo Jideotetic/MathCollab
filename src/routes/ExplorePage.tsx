@@ -5,10 +5,33 @@ import searchIconUrl from "../assets/ic_Search.svg";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
-import { Link } from "react-router-dom";
-import { classes } from "../data/classes";
+import { Form, Link, useLoaderData } from "react-router-dom";
+import { useEffect } from "react";
+
+interface Classes {
+  id: string;
+  creator: string;
+  title: string;
+  link: string;
+  views: string;
+  likes: string;
+  status: string;
+  video: string;
+  creatorImage: string;
+}
+
+interface Prop {
+  lessons: Classes[];
+  search: string;
+}
 
 export default function ExplorePage() {
+  const { lessons, search } = useLoaderData() as Prop;
+
+  useEffect(() => {
+    (document.getElementById("search") as HTMLInputElement).value = search;
+  }, [search]);
+
   return (
     <main className="mx-auto w-[1280px] max-w-full space-y-[40px] px-4 py-6 text-center xl:px-20">
       <div className="mx-auto w-[1135px] max-w-full space-y-[24px]">
@@ -36,13 +59,16 @@ export default function ExplorePage() {
             <img src={groupUrl} alt="" />
           </div>
         </div>
+
         <div className="mx-auto w-[668px] max-w-full gap-2 space-y-4 sm:flex sm:space-y-0">
-          <form action="#" className="relative w-full sm:w-[251px]">
+          <Form className="relative w-full sm:w-[251px]">
             <input
               type="text"
-              name=""
-              id=""
+              name="search"
+              autoComplete="off"
+              id="search"
               placeholder="Search"
+              defaultValue={search}
               className="w-full rounded-[80px] bg-[#d8d8db6e]"
             />
             <button
@@ -51,7 +77,7 @@ export default function ExplorePage() {
             >
               <img src={searchIconUrl} alt="" />
             </button>
-          </form>
+          </Form>
           <div className="flex items-center justify-center gap-2 max-[468px]:flex-col sm:flex-row">
             <button
               type="button"
@@ -80,75 +106,77 @@ export default function ExplorePage() {
           </div>
         </div>
       </div>
-      <div className="grid-cols-classes sm:grid-cols-classe1 mx-auto grid w-[1135px] max-w-full gap-x-2 gap-y-8 py-[15px] text-left">
-        {classes.map((lesson) => (
-          <Link to={lesson.link} key={lesson.id}>
-            <div className="flex h-full flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
-              <img
-                src={lesson.video}
-                alt=""
-                className="h-[203px] w-full bg-white"
-              />
-              <img
-                src={lesson.creatorImage}
-                alt=""
-                className="h-[46px] w-[46px]"
-              />
-              <div className="space-y-2">
-                <div className="flex flex-wrap items-center justify-between">
-                  {lesson.status === "ongoing" ? (
-                    <p className="text-base font-medium text-black">
-                      <span className="font-semibold">Preview</span>:
-                      {lesson.title}
-                    </p>
-                  ) : (
-                    <p className="text-base font-medium text-black">
-                      {lesson.title}
-                    </p>
-                  )}
+      <ul className="grid-cols-classes sm:grid-cols-classe1 mx-auto grid w-[1135px] max-w-full gap-x-2 gap-y-8 py-[15px] text-left">
+        {lessons.map((lesson) => (
+          <li key={lesson.id}>
+            <Link to={lesson.link}>
+              <div className="flex h-full flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+                <img
+                  src={lesson.video}
+                  alt=""
+                  className="h-[203px] w-full bg-white"
+                />
+                <img
+                  src={lesson.creatorImage}
+                  alt=""
+                  className="h-[46px] w-[46px]"
+                />
+                <div className="space-y-2">
+                  <div className="flex flex-wrap items-center justify-between">
+                    {lesson.status === "ongoing" ? (
+                      <p className="text-base font-medium text-black">
+                        <span className="font-semibold">Preview</span>:
+                        {lesson.title}
+                      </p>
+                    ) : (
+                      <p className="text-base font-medium text-black">
+                        {lesson.title}
+                      </p>
+                    )}
 
-                  <div className="flex items-center gap-1">
-                    <img src={heartIconUrl} alt="" />
-                    <span className="text-lg font-normal text-[#616161]">
-                      {lesson.likes}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap justify-between gap-3">
-                  <div className="text-lg font-normal text-[#616161]">
-                    <p>{lesson.creator}</p>
                     <div className="flex items-center gap-1">
-                      <EyeIcon className="h-[13px] w-[13px]" />
-
-                      <span className="shrink-0 text-xs font-normal text-[#616161]">
-                        {lesson.views}
+                      <img src={heartIconUrl} alt="" />
+                      <span className="text-lg font-normal text-[#616161]">
+                        {lesson.likes}
                       </span>
-
-                      <img src={ellipseIconUrl} alt="" className="" />
-                      {lesson.status === "ongoing" ? (
-                        <span className="shrink-0 text-xs font-semibold text-[#06031E]">
-                          {lesson.status}
-                        </span>
-                      ) : (
-                        <span className="shrink-0 text-xs font-normal text-[#616161]">
-                          {lesson.status}
-                        </span>
-                      )}
                     </div>
                   </div>
-                  {lesson.status === "ongoing" ? (
-                    <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                      Join
-                    </button>
-                  ) : (
-                    <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                      Share
-                    </button>
-                  )}
+                  <div className="flex flex-wrap justify-between gap-3">
+                    <div className="text-lg font-normal text-[#616161]">
+                      <p>{lesson.creator}</p>
+                      <div className="flex items-center gap-1">
+                        <EyeIcon className="h-[13px] w-[13px]" />
+
+                        <span className="shrink-0 text-xs font-normal text-[#616161]">
+                          {lesson.views}
+                        </span>
+
+                        <img src={ellipseIconUrl} alt="" className="" />
+                        {lesson.status === "ongoing" ? (
+                          <span className="shrink-0 text-xs font-semibold text-[#06031E]">
+                            {lesson.status}
+                          </span>
+                        ) : (
+                          <span className="shrink-0 text-xs font-normal text-[#616161]">
+                            {lesson.status}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {lesson.status === "ongoing" ? (
+                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                        Join
+                      </button>
+                    ) : (
+                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                        Share
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </li>
         ))}
 
         {/* <Link to="square-root-simplification">
@@ -687,7 +715,7 @@ export default function ExplorePage() {
             </div>
           </div>
         </div> */}
-      </div>
+      </ul>
       <div className="mx-auto w-[516px] max-w-full border-2 border-red-500 py-[15px]"></div>
     </main>
   );
