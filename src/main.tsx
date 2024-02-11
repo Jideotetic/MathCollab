@@ -8,13 +8,14 @@ import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
 import InputsContextProvider from "./contexts/InputsContext";
 // import ClassListContextProvider from "./contexts/ClassListContext";
-import "./index.css";
 import Canvas from "./components/Canvas";
 import AuthProvider from "./contexts/AuthContext";
 import HomePageIndex from "./routes/HomePageIndex";
 import ExplorePage from "./routes/ExplorePage";
 import OtpContextProvider from "./contexts/OtpContext";
 import Classes from "./routes/Classes";
+import { classesLoader, classLoader } from "./loaders/loaders";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +24,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePageIndex /> },
-      { path: "classes", element: <ExplorePage /> },
-      { path: "classes/:class", element: <Classes /> },
+      { path: "classes", element: <ExplorePage />, loader: classesLoader },
+      { path: "classes/:class", element: <Classes />, loader: classLoader },
     ],
   },
   {
