@@ -3,6 +3,7 @@ import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
 import { useLoaderData, Link } from "react-router-dom";
+import { useMemo } from "react";
 
 interface Classes {
   id: string;
@@ -21,11 +22,19 @@ interface Prop {
   lesson: Classes;
 }
 
+const PAGESIZE = 15;
+
 export default function Classes() {
   const { lesson, lessons } = useLoaderData() as Prop;
 
+  const currentLessons = useMemo(() => {
+    const firstPageIndex = 1 * PAGESIZE;
+    const lastPageIndex = firstPageIndex + PAGESIZE;
+    return lessons.slice(firstPageIndex, lastPageIndex);
+  }, [lessons]);
+
   return (
-    <main className="mx-auto w-[1280px] max-w-full space-y-[40px] px-4 py-6 text-center xl:px-20">
+    <main className="mx-auto w-[1280px] max-w-full space-y-[40px] px-4 py-6 pt-[110px] text-center xl:px-20">
       <div className="mx-auto w-[520px] max-w-full">
         <form role="search" className="relative w-full">
           <input
@@ -93,7 +102,7 @@ export default function Classes() {
               Explore more classes
             </p>
             <ul className="flex flex-col gap-4">
-              {lessons.map((lesson) => (
+              {currentLessons.map((lesson) => (
                 <li key={lesson.id}>
                   <Link to={`/classes/${lesson.link}`}>
                     <div className="flex h-full flex-col gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43] sm:flex-row">
@@ -185,7 +194,7 @@ export default function Classes() {
             </button>
           </div>
           <ul className="flex flex-col gap-4">
-            {lessons.map((lesson) => (
+            {currentLessons.map((lesson) => (
               <li key={lesson.id}>
                 <Link to={`/classes/${lesson.link}`}>
                   <div className="flex h-full flex-col gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43] sm:flex-row">

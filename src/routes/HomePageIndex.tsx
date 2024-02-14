@@ -14,6 +14,7 @@ import thorusUrl from "../assets/Thorus 2.svg";
 import groupUrl from "../assets/Group 48096042.svg";
 import iconUrl from "../assets/1_3.svg";
 import dashboardUrl from "../assets/Dashboard.png";
+import boxUrl from "../assets/Box1.png";
 import { useContext } from "react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { Link } from "react-router-dom";
@@ -22,7 +23,7 @@ export default function HomePageIndex() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
 
   return (
-    <main className="mx-auto w-[1280px] max-w-full text-center">
+    <main className="mx-auto w-[1280px] max-w-full pt-[101px] text-center">
       <div className="mb-[48px] bg-white/30 bg-image bg-cover bg-top bg-no-repeat pt-[33px]">
         <div className="mx-auto w-[1068px] max-w-full space-y-[48px] px-4">
           <div className="mx-auto w-[838px] max-w-full space-y-[32px]">
@@ -55,15 +56,12 @@ export default function HomePageIndex() {
           </div>
 
           <div className="w-full space-y-[48px]">
-            <iframe
-              width="640"
-              height="360"
-              src="https://www.youtube.com/embed/aN1LnNq4z54?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ"
-              title="Firebase Authentication Tutorial #1 - Introduction"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="mx-auto max-w-full"
-            ></iframe>
+            <img
+              src={boxUrl}
+              alt=""
+              className="mx-auto w-[100%] cursor-pointer sm:w-[50%]"
+            />
+
             <div className="mx-auto flex w-[375px] max-w-full flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-0">
               <button
                 onClick={() => setSignUpFormOpen(true)}
