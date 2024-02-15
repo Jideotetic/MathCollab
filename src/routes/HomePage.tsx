@@ -48,7 +48,7 @@ export default function HomePage() {
 
   return (
     <>
-      <header className="mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6 text-sm xl:px-20">
+      <header className="fixed left-0 right-0 top-0 z-40 mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6 text-sm xl:px-20">
         <MathCollab />
 
         {/* MOBILE NAV STARTS */}
