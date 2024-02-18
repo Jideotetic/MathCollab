@@ -59,7 +59,7 @@ export default function HomePageIndex() {
             <img
               src={boxUrl}
               alt=""
-              className="mx-auto w-[100%] cursor-pointer sm:w-[50%]"
+              className="mx-auto w-[100%] cursor-pointer"
             />
 
             <div className="mx-auto flex w-[375px] max-w-full flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-0">

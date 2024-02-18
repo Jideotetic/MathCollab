@@ -14,6 +14,7 @@ import HomePageIndex from "./routes/HomePageIndex";
 import ExplorePage from "./routes/ExplorePage";
 import OtpContextProvider from "./contexts/OtpContext";
 import Classes from "./routes/Classes";
+import DashboardClasses from "./routes/DashboardClasses";
 import { classesLoader, classLoader } from "./loaders/loaders";
 import "./index.css";
 
@@ -36,8 +37,9 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <DashboardIndex />,
-        errorElement: <ErrorPage />,
+        loader: classesLoader,
       },
+      { path: ":class", element: <DashboardClasses />, loader: classLoader },
     ],
   },
   {

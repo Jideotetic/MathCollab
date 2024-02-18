@@ -54,19 +54,19 @@ export default function ExplorePage() {
 
   return (
     <main className="mx-auto w-[1280px] max-w-full space-y-[40px] px-4 py-6 pt-[101px] text-center xl:px-20">
-      <div className="mx-auto w-[1135px] max-w-full space-y-[24px]">
+      <div className="mx-auto  w-[1135px] max-w-full space-y-[24px]">
         <div className="relative flex min-h-[172px] items-center justify-around rounded-[20px] border-4 border-[#06031E] bg-[#74C3F00A]">
           <img
             src={bgImageleftUrl}
             alt=""
-            className="absolute bottom-0 left-0  top-0"
+            className="absolute bottom-0 left-0 top-0"
           />
           <img
             src={bgImagerightUrl}
             alt=""
             className="absolute right-0 top-0"
           />
-          <div className="z-10 space-y-3 lg:text-left">
+          <div className="space-y-3 lg:text-left">
             <h2 className="text-clamp font-bold text-slate-950">
               Create and Join Top Collaborative Classes
             </h2>
@@ -75,7 +75,7 @@ export default function ExplorePage() {
               made easier for learners
             </p>
           </div>
-          <div className="z-10 hidden lg:block">
+          <div className="hidden lg:block">
             <img src={groupUrl} alt="" />
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function ExplorePage() {
           </div>
         </div>
       </div>
-      <ul className="grid-cols-classes sm:grid-cols-classe1 mx-auto grid w-[1135px] max-w-full gap-x-2 gap-y-8 py-[15px] text-left">
+      <ul className="mx-auto grid w-[1135px] max-w-full grid-cols-classes gap-x-2 gap-y-8 py-[15px] text-left sm:grid-cols-classe1">
         {currentLessons.map((lesson) => (
           <li key={lesson.id}>
             <Link to={lesson.link}>
@@ -200,7 +200,7 @@ export default function ExplorePage() {
         ))}
       </ul>
 
-      <div className="mx-auto w-[650px] max-w-full border-2 border-red-500 py-[15px]">
+      <div className="mx-auto w-[650px] max-w-full py-[15px]">
         <ReactPaginate
           previousLabel={"<< Previous"}
           nextLabel={"Next >>"}
