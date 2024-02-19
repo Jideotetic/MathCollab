@@ -138,6 +138,8 @@ export default function Form({
       setNewPasswordFormOpen(false);
       navigate("/dashboard");
       toast.success("Password reset successfully");
+    } else if (formType === "join-class") {
+      navigate("/canvas/id");
     }
 
     // setEmail("");

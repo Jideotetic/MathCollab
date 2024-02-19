@@ -43,7 +43,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "canvas",
+    path: "canvas/:classId",
     element: <Canvas />,
     errorElement: <ErrorPage />,
   },

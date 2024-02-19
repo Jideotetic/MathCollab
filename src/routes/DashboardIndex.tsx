@@ -1,10 +1,11 @@
 import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
 import { Link, useLoaderData } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
 import { NavLink } from "react-router-dom";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 
 interface Classes {
   id: string;
@@ -47,6 +48,8 @@ export default function DashboardIndex() {
     const lastPageIndex = firstPageIndex + PAGESIZE;
     return lessons.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, lessons]);
+
+  const { setJoinClassFormOpen } = useContext(FormsContext) as FormsContextType;
 
   // const totalPageCount = Math.ceil(lessons.length / PAGESIZE);
 
@@ -144,7 +147,10 @@ py-[6px] text-[#3A383C]`
                       </div>
                     </div>
                     {lesson.status === "ongoing" ? (
-                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                      <button
+                        onClick={() => setJoinClassFormOpen(true)}
+                        className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                      >
                         Join
                       </button>
                     ) : (
