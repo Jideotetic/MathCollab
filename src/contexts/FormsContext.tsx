@@ -9,8 +9,8 @@ export interface FormsContextType {
   setSignUpFormOpen: Dispatch<SetStateAction<boolean>>;
   resetPasswordFormOpen: boolean;
   setResetPasswordFormOpen: Dispatch<SetStateAction<boolean>>;
-  verifyEmailOTPFormOpen: boolean;
-  setVerifyEmailOTPFormOpen: Dispatch<SetStateAction<boolean>>;
+  verifyEmailFormOpen: boolean;
+  setVerifyEmailFormOpen: Dispatch<SetStateAction<boolean>>;
   verifyPasswordResetOTPFormOpen: boolean;
   setVerifyPasswordResetOTPFormOpen: Dispatch<SetStateAction<boolean>>;
   newPasswordFormOpen: boolean;
@@ -31,7 +31,7 @@ export default function FormsContextProvider({
   const [loginFormOpen, setLoginFormOpen] = useState(false);
   const [signUpFormOpen, setSignUpFormOpen] = useState(false);
   const [resetPasswordFormOpen, setResetPasswordFormOpen] = useState(false);
-  const [verifyEmailOTPFormOpen, setVerifyEmailOTPFormOpen] = useState(false);
+  const [verifyEmailFormOpen, setVerifyEmailFormOpen] = useState(false);
   const [verifyPasswordResetOTPFormOpen, setVerifyPasswordResetOTPFormOpen] =
     useState(false);
   const [newPasswordFormOpen, setNewPasswordFormOpen] = useState(false);
@@ -47,8 +47,8 @@ export default function FormsContextProvider({
           setSignUpFormOpen,
           resetPasswordFormOpen,
           setResetPasswordFormOpen,
-          verifyEmailOTPFormOpen,
-          setVerifyEmailOTPFormOpen,
+          verifyEmailFormOpen,
+          setVerifyEmailFormOpen,
           verifyPasswordResetOTPFormOpen,
           setVerifyPasswordResetOTPFormOpen,
           newPasswordFormOpen,

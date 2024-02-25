@@ -13,7 +13,7 @@ export default function FormWrapper({ children }: { children: ReactNode }) {
         leaveFrom="opacity-50"
         leaveTo="opacity-0"
       >
-        <div className="fixed inset-0 z-50 bg-black" />
+        <div className="fixed inset-0 z-50 bg-black/50" />
       </Transition.Child>
       <div className="fixed inset-0 z-50 overflow-y-auto">
         <div className="relative z-50 flex min-h-screen flex-col items-center justify-center p-5 text-center">

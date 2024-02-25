@@ -1,23 +1,15 @@
 import { Fragment, useContext } from "react";
-import { Dialog, Popover, Transition } from "@headlessui/react";
+import { Popover, Transition } from "@headlessui/react";
 import MathCollab from "../components/MathCollab";
-import LoginForm from "../components/LoginForm";
-import SignUpForm from "../components/SignUpForm";
-import ResetPasswordForm from "../components/ResetPasswordForm";
-import VerifyEmailOTPForm from "../components/VerifyEmailOTPForm";
-import VerifyPasswordResetOTPForm from "../components/VerifyPasswordResetOTPForm";
-import NewPasswordForm from "../components/NewPasswordForm";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import "react-toastify/dist/ReactToastify.css";
 import { Outlet, Link } from "react-router-dom";
-import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import facebookIconUrl from "../assets/Facebook.svg";
 import twitterIconUrl from "../assets/Twitter.svg";
 import instagramIconUrl from "../assets/Instagram.svg";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 import { NavLink } from "react-router-dom";
+import HomePageIndex from "./HomePageIndex";
 
 const navLinks = [
   { title: "Home", link: "/" },
@@ -27,27 +19,11 @@ const navLinks = [
 ];
 
 export default function HomePage() {
-  const {
-    loginFormOpen,
-    setLoginFormOpen,
-    signUpFormOpen,
-    setSignUpFormOpen,
-    resetPasswordFormOpen,
-    setResetPasswordFormOpen,
-    verifyEmailOTPFormOpen,
-    setVerifyEmailOTPFormOpen,
-    verifyPasswordResetOTPFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
-    newPasswordFormOpen,
-    setNewPasswordFormOpen,
-  } = useContext(FormsContext) as FormsContextType;
-
-  const { setEmail, setPassword, setFirstName, setLastName } = useContext(
-    InputsContext,
-  ) as InputsContextType;
+  const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
 
   return (
     <>
+      {/* HEADER STARTS */}
       <header className="fixed left-0 right-0 top-0 z-10 mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6 text-sm xl:px-20">
         <MathCollab />
 
@@ -55,12 +31,15 @@ export default function HomePage() {
         <Popover className="lg:hidden">
           {({ open }) => (
             <>
+              {/* OPEN NAV START */}
               <Popover.Button>
                 {!open && (
                   <Bars3Icon className="h-10 w-10 transition-transform duration-300 ease-in-out hover:rotate-180" />
                 )}
               </Popover.Button>
+              {/* OPEN NAV ENDS */}
 
+              {/* OVERLAY */}
               <Transition.Child
                 as={Fragment}
                 enter="ease-in duration-200"
@@ -73,6 +52,7 @@ export default function HomePage() {
                 <Popover.Overlay className="fixed inset-0 z-50 bg-black" />
               </Transition.Child>
 
+              {/* NAV BAR */}
               <Transition.Child
                 as={Fragment}
                 enter="transition duration-200 ease-out"
@@ -107,17 +87,21 @@ export default function HomePage() {
                             </NavLink>
                           </li>
                         ))}
+
+                        {/* LOGIN LINK */}
                         <li>
-                          <button
-                            type="button"
+                          <Link
+                            to="/login"
                             onClick={() => setLoginFormOpen(true)}
                             className="rounded-lg border border-slate-950 px-7 py-3 font-semibold text-slate-950 hover:bg-slate-950 hover:text-white"
                           >
                             Sign In
-                          </button>
+                          </Link>
                         </li>
+                        {/* LOGIN LINK */}
                       </ul>
 
+                      {/* CLOSE NAV START */}
                       <button
                         type="button"
                         className="-mt-4 self-start"
@@ -125,6 +109,7 @@ export default function HomePage() {
                       >
                         <XMarkIcon className="h-10 w-10 transition-transform duration-300 ease-in hover:rotate-45" />
                       </button>
+                      {/* CLOSE NAV ENDS */}
                     </>
                   )}
                 </Popover.Panel>
@@ -134,6 +119,7 @@ export default function HomePage() {
         </Popover>
         {/* MOBILE NAV ENDS */}
 
+        {/* LARGE SCREEN NAV STARTS */}
         <nav className="hidden lg:block">
           <ul className="gap-8 lg:flex">
             {navLinks.map((link) => (
@@ -155,91 +141,21 @@ export default function HomePage() {
             ))}
           </ul>
         </nav>
+        {/* LARGE SCREEN NAV ENDS */}
 
-        <button
-          type="button"
+        {/* LOGIN BUTTON */}
+        <Link
+          to="/login"
           onClick={() => setLoginFormOpen(true)}
           className="hidden rounded-lg border border-slate-950 px-7 py-3 font-semibold text-slate-950 hover:bg-slate-950 hover:text-white lg:block"
         >
           Sign In
-        </button>
-
-        {/* AUTHENTICATION SCREENS FLOW STARTS */}
-        <Transition show={loginFormOpen} as={Fragment}>
-          <Dialog
-            className="relative z-10"
-            onClose={() => {
-              setLoginFormOpen(false);
-              setEmail("");
-              setPassword("");
-            }}
-          >
-            <LoginForm />
-          </Dialog>
-        </Transition>
-
-        <Transition show={signUpFormOpen} as={Fragment}>
-          <Dialog
-            className="relative z-10"
-            onClose={() => {
-              setSignUpFormOpen(false);
-              setFirstName("");
-              setLastName("");
-              setEmail("");
-              setPassword("");
-            }}
-          >
-            <SignUpForm />
-          </Dialog>
-        </Transition>
-
-        <Transition show={verifyEmailOTPFormOpen} as={Fragment}>
-          <Dialog
-            className="relative z-10"
-            onClose={() => {
-              setVerifyEmailOTPFormOpen(false);
-              signOut(auth);
-            }}
-          >
-            <VerifyEmailOTPForm />
-          </Dialog>
-        </Transition>
-        <Transition show={resetPasswordFormOpen} as={Fragment}>
-          <Dialog
-            className="relative z-10"
-            onClose={() => {
-              setResetPasswordFormOpen(false);
-              setEmail("");
-            }}
-          >
-            <ResetPasswordForm />
-          </Dialog>
-        </Transition>
-        <Transition show={verifyPasswordResetOTPFormOpen} as={Fragment}>
-          <Dialog
-            className="relative z-10"
-            onClose={() => {
-              setVerifyPasswordResetOTPFormOpen(false);
-            }}
-          >
-            <VerifyPasswordResetOTPForm />
-          </Dialog>
-        </Transition>
-        <Transition show={newPasswordFormOpen} as={Fragment}>
-          <Dialog
-            className="relative z-10"
-            onClose={() => {
-              setNewPasswordFormOpen(false);
-            }}
-          >
-            <NewPasswordForm />
-          </Dialog>
-        </Transition>
-        {/* AUTHENTICATION FLOW SCREEN ENDS */}
+        </Link>
       </header>
 
-      <Outlet />
+      <HomePageIndex />
 
+      {/* FOOTER STARTS */}
       <div className="bg-[#06031E]">
         <footer className="mx-auto w-[1280px] max-w-full p-4 text-start text-base text-white">
           <div className="mx-auto w-[1200px] max-w-full space-y-[43px]">
@@ -321,6 +237,11 @@ export default function HomePage() {
           </div>
         </footer>
       </div>
+      {/* FOOTER ENDS */}
+
+      {/* AUTHENTICATION SCREENS FLOW STARTS */}
+      <Outlet />
+      {/* AUTHENTICATION FLOW SCREEN ENDS */}
     </>
   );
 }

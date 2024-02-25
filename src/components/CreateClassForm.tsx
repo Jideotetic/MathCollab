@@ -1,7 +1,7 @@
 import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
 import FormFooter from "./FormFooter";
-import Form from "./Form";
+import Form from "./CustomForm";
 
 const inputs = [{ label: "Class name", inputType: "text" }];
 
@@ -11,11 +11,11 @@ const headerContent = {
   email: "",
 };
 
-export default function CreateClassForm() {
+export default function CreateClassForm({ socket }) {
   return (
     <FormWrapper>
       <FormHeader headerContent={headerContent} />
-      <Form inputs={inputs} formType="create-class" />
+      <Form inputs={inputs} formType="create-class" socket={socket} />
       <FormFooter formType="create-class" />
     </FormWrapper>
   );

@@ -119,6 +119,7 @@ export default function OTPInputs({ otp, otpLength, onChange }: Props) {
           type="text"
           inputMode="numeric"
           autoComplete="one-time-code"
+          name={id.toString()}
           pattern="\d{1}"
           value={input}
           onChange={(e) => inputOnChange(e, id)}

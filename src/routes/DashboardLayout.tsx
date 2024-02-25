@@ -1,6 +1,6 @@
 import MathCollab from "../components/MathCollab";
 import { NavLink, Outlet } from "react-router-dom";
-import { useContext, Fragment } from "react";
+import { useContext, Fragment, useEffect } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";
@@ -17,6 +17,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 
 // import { ClassListType } from "../@types/classListType";
 
@@ -41,11 +42,16 @@ export default function DashboardLayout() {
   //     ClassListContext,
   //   ) as ClassListType;
   const currentUser = useContext(AuthContext);
+  const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
 
   const handleLogout = () => {
     // navigate("/login");
     signOut(auth);
   };
+
+  useEffect(() => {
+    setLoginFormOpen(false);
+  }, [setLoginFormOpen]);
 
   // const navigate = useNavigate();
 
@@ -214,9 +220,11 @@ export default function DashboardLayout() {
             <div className="flex gap-4">
               <div className="text-sm leading-[21px]">
                 <div className=" font-semibold text-slate-950">
-                  {currentUser?.displayName}.
+                  {currentUser?.email?.toLocaleUpperCase()}
                 </div>
-                <div className="font-normal text-neutral-500">Free Account</div>
+                <div className="text-center font-normal text-neutral-500">
+                  Free Account
+                </div>
               </div>
               <img
                 src={currentUser?.photoURL || userImageUrl}
