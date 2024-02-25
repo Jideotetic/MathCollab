@@ -1,7 +1,4 @@
-import { useContext } from "react";
 import MathCollab from "./MathCollab";
-import { AuthContext } from "../contexts/AuthContext";
-import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { useRouteLoaderData } from "react-router-dom";
 
 interface HeaderContentProps {

@@ -101,7 +101,7 @@ py-[6px] text-[#3A383C]`
           ))}
         </ul>
 
-        <CreateOrJoinClassButton socket={socket} />
+        <CreateOrJoinClassButton />
       </div>
 
       <div className="p-4">

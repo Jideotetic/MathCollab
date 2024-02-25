@@ -10,7 +10,7 @@ import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import CreateClassForm from "./CreateClassForm";
 import JoinClassForm from "./JoinClassForm";
 
-export default function CreateOrJoinClassButton({ socket }) {
+export default function CreateOrJoinClassButton() {
   const {
     createClassFormOpen,
     setCreateClassFormOpen,
@@ -74,7 +74,7 @@ export default function CreateOrJoinClassButton({ socket }) {
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-5 text-center">
-              <CreateClassForm socket={socket} />
+              <CreateClassForm />
             </div>
           </div>
         </Dialog>

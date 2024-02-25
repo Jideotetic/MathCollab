@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 import lineUrl from "../assets/line.svg";
 import googleLogoUrl from "../assets/Google-logo.svg";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { useContext } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 
 export default function FormFooter({ formType }: { formType: string }) {
   const {
@@ -13,12 +10,8 @@ export default function FormFooter({ formType }: { formType: string }) {
     setLoginFormOpen,
     signUpFormOpen,
     setSignUpFormOpen,
-    verifyEmailOTPFormOpen,
-    setVerifyEmailOTPFormOpen,
     resetPasswordFormOpen,
     setResetPasswordFormOpen,
-    verifyPasswordResetOTPFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
     newPasswordFormOpen,
     setNewPasswordFormOpen,
   } = useContext(FormsContext) as FormsContextType;
@@ -42,10 +35,6 @@ export default function FormFooter({ formType }: { formType: string }) {
   function goToSignInPage() {
     if (signUpFormOpen) {
       setSignUpFormOpen(false);
-    }
-
-    if (verifyEmailOTPFormOpen) {
-      setVerifyEmailOTPFormOpen(false);
     }
 
     // if (verifyPasswordResetOTPFormOpen) {

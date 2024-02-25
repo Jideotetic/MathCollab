@@ -1,21 +1,11 @@
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { useState, useContext, FormEvent, ChangeEvent } from "react";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import { auth } from "../firebase";
-import { ToastContainer, toast } from "react-toastify";
+import { useState, useContext, ChangeEvent } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import emailjs from "emailjs-com";
-import { OtpContext, OtpContextType } from "../contexts/OtpContext";
-import { AuthContext } from "../contexts/AuthContext";
 import { Form, useSubmit } from "react-router-dom";
 
 export interface Props {
@@ -26,45 +16,25 @@ export interface Props {
 export default function CustomForm({
   inputs,
   formType,
-  socket,
 }: {
   inputs: Props[];
   formType: string;
 }) {
   const [otp, setOtp] = useState("");
 
-  const { otpValue } = useContext(OtpContext) as OtpContextType;
-
   // const [time, setTime] = useState(60);
   // const [timeActive, setTimeActive] = useState(false);
 
-  const navigate = useNavigate();
-
-  const currentUser = useContext(AuthContext);
-
-  const {
-    email,
-    password,
-    setEmail,
-    setPassword,
-    firstName,
-    lastName,
-    collaborators,
-    setCollaborators,
-    className,
-  } = useContext(InputsContext) as InputsContextType;
+  const { setEmail, setPassword, collaborators, setCollaborators } = useContext(
+    InputsContext,
+  ) as InputsContextType;
 
   const {
-    loginFormOpen,
     setLoginFormOpen,
     setResetPasswordFormOpen,
     signUpFormOpen,
     setSignUpFormOpen,
-    setVerifyEmailOTPFormOpen,
-    verifyEmailOTPFormOpen,
     resetPasswordFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
-    verifyPasswordResetOTPFormOpen,
     setNewPasswordFormOpen,
     newPasswordFormOpen,
   } = useContext(FormsContext) as FormsContextType;
@@ -86,7 +56,6 @@ export default function CustomForm({
     console.log("submit");
     if (signUpFormOpen) {
       setSignUpFormOpen(false);
-      setVerifyEmailOTPFormOpen(true);
     }
     submit(e.currentTarget.form);
     e.currentTarget.form?.reset();
