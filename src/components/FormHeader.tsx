@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import MathCollab from "./MathCollab";
+import { AuthContext } from "../contexts/AuthContext";
 import { InputsContext, InputsContextType } from "../contexts/InputsContext";
+import { useRouteLoaderData } from "react-router-dom";
 
 interface HeaderContentProps {
   title: string;
@@ -13,10 +15,10 @@ export default function FormHeader({
 }: {
   headerContent: HeaderContentProps;
 }) {
-  const { email } = useContext(InputsContext) as InputsContextType;
+  const { email } = useRouteLoaderData("root") as { email: string };
 
   return (
-    <div className="flex w-[359px] max-w-full flex-col items-center justify-center text-center">
+    <div className="flex w-[359px] max-w-full flex-col items-center justify-center gap-2 text-center">
       <MathCollab />
 
       <div className="space-y-2">

@@ -1,11 +1,16 @@
 import { classes } from "../data/classes";
-import { LoaderFunction } from "react-router-dom";
+import { LoaderFunction, redirect, LoaderFunctionArgs } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../firebase";
+import { toast } from "react-toastify";
+import emailjs from "emailjs-com";
+import { temp } from "../otp";
 
-interface LoaderRequest {
-  url: string;
-}
-
-export async function classesLoader({ request }: { request: LoaderRequest }) {
+export async function classesLoader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search");
   let lessons = classes.filter((lesson) => {

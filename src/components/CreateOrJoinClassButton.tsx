@@ -10,7 +10,7 @@ import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import CreateClassForm from "./CreateClassForm";
 import JoinClassForm from "./JoinClassForm";
 
-export default function CreateOrJoinClassButton() {
+export default function CreateOrJoinClassButton({ socket }) {
   const {
     createClassFormOpen,
     setCreateClassFormOpen,
@@ -53,6 +53,7 @@ export default function CreateOrJoinClassButton() {
           </Popover.Panel>
         </Transition>
       </Popover>
+
       <Transition show={createClassFormOpen} as={Fragment}>
         <Dialog
           className="relative z-10"
@@ -73,11 +74,12 @@ export default function CreateOrJoinClassButton() {
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-5 text-center">
-              <CreateClassForm />
+              <CreateClassForm socket={socket} />
             </div>
           </div>
         </Dialog>
       </Transition>
+
       <Transition show={joinClassFormOpen} as={Fragment}>
         <Dialog
           className="relative z-10"

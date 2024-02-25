@@ -7,26 +7,74 @@ import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
 import InputsContextProvider from "./contexts/InputsContext";
-// import ClassListContextProvider from "./contexts/ClassListContext";
 import Canvas from "./components/Canvas";
 import AuthProvider from "./contexts/AuthContext";
-import HomePageIndex from "./routes/HomePageIndex";
-import ExplorePage from "./routes/ExplorePage";
+// import HomePageIndex from "./routes/HomePageIndex";
+// import ExplorePage from "./routes/ExplorePage";
 import OtpContextProvider from "./contexts/OtpContext";
-import Classes from "./routes/Classes";
+// import Classes from "./routes/Classes";
 import DashboardClasses from "./routes/DashboardClasses";
 import { classesLoader, classLoader } from "./loaders/loaders";
+import {
+  signUpFormAction,
+  verifyEmailFormAction,
+  loginFormAction,
+  resetPasswordFormAction,
+  verifyPasswordResetFormAction,
+  newPasswordFormAction,
+} from "./actions/actions";
 import "./index.css";
+import LoginForm from "./components/LoginForm";
+import SignUpForm from "./components/SignUpForm";
+import VerifyEmailOTPForm from "./components/VerifyEmailForm";
+import ResetPasswordForm from "./components/ResetPasswordForm";
+import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm";
+import NewPasswordForm from "./components/NewPasswordForm";
+// import { temp } from "./contexts/Auth";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    id: "root",
     element: <HomePage />,
+    // loader() {
+    //   return { email: temp.email, otpValue: temp.otpValue };
+    // },
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePageIndex /> },
-      { path: "classes", element: <ExplorePage />, loader: classesLoader },
-      { path: "classes/:class", element: <Classes />, loader: classLoader },
+      {
+        path: "signup",
+        element: <SignUpForm />,
+        action: signUpFormAction,
+      },
+      {
+        path: "verify-email",
+        element: <VerifyEmailOTPForm />,
+        action: verifyEmailFormAction,
+      },
+      {
+        path: "login",
+        element: <LoginForm />,
+        action: loginFormAction,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPasswordForm />,
+        action: resetPasswordFormAction,
+      },
+      {
+        path: "verify-password-reset",
+        element: <VerifyPasswordResetOTPForm />,
+        action: verifyPasswordResetFormAction,
+      },
+      {
+        path: "new-password",
+        element: <NewPasswordForm />,
+        action: newPasswordFormAction,
+      },
+
+      // { path: "classes", element: <ExplorePage />, loader: classesLoader },
+      // { path: "classes/:class", element: <Classes />, loader: classLoader },
     ],
   },
   {
@@ -43,7 +91,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "canvas",
+    path: "canvas/:classId",
     element: <Canvas />,
     errorElement: <ErrorPage />,
   },
@@ -54,11 +102,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <AuthProvider>
       <FormsContextProvider>
         <OtpContextProvider>
-          {/* <ClassListContextProvider> */}
           <InputsContextProvider>
             <RouterProvider router={router} />
           </InputsContextProvider>
-          {/* </ClassListContextProvider> */}
         </OtpContextProvider>
       </FormsContextProvider>
     </AuthProvider>

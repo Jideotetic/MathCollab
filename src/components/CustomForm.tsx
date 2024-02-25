@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import Inputs from "./Inputs";
 import OTPInputs from "./OTPInputs";
-import { useState, useContext, FormEvent } from "react";
+import { useState, useContext, FormEvent, ChangeEvent } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -15,15 +15,18 @@ import { InputsContext, InputsContextType } from "../contexts/InputsContext";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import emailjs from "emailjs-com";
 import { OtpContext, OtpContextType } from "../contexts/OtpContext";
+import { AuthContext } from "../contexts/AuthContext";
+import { Form, useSubmit } from "react-router-dom";
 
 export interface Props {
   label: string;
   inputType: string;
 }
 
-export default function Form({
+export default function CustomForm({
   inputs,
   formType,
+  socket,
 }: {
   inputs: Props[];
   formType: string;
@@ -37,8 +40,19 @@ export default function Form({
 
   const navigate = useNavigate();
 
-  const { email, password, setEmail, setPassword, firstName, lastName } =
-    useContext(InputsContext) as InputsContextType;
+  const currentUser = useContext(AuthContext);
+
+  const {
+    email,
+    password,
+    setEmail,
+    setPassword,
+    firstName,
+    lastName,
+    collaborators,
+    setCollaborators,
+    className,
+  } = useContext(InputsContext) as InputsContextType;
 
   const {
     loginFormOpen,
@@ -59,92 +73,113 @@ export default function Form({
     setOtp(value);
   }
 
-  // function handleCollaboratorsChange(e: ChangeEvent<HTMLInputElement>) {
-  //   setCollaborators(e.target.value);
-  // }
+  function handleCollaboratorsChange(e: ChangeEvent<HTMLInputElement>) {
+    setCollaborators(e.target.value);
+  }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const submit = useSubmit();
+
+  async function handleSubmit(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
     e.preventDefault();
-    if (loginFormOpen) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          setLoginFormOpen(false);
-          navigate("/dashboard");
-        })
-        .catch((error) => {
-          console.error(error);
-          if (error.code === "auth/wrong-password") {
-            toast.error("Please check the Password");
-          }
-          if (error.code === "auth/invalid-credential") {
-            toast.error("Password or Email invalid");
-          }
-          if (error.code === "auth/too-many-requests") {
-            toast.error(
-              "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
-            );
-          }
-          if (error.code === "auth/user-not-found") {
-            toast.error("Please check the Email");
-          }
-        });
-    } else if (signUpFormOpen) {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-
-      updateProfile(userCredential.user, {
-        displayName: firstName + " " + lastName.slice(0, 1),
-      })
-        .then(() => {
-          setSignUpFormOpen(false);
-          setVerifyEmailOTPFormOpen(true);
-          sendOTP();
-        })
-        .catch((error) => {
-          if (error.code === "auth/email-already-in-use") {
-            toast.error("Email Already in Use");
-          } else if (error.code === "auth/invalid-email") {
-            toast.error("Invalid email");
-          }
-        });
-    } else if (verifyEmailOTPFormOpen) {
-      if (otp !== otpValue) {
-        alert("Invalid OTP");
-        return;
-      }
-      setVerifyEmailOTPFormOpen(false);
-      navigate("/dashboard");
-    } else if (resetPasswordFormOpen) {
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          // setResetPasswordFormOpen(false);
-          // setVerifyPasswordResetOTPFormOpen(true);
-          sendOTP();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else if (verifyPasswordResetOTPFormOpen) {
-      if (otp !== otpValue) {
-        alert("Invalid OTP");
-        return;
-      }
-      setVerifyPasswordResetOTPFormOpen(false);
-      setNewPasswordFormOpen(true);
-    } else if (newPasswordFormOpen) {
-      setNewPasswordFormOpen(false);
-      navigate("/dashboard");
-      toast.success("Password reset successfully");
+    console.log("submit");
+    if (signUpFormOpen) {
+      setSignUpFormOpen(false);
+      setVerifyEmailOTPFormOpen(true);
     }
-
-    // setEmail("");
-    // setPassword("");
-    // setConfirmPassword("");
-    // setFirstName("");
-    // setLastName("");
+    submit(e.currentTarget.form);
+    e.currentTarget.form?.reset();
+    //   if (loginFormOpen) {
+    //     signInWithEmailAndPassword(auth, email, password)
+    //       .then(() => {
+    //         setLoginFormOpen(false);
+    //         navigate("/dashboard");
+    //       })
+    //       .catch((error) => {
+    //         console.error(error);
+    //         if (error.code === "auth/wrong-password") {
+    //           toast.error("Please check the Password");
+    //         }
+    //         if (error.code === "auth/invalid-credential") {
+    //           toast.error("Password or Email invalid");
+    //         }
+    //         if (error.code === "auth/too-many-requests") {
+    //           toast.error(
+    //             "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+    //           );
+    //         }
+    //         if (error.code === "auth/user-not-found") {
+    //           toast.error("Please check the Email");
+    //         }
+    //       });
+    //   } else if (signUpFormOpen) {
+    //     const userCredential = await createUserWithEmailAndPassword(
+    //       auth,
+    //       email,
+    //       password,
+    //     );
+    //     updateProfile(userCredential.user, {
+    //       displayName: firstName + " " + lastName.slice(0, 1),
+    //     })
+    //       .then(() => {
+    //         setSignUpFormOpen(false);
+    //         setVerifyEmailOTPFormOpen(true);
+    //         sendOTP();
+    //       })
+    //       .catch((error) => {
+    //         if (error.code === "auth/email-already-in-use") {
+    //           toast.error("Email Already in Use");
+    //         } else if (error.code === "auth/invalid-email") {
+    //           toast.error("Invalid email");
+    //         }
+    //       });
+    //   } else if (verifyEmailOTPFormOpen) {
+    //     if (otp !== otpValue) {
+    //       alert("Invalid OTP");
+    //       return;
+    //     }
+    //     setVerifyEmailOTPFormOpen(false);
+    //     navigate("/dashboard");
+    //   } else if (resetPasswordFormOpen) {
+    //     sendPasswordResetEmail(auth, email)
+    //       .then(() => {
+    //         // setResetPasswordFormOpen(false);
+    //         // setVerifyPasswordResetOTPFormOpen(true);
+    //         sendOTP();
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   } else if (verifyPasswordResetOTPFormOpen) {
+    //     if (otp !== otpValue) {
+    //       alert("Invalid OTP");
+    //       return;
+    //     }
+    //     setVerifyPasswordResetOTPFormOpen(false);
+    //     setNewPasswordFormOpen(true);
+    //   } else if (newPasswordFormOpen) {
+    //     setNewPasswordFormOpen(false);
+    //     navigate("/dashboard");
+    //     toast.success("Password reset successfully");
+    //   } else if (formType === "join-class") {
+    //     navigate(`/canvas/${className}`);
+    //   } else if (formType === "create-class") {
+    //     // {name, roomId, userId, host, presenter}
+    //     const roomData = {
+    //       currentUser,
+    //       roomId: className,
+    //       host: true,
+    //       presenter: true,
+    //     };
+    //     socket.emit("userJoined", roomData);
+    //     navigate(`/canvas/${className}`);
+    //   }
+    //   // setEmail("");
+    //   // setPassword("");
+    //   // setConfirmPassword("");
+    //   // setFirstName("");
+    //   // setLastName("");
   }
 
   function forgotPassword() {
@@ -166,27 +201,27 @@ export default function Form({
     setLoginFormOpen(true);
   }
 
-  function sendOTP() {
-    const templateParams = {
-      to_email: email,
-      to_name: firstName,
-      message: otpValue,
-    };
+  // function sendOTP() {
+  //   const templateParams = {
+  //     to_email: email,
+  //     to_name: firstName,
+  //     message: otpValue,
+  //   };
 
-    emailjs
-      .send(
-        "service_gmfhpbo",
-        "template_q4nt0w6",
-        templateParams,
-        "ATX_F8kDIENLslJVM",
-      )
-      .then(() => {
-        alert("Email sent successfully!");
-      })
-      .catch(() => {
-        alert("Error sending email contact administrator");
-      });
-  }
+  //   emailjs
+  //     .send(
+  //       "service_gmfhpbo",
+  //       "template_q4nt0w6",
+  //       templateParams,
+  //       "ATX_F8kDIENLslJVM",
+  //     )
+  //     .then(() => {
+  //       alert("Email sent successfully!");
+  //     })
+  //     .catch(() => {
+  //       alert("Error sending email contact administrator");
+  //     });
+  // }
 
   // function resendOTP() {
   //   sendEmailVerification(auth.currentUser)
@@ -214,9 +249,10 @@ export default function Form({
 
   return (
     <>
-      <form
+      <Form
         className="flex w-full min-w-[202px] flex-col gap-8"
-        onSubmit={handleSubmit}
+        method="post"
+        action="."
       >
         <ToastContainer />
         {formType === "login" && (
@@ -337,8 +373,8 @@ export default function Form({
                 id="collaborators"
                 multiple
                 required
-                // value={collaborators}
-                // onChange={handleCollaboratorsChange}
+                value={collaborators}
+                onChange={handleCollaboratorsChange}
                 className="form-input  inline-block h-20 w-full rounded-lg border-neutral-200 bg-white pb-3 pr-8 pt-3 text-sm placeholder-transparent shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
               ></input>
               <div className="flex items-start gap-2">
@@ -362,6 +398,7 @@ export default function Form({
 
         <button
           type="submit"
+          onClick={handleSubmit}
           className="mx-auto w-[202px] rounded-lg bg-slate-950 py-[13px] text-center text-sm font-medium text-white hover:bg-slate-800"
         >
           {formType === "signup"
@@ -402,7 +439,7 @@ export default function Form({
             Remember Password?
           </Link>
         )}
-      </form>
+      </Form>
     </>
   );
 }

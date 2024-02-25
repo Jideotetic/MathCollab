@@ -1,10 +1,12 @@
 import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
 import { Link, useLoaderData } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext, useEffect } from "react";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
 import { NavLink } from "react-router-dom";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import io from "socket.io-client";
 
 interface Classes {
   id: string;
@@ -23,10 +25,6 @@ interface Prop {
   search: string;
 }
 
-// interface Data {
-//   selected: number;
-// }
-
 const PAGESIZE = 15;
 
 const classesCategory = [
@@ -39,6 +37,16 @@ const classesCategory = [
   "Mine",
 ];
 
+const server = "http://localhost:5000";
+const connectionOptions = {
+  "force new connection": true,
+  reconnectionAttempts: Infinity,
+  timeout: 10000,
+  transports: ["wesocket"],
+};
+
+const socket = io(server, connectionOptions);
+
 export default function DashboardIndex() {
   const { lessons } = useLoaderData() as Prop;
   const [currentPage] = useState(1);
@@ -47,6 +55,18 @@ export default function DashboardIndex() {
     const lastPageIndex = firstPageIndex + PAGESIZE;
     return lessons.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, lessons]);
+
+  const { setJoinClassFormOpen } = useContext(FormsContext) as FormsContextType;
+
+  useEffect(() => {
+    socket.on("userIsJoined", (data) => {
+      if (data.success) {
+        console.log("Joined");
+      } else {
+        console.log("Error joining");
+      }
+    });
+  }, []);
 
   // const totalPageCount = Math.ceil(lessons.length / PAGESIZE);
 
@@ -81,8 +101,9 @@ py-[6px] text-[#3A383C]`
           ))}
         </ul>
 
-        <CreateOrJoinClassButton />
+        <CreateOrJoinClassButton socket={socket} />
       </div>
+
       <div className="p-4">
         <ul className="mx-auto grid max-w-full grid-cols-classes gap-x-2 gap-y-8 py-[15px] text-left sm:grid-cols-classe1">
           {currentLessons.map((lesson) => (
@@ -144,7 +165,10 @@ py-[6px] text-[#3A383C]`
                       </div>
                     </div>
                     {lesson.status === "ongoing" ? (
-                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                      <button
+                        onClick={() => setJoinClassFormOpen(true)}
+                        className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                      >
                         Join
                       </button>
                     ) : (
