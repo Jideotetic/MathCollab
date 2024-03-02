@@ -1,61 +1,19 @@
 import { redirect, LoaderFunctionArgs } from "react-router-dom";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "../firebase";
 import { toast } from "react-toastify";
 import emailjs from "emailjs-com";
 import { temp } from "../otp";
+import { server } from "../contexts/socket";
+import { authProvider } from "../auth";
 
 export async function signUpFormAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
-  //   const firstName = formData.get("First Name")!.toString();
-  //   const lastName = formData.get("Last Name")!.toString();
+  const firstName = formData.get("First Name")!.toString();
+  const lastName = formData.get("Last Name")!.toString();
   const email = formData.get("Email")!.toString();
   const password = formData.get("Password")!.toString();
 
-  temp.email = email;
-
-  const otpValue = temp.otpValue;
-
-  function sendOTP() {
-    const templateParams = {
-      to_email: email,
-      to_name: "Collaborator",
-      message: otpValue,
-    };
-
-    emailjs
-      .send(
-        "service_gmfhpbo",
-        "template_q4nt0w6",
-        templateParams,
-        "ATX_F8kDIENLslJVM",
-      )
-      .then(() => {
-        toast.success("Email sent successfully!");
-      })
-      .catch(() => {
-        toast.error("Error sending email contact administrator");
-      });
-  }
-
-  return createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      sendOTP();
-      return redirect("/verify-email");
-    })
-    .catch((error) => {
-      if (error.code === "auth/email-already-in-use") {
-        temp.email = "";
-        return toast.error("Email Already in Use");
-      } else if (error.code === "auth/invalid-email") {
-        temp.email = "";
-        return toast.error("Invalid email");
-      }
-    });
+  return authProvider.signup(email, password, firstName, lastName);
 }
 
 export async function verifyEmailFormAction({ request }: LoaderFunctionArgs) {
@@ -84,13 +42,7 @@ export async function loginFormAction({ request }: LoaderFunctionArgs) {
   const email = formData.get("Email")!.toString();
   const password = formData.get("Password")!.toString();
 
-  return signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      return redirect("/dashboard");
-    })
-    .catch(() => {
-      return toast.error("Password or Email invalid");
-    });
+  return authProvider.login(email, password);
 }
 
 export async function resetPasswordFormAction({ request }: LoaderFunctionArgs) {
@@ -163,4 +115,32 @@ export async function newPasswordFormAction({ request }: LoaderFunctionArgs) {
     toast.success("Password reset complete");
     return redirect("/login");
   }
+}
+
+export async function signoutAction() {
+  authProvider.signout();
+  return redirect("/");
+}
+
+export async function createClassAction({ request }: LoaderFunctionArgs) {
+  const formData = await request.formData();
+
+  const className = formData.get("Class name");
+  // const collaborators = formData.get("collaborators");
+
+  server.emit("user-joined", { className });
+  server.emit("host", { host: true });
+
+  return redirect(`/canvas/${className}`);
+}
+
+export async function joinClassAction({ request }: LoaderFunctionArgs) {
+  const formData = await request.formData();
+
+  const className = formData.get("Enter/Paste Invite link");
+
+  server.emit("user-joined", { className });
+  server.emit("host", { host: false });
+
+  return redirect(`/canvas/${className}`);
 }

@@ -1,6 +1,4 @@
-// import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
 import { Dialog, Transition } from "@headlessui/react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { useContext, Fragment, useEffect } from "react";
@@ -15,13 +13,6 @@ const inputs = [
   { label: "Email", inputType: "email" },
   { label: "Password", inputType: "password" },
 ];
-
-// const headerContent = {
-//   title: "",
-//   description:
-//     "Sign in to your account and collaborate with like minds in solving problems",
-//   email: "",
-// };
 
 export default function LoginForm() {
   const {
@@ -96,6 +87,7 @@ export default function LoginForm() {
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
             action="."
+            replace
           >
             <ToastContainer />
             <div className="flex flex-col">

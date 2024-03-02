@@ -10,6 +10,8 @@ import googleLogoUrl from "../assets/Google-logo.svg";
 import { ToastContainer } from "react-toastify";
 
 const inputs = [
+  { label: "First Name", inputType: "text" },
+  { label: "Last Name", inputType: "text" },
   { label: "Email", inputType: "email" },
   { label: "Password", inputType: "password" },
 ];
@@ -62,6 +64,7 @@ export default function SignUpForm() {
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
             action="."
+            replace
           >
             <ToastContainer />
             <div className="flex flex-col gap-8">
