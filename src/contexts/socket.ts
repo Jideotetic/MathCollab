@@ -2,7 +2,7 @@
 import io, { Socket } from "socket.io-client";
 
 // const PORT = "http://localhost:5000";
-const PORT = "https://mathcollab-server.onrender.com";
+const PORT = import.meta.env.REACT_APP_BACKEND_URL;
 // const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const connectionOptions = {
   "force new connection": true,
