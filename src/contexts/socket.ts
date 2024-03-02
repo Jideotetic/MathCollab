@@ -1,7 +1,7 @@
 // import { createContext } from "react";
 import io, { Socket } from "socket.io-client";
 
-const PORT = "http://localhost:5000";
+const PORT = "http://localhost:10000";
 const connectionOptions = {
   "force new connection": true,
   reconnectionAttempts: "Infinity",
