@@ -3,18 +3,16 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 import DashboardLayout from "./routes/DashboardLayout";
-import DashboardIndex from "./routes/DashboardIndex";
 import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
-import InputsContextProvider from "./contexts/InputsContext";
+// import InputsContextProvider from "./contexts/InputsContext";
 import Canvas from "./components/Canvas";
-import AuthProvider from "./contexts/AuthContext";
-// import HomePageIndex from "./routes/HomePageIndex";
-// import ExplorePage from "./routes/ExplorePage";
-import OtpContextProvider from "./contexts/OtpContext";
-// import Classes from "./routes/Classes";
-import DashboardClasses from "./routes/DashboardClasses";
-import { classesLoader, classLoader } from "./loaders/loaders";
+// import OtpContextProvider from "./contexts/OtpContext";
+import {
+  canvasLoader,
+  dashboardLoader,
+  homePageLoader,
+} from "./loaders/loaders";
 import {
   signUpFormAction,
   verifyEmailFormAction,
@@ -22,6 +20,9 @@ import {
   resetPasswordFormAction,
   verifyPasswordResetFormAction,
   newPasswordFormAction,
+  createClassAction,
+  joinClassAction,
+  signoutAction,
 } from "./actions/actions";
 import "./index.css";
 import LoginForm from "./components/LoginForm";
@@ -30,17 +31,17 @@ import VerifyEmailOTPForm from "./components/VerifyEmailForm";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm";
 import NewPasswordForm from "./components/NewPasswordForm";
-// import { temp } from "./contexts/Auth";
+import CreateClassForm from "./components/CreateClassForm";
+import JoinClassForm from "./components/JoinClassForm";
+// import RoomContextProvider from "./contexts/RoomContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
     id: "root",
     element: <HomePage />,
-    // loader() {
-    //   return { email: temp.email, otpValue: temp.otpValue };
-    // },
     errorElement: <ErrorPage />,
+    loader: homePageLoader,
     children: [
       {
         path: "signup",
@@ -72,41 +73,57 @@ const router = createBrowserRouter([
         element: <NewPasswordForm />,
         action: newPasswordFormAction,
       },
-
-      // { path: "classes", element: <ExplorePage />, loader: classesLoader },
-      // { path: "classes/:class", element: <Classes />, loader: classLoader },
     ],
   },
   {
     path: "dashboard",
+    id: "dashboard",
     element: <DashboardLayout />,
+    loader: dashboardLoader,
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        element: <DashboardIndex />,
-        loader: classesLoader,
+        path: "create-class",
+        element: <CreateClassForm />,
+        action: createClassAction,
       },
-      { path: ":class", element: <DashboardClasses />, loader: classLoader },
+      {
+        path: "join-class",
+        element: <JoinClassForm />,
+        action: joinClassAction,
+      },
+      {
+        path: "signout",
+        action: signoutAction,
+      },
     ],
   },
   {
-    path: "canvas/:classId",
+    path: "canvas/:id",
+    id: "canvas",
     element: <Canvas />,
     errorElement: <ErrorPage />,
+    loader: canvasLoader,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <AuthProvider>
-      <FormsContextProvider>
-        <OtpContextProvider>
-          <InputsContextProvider>
-            <RouterProvider router={router} />
-          </InputsContextProvider>
-        </OtpContextProvider>
-      </FormsContextProvider>
-    </AuthProvider>
+    {/* <RoomContextProvider> */}
+    <FormsContextProvider>
+      {/* <OtpContextProvider> */}
+      {/* <InputsContextProvider> */}
+      <RouterProvider
+        router={router}
+        fallbackElement={
+          <p className="flex h-screen w-screen items-center justify-center">
+            Loading...
+          </p>
+        }
+      />
+      {/* </InputsContextProvider> */}
+      {/* </OtpContextProvider> */}
+    </FormsContextProvider>
+    {/* </RoomContextProvider> */}
   </React.StrictMode>,
 );

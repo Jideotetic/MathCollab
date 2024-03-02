@@ -17,9 +17,15 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import Collaborators from "./Collaborators";
 import ClassChat from "./ClassChat";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+// import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
+import { ToastContainer, toast } from "react-toastify";
+import { useRouteLoaderData } from "react-router-dom";
+import { User } from "firebase/auth";
+import { server } from "../contexts/socket";
 
 const penTools = [
   arrowUrl,
@@ -49,10 +55,82 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
+  const [host, setHost] = useState(false);
+  const { user } = useRouteLoaderData("canvas") as {
+    user: User;
+  };
+  const [content, setContent] = useState("Solution");
+
+  const {
+    // setJoinClassFormOpen,
+    joinClassFormOpen,
+    createClassFormOpen,
+    // setCreateClassFormOpen,
+  } = useContext(FormsContext) as FormsContextType;
+
+  console.log(
+    "joinClassFormOpen",
+    joinClassFormOpen,
+    "createClassFormOpen",
+    createClassFormOpen,
+    "host",
+    host,
+    user,
+  );
+
+  // const { server } = useContext(RoomContext) as RoomContextType;
+
+  useEffect(() => {
+    // server.on("class-created", (data) => {
+    //   data.success
+    //     ? toast.success(`You start the ${data.className} class`)
+    //     : console.log("Something went wrong");
+    // });
+
+    // setHost(presenter);
+
+    server.on("user-joined", (data) => {
+      data.success
+        ? toast.success(`${user.displayName} join`)
+        : console.log("Something went wrong");
+    });
+
+    server.on("host", (data) => {
+      toast.info(data.host);
+      setHost(data.host);
+    });
+
+    server.emit("canvas-data", content);
+  }, [user.displayName, content]);
+
+  useEffect(() => {
+    server.on("canvas-data-response", (data) => {
+      setContent(data);
+    });
+  }, []);
+
+  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    setContent(e.target.value);
+  }
+
+  // useEffect(() => {
+  //   if (joinClassFormOpen === true) {
+  //     setHost(false);
+  //   }
+  //   if (createClassFormOpen === true) {
+  //     setHost(true);
+  //   }
+  // }, [
+  //   setCreateClassFormOpen,
+  //   joinClassFormOpen,
+  //   createClassFormOpen,
+  //   setJoinClassFormOpen,
+  // ]);
   return (
     <>
+      <ToastContainer />
       <div></div>
-      <div className="grid-cols-canvasLayout mx-auto grid min-h-screen max-w-[1280px] gap-1 bg-white px-4 py-4">
+      <div className="mx-auto grid min-h-screen max-w-[1280px] grid-cols-canvasLayout gap-1 bg-white px-4 py-4">
         <div className="rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
           <div className="text-base font-medium leading-normal text-neutral-700">
             Pen tools
@@ -109,13 +187,20 @@ export default function Canvas() {
             </code>
           </div>
         </div>
+
         <div className="flex flex-col  gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
           <input
             type="text"
+            // value={params.}
             className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
             placeholder="Type in the questions you are solving to keep collaborators informed"
           />
-          <textarea className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"></textarea>
+          <textarea
+            disabled={host ? false : true}
+            value={content}
+            onChange={handleChange}
+            className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
+          ></textarea>
           <div className="flex h-[43px] justify-evenly rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
             <button
               type="button"
@@ -182,6 +267,7 @@ export default function Canvas() {
             </button>
           </div>
         </div>
+
         <div className="rounded-lg border  border-neutral-200 bg-white p-2 shadow-sm">
           <div className="mb-2 flex justify-between text-base font-medium leading-normal text-neutral-700">
             <button

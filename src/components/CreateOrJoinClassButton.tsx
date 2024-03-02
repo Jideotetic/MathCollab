@@ -1,22 +1,18 @@
-import { Popover, Transition, Dialog } from "@headlessui/react";
+import { Popover, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
   PlusIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import { useContext, Fragment } from "react";
+import { useContext } from "react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 
-import CreateClassForm from "./CreateClassForm";
-import JoinClassForm from "./JoinClassForm";
+import { Link } from "react-router-dom";
 
 export default function CreateOrJoinClassButton() {
-  const {
-    createClassFormOpen,
-    setCreateClassFormOpen,
-    joinClassFormOpen,
-    setJoinClassFormOpen,
-  } = useContext(FormsContext) as FormsContextType;
+  const { setCreateClassFormOpen, setJoinClassFormOpen } = useContext(
+    FormsContext,
+  ) as FormsContextType;
 
   return (
     <>
@@ -34,27 +30,27 @@ export default function CreateOrJoinClassButton() {
           leaveTo="transform scale-95 opacity-0"
         >
           <Popover.Panel className="absolute z-10 mt-2 flex flex-col rounded bg-white font-poppins text-[10px] font-light leading-[14px] text-neutral-700 shadow-lg">
-            <button
-              type="button"
+            <Link
+              to="create-class"
               className="flex items-center gap-2 rounded px-4 py-1.5 hover:bg-black hover:text-white"
               onClick={() => setCreateClassFormOpen(true)}
             >
               <PlusIcon className="h-4 w-4" />
               Create class
-            </button>
-            <button
-              type="button"
+            </Link>
+            <Link
+              to="join-class"
               className="flex items-center gap-2 rounded px-4 py-1.5 hover:bg-black hover:text-white"
               onClick={() => setJoinClassFormOpen(true)}
             >
               <UserPlusIcon className="h-4 w-4" />
               Join class
-            </button>
+            </Link>
           </Popover.Panel>
         </Transition>
       </Popover>
 
-      <Transition show={createClassFormOpen} as={Fragment}>
+      {/* <Transition show={createClassFormOpen} as={Fragment}>
         <Dialog
           className="relative z-10"
           onClose={() => {
@@ -78,9 +74,9 @@ export default function CreateOrJoinClassButton() {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
 
-      <Transition show={joinClassFormOpen} as={Fragment}>
+      {/* <Transition show={joinClassFormOpen} as={Fragment}>
         <Dialog
           className="relative z-10"
           onClose={() => {
@@ -104,7 +100,7 @@ export default function CreateOrJoinClassButton() {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
     </>
   );
 }

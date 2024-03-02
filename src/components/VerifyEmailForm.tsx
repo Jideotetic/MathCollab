@@ -1,26 +1,14 @@
 import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
 import { Dialog, Transition } from "@headlessui/react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { useContext, Fragment, useEffect, useState } from "react";
-import { useNavigate, Form, Link } from "react-router-dom";
+import { useNavigate, Form, Link, useRouteLoaderData } from "react-router-dom";
 import { temp } from "../otp";
 import OTPInputs from "./OTPInputs";
 import { ToastContainer } from "react-toastify";
 import MathCollab from "./MathCollab";
-import { AuthContext } from "../contexts/AuthContext";
-import { deleteUser } from "firebase/auth";
-
-// const inputs = [
-//   { label: "Email", inputType: "email" },
-//   { label: "Password", inputType: "password" },
-// ];
-
-// const headerContent = {
-//   title: "Verify Email",
-//   description: "Enter the verification code sent to",
-//   email: "Jideotetic@gmail.com",
-// };
+import { User, deleteUser } from "firebase/auth";
+import { authProvider } from "../auth";
 
 export default function VerifyEmailOTPForm() {
   const [otp, setOtp] = useState("");
@@ -29,7 +17,9 @@ export default function VerifyEmailOTPForm() {
     setOtp(value);
   }
 
-  const currentUser = useContext(AuthContext);
+  const { user } = useRouteLoaderData("root") as { user: User };
+
+  console.log(user);
 
   const {
     verifyEmailFormOpen,
@@ -44,7 +34,7 @@ export default function VerifyEmailOTPForm() {
   function goToSignInPage() {
     setVerifyEmailFormOpen(false);
     setLoginFormOpen(true);
-    deleteUser(currentUser!);
+    deleteUser(user);
     temp.email = "";
   }
 
@@ -54,7 +44,7 @@ export default function VerifyEmailOTPForm() {
 
     if (signUpFormOpen === false && verifyEmailFormOpen === false) {
       temp.email = "";
-      deleteUser(currentUser!);
+      deleteUser(user);
       navigate("/");
     }
   }, [
@@ -63,7 +53,7 @@ export default function VerifyEmailOTPForm() {
     setSignUpFormOpen,
     verifyEmailFormOpen,
     setVerifyEmailFormOpen,
-    currentUser,
+    user,
   ]);
 
   return (
@@ -73,7 +63,7 @@ export default function VerifyEmailOTPForm() {
         onClose={() => {
           setVerifyEmailFormOpen(false);
           temp.email = "";
-          deleteUser(currentUser!);
+          deleteUser(authProvider.user!);
           navigate("/");
         }}
       >
@@ -98,6 +88,7 @@ export default function VerifyEmailOTPForm() {
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
             action="."
+            replace
           >
             <ToastContainer />
             <div className="flex flex-col gap-8">

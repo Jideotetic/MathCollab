@@ -1,27 +1,53 @@
 import { classes } from "../data/classes";
-import { LoaderFunction, LoaderFunctionArgs } from "react-router-dom";
-// import {
-//   createUserWithEmailAndPassword,
-//   updateProfile,
-//   signInWithEmailAndPassword,
-// } from "firebase/auth";
-// import { auth } from "../firebase";
-// import { toast } from "react-toastify";
-// import emailjs from "emailjs-com";
-// import { temp } from "../otp";
+import { LoaderFunction, LoaderFunctionArgs, redirect } from "react-router-dom";
+import { authProvider } from "../auth";
 
-export async function classesLoader({ request }: LoaderFunctionArgs) {
+export async function homePageLoader() {
+  try {
+    await authProvider.checkAuth();
+    return {
+      user: authProvider.user,
+    };
+  } catch (error) {
+    // handle error
+  }
+}
+
+export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search");
+
   let lessons = classes.filter((lesson) => {
     return lesson.link.includes(search!);
   });
+
   if (!search) {
     lessons = classes;
+  }
 
-    return { lessons, search };
-  } else {
-    return { lessons, search };
+  try {
+    await authProvider.checkAuth();
+    if (!authProvider.user) {
+      return redirect("/");
+    }
+    return {
+      user: authProvider.user,
+      lessons,
+      search,
+    };
+  } catch (error) {
+    // handle error
+  }
+}
+
+export async function canvasLoader() {
+  try {
+    await authProvider.checkAuth();
+    return {
+      user: authProvider.user,
+    };
+  } catch (error) {
+    // handle error
   }
 }
 

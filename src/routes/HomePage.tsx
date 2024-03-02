@@ -4,12 +4,29 @@ import MathCollab from "../components/MathCollab";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import "react-toastify/dist/ReactToastify.css";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useRouteLoaderData } from "react-router-dom";
 import facebookIconUrl from "../assets/Facebook.svg";
 import twitterIconUrl from "../assets/Twitter.svg";
 import instagramIconUrl from "../assets/Instagram.svg";
 import { NavLink } from "react-router-dom";
 import HomePageIndex from "./HomePageIndex";
+import { User } from "firebase/auth";
+// import { auth } from "../firebase";
+
+// interface ConnectionOptionsProp {
+//   // "force new connection": boolean;
+//   // reconnectionAttempts: string;
+//   // timeout: number;
+//   // transport: string[];
+// }
+// const connectionOptions = {
+//   "force new connection": true,
+//   reconnectionAttempts: "Infinity",
+//   timeout: 1000,
+//   transport: ["websocket"],
+// };
+
+// const socket = io(server, connectionOptions as ConnectionOptionsProp);
 
 const navLinks = [
   { title: "Home", link: "/" },
@@ -20,6 +37,9 @@ const navLinks = [
 
 export default function HomePage() {
   const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
+  const { user } = useRouteLoaderData("root") as { user: User };
+
+  console.log(user);
 
   return (
     <>
@@ -152,8 +172,11 @@ export default function HomePage() {
           Sign In
         </Link>
       </header>
+      {/* HEADER ENDS */}
 
+      {/* MAIN STARTS */}
       <HomePageIndex />
+      {/* MAIN ENDS */}
 
       {/* FOOTER STARTS */}
       <div className="bg-[#06031E]">
@@ -239,9 +262,8 @@ export default function HomePage() {
       </div>
       {/* FOOTER ENDS */}
 
-      {/* AUTHENTICATION SCREENS FLOW STARTS */}
+      {/* AUTHENTICATION SCREENS */}
       <Outlet />
-      {/* AUTHENTICATION FLOW SCREEN ENDS */}
     </>
   );
 }
