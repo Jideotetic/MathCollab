@@ -1,9 +1,9 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
-import { authProvider } from "../auth";
-import { useRouteLoaderData } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+// import { authProvider } from "../auth";
+// import { useRouteLoaderData } from "react-router-dom";
 
 // export const AuthContext = createContext<User | null>(null);
 
