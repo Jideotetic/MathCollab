@@ -33,7 +33,6 @@ import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm"
 import NewPasswordForm from "./components/NewPasswordForm";
 import CreateClassForm from "./components/CreateClassForm";
 import JoinClassForm from "./components/JoinClassForm";
-// import RoomContextProvider from "./contexts/RoomContext";
 
 const router = createBrowserRouter([
   {
