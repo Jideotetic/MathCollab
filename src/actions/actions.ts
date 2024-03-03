@@ -147,7 +147,7 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
       clearTimeout(timeout);
       resolve(false);
       console.log("Timeout waiting for inactive-class event");
-    }, 100);
+    }, 1000);
 
     server.on("inactive-class", (data) => {
       clearTimeout(timeout);
