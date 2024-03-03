@@ -10,7 +10,7 @@ import signOutUrl from "../assets/sign-out.svg";
 // import searchIconUrl from "../assets/ic_Search.svg";
 import { User } from "firebase/auth";
 import notificationUrl from "../assets/notification.svg";
-import userImageUrl from "../assets/user-image.png";
+import userImageUrl from "../assets/user.jpeg";
 import arrowRightIconUrl from "../assets/Icon.svg";
 import { Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -19,6 +19,7 @@ import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import DashboardIndex from "./DashboardIndex";
 import { useRouteLoaderData } from "react-router-dom";
 import { authProvider } from "../auth";
+import { ToastContainer } from "react-toastify";
 
 const navLinks = [
   { id: uuidv4(), title: "Graphing Calculator", link: "graphing-calculator" },
@@ -58,6 +59,7 @@ export default function DashboardLayout() {
 
   return (
     <>
+      <ToastContainer />
       <header className="fixed left-0 right-0 top-0 z-10 mx-auto flex w-[1280px] max-w-full justify-between bg-white px-4 py-6">
         <h1 className="hidden text-[28px] font-bold leading-[32px] text-[#3A383C] lg:inline-block">
           Math

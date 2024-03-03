@@ -142,5 +142,28 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
 
   server.emit("user-joined", { className, user, host: false });
 
-  return redirect(`/canvas/${className}`);
+  const inActiveClass = await new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      clearTimeout(timeout);
+      resolve(false);
+      console.log("Timeout waiting for inactive-class event");
+    }, 100);
+
+    server.on("inactive-class", (data) => {
+      clearTimeout(timeout);
+      resolve(data.success);
+      console.log("inactive", data.success);
+    });
+  });
+
+  console.log(inActiveClass);
+
+  if (inActiveClass) {
+    toast.error("No active class");
+    console.log("inactive");
+    return redirect(`${new URL(request.url).origin}/dashboard`);
+  } else {
+    console.log("active");
+    return redirect(`/canvas/${className}`);
+  }
 }

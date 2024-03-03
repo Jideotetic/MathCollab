@@ -56,11 +56,11 @@ const shapes = [
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   const [host, setHost] = useState(false);
-  const { user, url, className1 } = useRouteLoaderData("canvas") as {
+  // const [activeClass, setActiveClass] = useState("");
+  const { user } = useRouteLoaderData("canvas") as {
     user: User;
-    url: string;
-    className1: string;
   };
+
   const [content, setContent] = useState("");
 
   // const {
@@ -70,17 +70,7 @@ export default function Canvas() {
   //   // setCreateClassFormOpen,
   // } = useContext(FormsContext) as FormsContextType;
 
-  console.log(
-    "host",
-    "===>",
-    host,
-    "url",
-    "===>",
-    url,
-    "className1",
-    "===>",
-    className1,
-  );
+  console.log("host", "===>", host);
 
   const navigate = useNavigate();
 
@@ -99,6 +89,40 @@ export default function Canvas() {
       setHost(host);
       sessionStorage.setItem("host", host);
     });
+
+    // server.on("class-name", (className) => {
+    //   console.log(
+    //     "activeClass",
+    //     "==>",
+    //     activeClass,
+    //     "class-name",
+    //     "===>",
+    //     className,
+    //   );
+    //   setActiveClass(className);
+    //   console.log(
+    //     "activeClass",
+    //     "==>",
+    //     activeClass,
+    //     "class-name",
+    //     "===>",
+    //     className,
+    //   );
+    // });
+
+    // server.on("class-name-joined", (className) => {
+    //   // if (activeClass !== className) {
+    //   //   navigate(`/${url}/dashboard`);
+    //   // }
+    //   console.log(
+    //     "activeClass",
+    //     "==>",
+    //     activeClass,
+    //     "class-name-joined",
+    //     "===>",
+    //     className,
+    //   );
+    // });
 
     server.emit("canvas-data", content);
   }, [user.displayName, content, navigate]);
