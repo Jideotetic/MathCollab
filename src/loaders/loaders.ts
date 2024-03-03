@@ -1,7 +1,8 @@
 import { classes } from "../data/classes";
 import { LoaderFunction, LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
-import { server } from "../contexts/socket";
+// import { server } from "../contexts/socket";
+// import { toast } from "react-toastify";
 
 export async function homePageLoader() {
   try {
@@ -41,25 +42,11 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   }
 }
 
-export async function canvasLoader({ request }: LoaderFunctionArgs) {
-  let url = new URL(request.url).pathname;
-  const tempUrl = url.split("/");
-  url = tempUrl[tempUrl.length - 1];
-  let className1 = "Default";
-
-  server.on("class-name", (className) => {
-    if (className !== url) {
-      return redirect(`${new URL(request.url).origin}/dashboard`);
-    }
-    className1 = className;
-  });
-
+export async function canvasLoader() {
   try {
     await authProvider.checkAuth();
     return {
       user: authProvider.user,
-      url,
-      className1,
     };
   } catch (error) {
     // handle error
