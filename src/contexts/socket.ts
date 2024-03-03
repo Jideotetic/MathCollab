@@ -1,7 +1,7 @@
 // import { createContext } from "react";
 import io, { Socket } from "socket.io-client";
 
-// const PORT = "http://localhost:5000";
+// const PORT = "http://localhost:10000";
 const PORT = import.meta.env.REACT_APP_BACKEND_URL;
 // const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const connectionOptions = {

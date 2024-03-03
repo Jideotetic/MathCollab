@@ -127,9 +127,9 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
 
   const className = formData.get("Class name");
   // const collaborators = formData.get("collaborators");
+  const user = authProvider.user;
 
-  server.emit("user-joined", { className });
-  server.emit("host", { host: true });
+  server.emit("user-create", { className, user, host: true });
 
   return redirect(`/canvas/${className}`);
 }
@@ -138,9 +138,9 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
   const className = formData.get("Enter/Paste Invite link");
+  const user = authProvider.user;
 
-  server.emit("user-joined", { className });
-  server.emit("host", { host: false });
+  server.emit("user-joined", { className, user, host: false });
 
   return redirect(`/canvas/${className}`);
 }

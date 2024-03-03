@@ -52,6 +52,8 @@ export default function DashboardLayout() {
   useEffect(() => {
     setCreateClassFormOpen(false);
     setJoinClassFormOpen(false);
+
+    sessionStorage.removeItem("host");
   }, [setJoinClassFormOpen, setCreateClassFormOpen]);
 
   return (
