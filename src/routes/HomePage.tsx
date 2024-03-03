@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import MathCollab from "../components/MathCollab";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -39,6 +39,9 @@ export default function HomePage() {
   const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
   const { user } = useRouteLoaderData("root") as { user: User };
 
+  useEffect(() => {
+    sessionStorage.removeItem("host");
+  }, []);
   console.log(user);
 
   return (

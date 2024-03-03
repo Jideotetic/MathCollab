@@ -17,13 +17,13 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Collaborators from "./Collaborators";
 import ClassChat from "./ClassChat";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+// import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
 import { ToastContainer, toast } from "react-toastify";
-import { useRouteLoaderData } from "react-router-dom";
+import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import { User } from "firebase/auth";
 import { server } from "../contexts/socket";
 
@@ -56,52 +56,57 @@ const shapes = [
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   const [host, setHost] = useState(false);
-  const { user } = useRouteLoaderData("canvas") as {
+  const { user, url, className1 } = useRouteLoaderData("canvas") as {
     user: User;
+    url: string;
+    className1: string;
   };
-  const [content, setContent] = useState("Solution");
+  const [content, setContent] = useState("");
 
-  const {
-    // setJoinClassFormOpen,
-    joinClassFormOpen,
-    createClassFormOpen,
-    // setCreateClassFormOpen,
-  } = useContext(FormsContext) as FormsContextType;
+  // const {
+  //   // setJoinClassFormOpen,
+  //   // joinClassFormOpen,
+  //   // createClassFormOpen,
+  //   // setCreateClassFormOpen,
+  // } = useContext(FormsContext) as FormsContextType;
 
   console.log(
-    "joinClassFormOpen",
-    joinClassFormOpen,
-    "createClassFormOpen",
-    createClassFormOpen,
     "host",
+    "===>",
     host,
-    user,
+    "url",
+    "===>",
+    url,
+    "className1",
+    "===>",
+    className1,
   );
 
-  // const { server } = useContext(RoomContext) as RoomContextType;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // server.on("class-created", (data) => {
-    //   data.success
-    //     ? toast.success(`You start the ${data.className} class`)
-    //     : console.log("Something went wrong");
-    // });
-
-    // setHost(presenter);
-
     server.on("user-joined", (data) => {
-      data.success
-        ? toast.success(`${user.displayName} join`)
-        : console.log("Something went wrong");
+      const { success } = data;
+      if (success) {
+        toast.success(`${user.displayName} join`);
+      } else {
+        toast.error("Something went wrong");
+        return navigate("-1");
+      }
     });
 
-    server.on("host", (data) => {
-      toast.info(data.host);
-      setHost(data.host);
+    server.on("host", (host) => {
+      setHost(host);
+      sessionStorage.setItem("host", host);
     });
 
     server.emit("canvas-data", content);
-  }, [user.displayName, content]);
+  }, [user.displayName, content, navigate]);
+
+  useEffect(() => {
+    const host = sessionStorage.getItem("host");
+    setHost(host === "true");
+  }, []);
 
   useEffect(() => {
     server.on("canvas-data-response", (data) => {
