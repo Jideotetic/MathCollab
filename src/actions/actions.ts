@@ -129,7 +129,8 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
   // const collaborators = formData.get("collaborators");
   const user = authProvider.user;
 
-  server.emit("user-create", { className, user, host: true });
+  // server.emit("user-create", { className, user, host: true });
+  server.emit("user-joined", { className, user, host: true });
 
   return redirect(`/canvas/${className}`);
 }
