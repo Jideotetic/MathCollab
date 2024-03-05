@@ -137,7 +137,7 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
 export async function joinClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
-  const className = formData.get("Enter/Paste Invite link");
+  const className = formData.get("Enter/Paste class name");
   const user = authProvider.user;
 
   server.emit("user-joined", { className, user, host: false });

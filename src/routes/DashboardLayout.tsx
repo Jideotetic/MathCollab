@@ -1,6 +1,6 @@
 import MathCollab from "../components/MathCollab";
 import { Form, NavLink, Outlet } from "react-router-dom";
-import { useContext, Fragment, useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";
@@ -15,7 +15,6 @@ import arrowRightIconUrl from "../assets/Icon.svg";
 import { Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import DashboardIndex from "./DashboardIndex";
 import { useRouteLoaderData } from "react-router-dom";
 import { authProvider } from "../auth";
@@ -42,20 +41,13 @@ export default function DashboardLayout() {
 
   console.log(user);
 
-  const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
-    FormsContext,
-  ) as FormsContextType;
-
   const handleLogout = () => {
     authProvider.signout();
   };
 
   useEffect(() => {
-    setCreateClassFormOpen(false);
-    setJoinClassFormOpen(false);
-
     sessionStorage.removeItem("host");
-  }, [setJoinClassFormOpen, setCreateClassFormOpen]);
+  }, []);
 
   return (
     <>
