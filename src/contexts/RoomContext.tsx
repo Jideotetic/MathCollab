@@ -1,12 +1,27 @@
-// import { ReactNode } from "react";
-// import { server } from "./socket";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useState,
+} from "react";
 
-// export default function RoomContextProvider({
-//   children,
-// }: {
-//   children: ReactNode;
-// }) {
-//   return (
-//     <RoomContext.Provider value={{ server }}>{children}</RoomContext.Provider>
-//   );
-// }
+export interface HostContextType {
+  host: boolean;
+  setHost: Dispatch<SetStateAction<boolean>>;
+}
+
+export const RoomContext = createContext<null | HostContextType>(null);
+
+export default function RoomContextProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [host, setHost] = useState(false);
+  return (
+    <RoomContext.Provider value={{ host, setHost }}>
+      {children}
+    </RoomContext.Provider>
+  );
+}

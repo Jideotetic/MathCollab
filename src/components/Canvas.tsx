@@ -17,15 +17,16 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useContext } from "react";
 import Collaborators from "./Collaborators";
 import ClassChat from "./ClassChat";
-// import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import { User } from "firebase/auth";
 import { server } from "../contexts/socket";
+// import { HostContextType, RoomContext } from "../contexts/RoomContext";
 
 const penTools = [
   arrowUrl,
@@ -56,21 +57,16 @@ const shapes = [
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   const [host, setHost] = useState(false);
-  // const [activeClass, setActiveClass] = useState("");
+  const [content, setContent] = useState("default");
   const { user } = useRouteLoaderData("canvas") as {
     user: User;
   };
 
-  const [content, setContent] = useState("");
+  const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
+    FormsContext,
+  ) as FormsContextType;
 
-  // const {
-  //   // setJoinClassFormOpen,
-  //   // joinClassFormOpen,
-  //   // createClassFormOpen,
-  //   // setCreateClassFormOpen,
-  // } = useContext(FormsContext) as FormsContextType;
-
-  console.log("host", "===>", host);
+  // const { host, setHost } = useContext(RoomContext) as HostContextType;
 
   const navigate = useNavigate();
 
@@ -79,10 +75,12 @@ export default function Canvas() {
       const { success } = data;
       if (success) {
         toast.success(`${user.displayName} join`);
-      } else {
-        toast.error("Something went wrong");
-        return navigate("-1");
       }
+    });
+
+    server.on("canvas-response", (data) => {
+      setContent(data);
+      console.log(data);
     });
 
     server.on("host", (host) => {
@@ -90,71 +88,40 @@ export default function Canvas() {
       sessionStorage.setItem("host", host);
     });
 
-    // server.on("class-name", (className) => {
-    //   console.log(
-    //     "activeClass",
-    //     "==>",
-    //     activeClass,
-    //     "class-name",
-    //     "===>",
-    //     className,
-    //   );
-    //   setActiveClass(className);
-    //   console.log(
-    //     "activeClass",
-    //     "==>",
-    //     activeClass,
-    //     "class-name",
-    //     "===>",
-    //     className,
-    //   );
-    // });
-
-    // server.on("class-name-joined", (className) => {
-    //   // if (activeClass !== className) {
-    //   //   navigate(`/${url}/dashboard`);
-    //   // }
-    //   console.log(
-    //     "activeClass",
-    //     "==>",
-    //     activeClass,
-    //     "class-name-joined",
-    //     "===>",
-    //     className,
-    //   );
-    // });
-
-    server.emit("canvas-data", content);
-  }, [user.displayName, content, navigate]);
-
-  useEffect(() => {
     const host = sessionStorage.getItem("host");
     setHost(host === "true");
-  }, []);
+  }, [user.displayName, navigate, setHost]);
 
   useEffect(() => {
-    server.on("canvas-data-response", (data) => {
-      setContent(data);
-    });
-  }, []);
+    if (host === true) {
+      console.log("true host");
+      server.emit("canvas-data", content);
+    }
+  }, [content, host]);
+
+  // useEffect(() => {
+  //   server.on("canvas-data-response", (data) => {
+  //     setContent(data);
+  //     console.log(data);
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   server.on("canvas-data-response", (data) => {
+  //     setContent(data);
+  //   });
+  // }, []);
 
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value);
   }
 
-  // useEffect(() => {
-  //   if (joinClassFormOpen === true) {
-  //     setHost(false);
-  //   }
-  //   if (createClassFormOpen === true) {
-  //     setHost(true);
-  //   }
-  // }, [
-  //   setCreateClassFormOpen,
-  //   joinClassFormOpen,
-  //   createClassFormOpen,
-  //   setJoinClassFormOpen,
-  // ]);
+  console.log("host", "===>", host);
+
+  useEffect(() => {
+    setJoinClassFormOpen(false);
+    setCreateClassFormOpen(false);
+  }, [setCreateClassFormOpen, setJoinClassFormOpen]);
   return (
     <>
       <ToastContainer />
@@ -220,7 +187,6 @@ export default function Canvas() {
         <div className="flex flex-col  gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
           <input
             type="text"
-            // value={params.}
             className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
             placeholder="Type in the questions you are solving to keep collaborators informed"
           />
