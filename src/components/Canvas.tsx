@@ -58,6 +58,7 @@ export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   const [host, setHost] = useState(false);
   const [content, setContent] = useState("default");
+  const [sharedContent, setSharedContent] = useState("Shared");
   const { user } = useRouteLoaderData("canvas") as {
     user: User;
   };
@@ -78,11 +79,6 @@ export default function Canvas() {
       }
     });
 
-    server.on("canvas-response", (data) => {
-      setContent(data);
-      console.log(data);
-    });
-
     server.on("host", (host) => {
       setHost(host);
       sessionStorage.setItem("host", host);
@@ -99,18 +95,12 @@ export default function Canvas() {
     }
   }, [content, host]);
 
-  // useEffect(() => {
-  //   server.on("canvas-data-response", (data) => {
-  //     setContent(data);
-  //     console.log(data);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   server.on("canvas-data-response", (data) => {
-  //     setContent(data);
-  //   });
-  // }, []);
+  useEffect(() => {
+    server.on("canvas-response", (data) => {
+      setSharedContent(data);
+      console.log(data);
+    });
+  }, []);
 
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value);
@@ -190,12 +180,25 @@ export default function Canvas() {
             className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
             placeholder="Type in the questions you are solving to keep collaborators informed"
           />
-          <textarea
+          {host === true ? (
+            <textarea
+              value={content}
+              onChange={handleChange}
+              className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
+            ></textarea>
+          ) : (
+            <textarea
+              disabled
+              value={sharedContent}
+              className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
+            ></textarea>
+          )}
+          {/* <textarea
             disabled={host ? false : true}
             value={content}
             onChange={handleChange}
             className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
-          ></textarea>
+          ></textarea> */}
           <div className="flex h-[43px] justify-evenly rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
             <button
               type="button"
