@@ -1,6 +1,6 @@
 import MathCollab from "../components/MathCollab";
 import { Form, NavLink, Outlet } from "react-router-dom";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
 import calenderUrl from "../assets/calender.svg";
@@ -38,6 +38,7 @@ export default function DashboardLayout() {
   const { user } = useRouteLoaderData("dashboard") as {
     user: User;
   };
+  const [userName, setUserName] = useState(user.displayName);
 
   console.log(user);
 
@@ -47,7 +48,9 @@ export default function DashboardLayout() {
 
   useEffect(() => {
     sessionStorage.removeItem("host");
-  }, []);
+    const names = userName?.split(" ");
+    setUserName((names?.[0] + " " + names?.[1][0]) as string);
+  }, [userName]);
 
   return (
     <>
@@ -210,9 +213,7 @@ export default function DashboardLayout() {
           <div className="flex shrink-0 items-center justify-center gap-2">
             <div className="flex gap-4">
               <div className="text-sm leading-[21px]">
-                <div className="font-semibold text-slate-950">
-                  {user?.displayName}
-                </div>
+                <div className="font-semibold text-slate-950">{userName}.</div>
                 <div className="font-normal text-neutral-500">Free Account</div>
               </div>
               <img
@@ -221,8 +222,6 @@ export default function DashboardLayout() {
                 alt=""
               />
             </div>
-
-            <img src={arrowRightIconUrl} alt="" />
           </div>
         </div>
       </header>

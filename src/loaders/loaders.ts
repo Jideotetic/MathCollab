@@ -7,6 +7,9 @@ import { authProvider } from "../auth";
 export async function homePageLoader() {
   try {
     await authProvider.checkAuth();
+    if (authProvider.user) {
+      return redirect("/dashboard");
+    }
     return {
       user: authProvider.user,
     };
