@@ -34,6 +34,7 @@ import NewPasswordForm from "./components/NewPasswordForm";
 import CreateClassForm from "./components/CreateClassForm";
 import JoinClassForm from "./components/JoinClassForm";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
