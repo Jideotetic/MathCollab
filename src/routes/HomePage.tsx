@@ -87,7 +87,8 @@ export default function HomePage() {
               >
                 <Popover.Panel
                   as="nav"
-                  className="fixed left-0 top-0 z-50 flex h-screen w-full justify-between bg-white px-4 py-6 sm:w-[50%]"
+{/*                   className="fixed left-0 top-0 z-50 flex h-screen w-full justify-between bg-white px-4 py-6 sm:w-[50%]" */}
+                  className="fixed left-0 top-0 z-50 flex h-screen justify-between overflow-auto bg-white px-4 py-6 max-[320px]:w-full min-[320px]:w-full min-[350px]:w-[80%] sm:w-[50%]"
                 >
                   {({ close }) => (
                     <>
