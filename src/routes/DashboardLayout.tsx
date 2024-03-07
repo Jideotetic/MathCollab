@@ -10,7 +10,7 @@ import signOutUrl from "../assets/sign-out.svg";
 // import searchIconUrl from "../assets/ic_Search.svg";
 import { User } from "firebase/auth";
 import notificationUrl from "../assets/notification.svg";
-import userImageUrl from "../assets/user.jpeg";
+// import userImageUrl from "../assets/user.jpeg";
 import { Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
