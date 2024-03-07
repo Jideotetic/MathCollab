@@ -107,13 +107,14 @@ export default function HomePageIndex() {
               </p>
             </div>
 
-            <button
+            <Link
+              to="/signup"
               onClick={() => setSignUpFormOpen(true)}
               type="button"
               className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
             >
               Get Started
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -144,13 +145,14 @@ export default function HomePageIndex() {
               </p>
             </div>
 
-            <button
+            <Link
+              to="/signup"
               onClick={() => setSignUpFormOpen(true)}
               type="button"
               className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
             >
               Get Started
-            </button>
+            </Link>
           </div>
 
           <img src={createUrl} className="max-w-full md:w-[50%] " alt="" />
@@ -201,13 +203,14 @@ export default function HomePageIndex() {
               </p>
             </div>
 
-            <button
+            <Link
+              to="/signup"
               onClick={() => setSignUpFormOpen(true)}
               type="button"
               className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
             >
               Get Started
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -298,13 +301,14 @@ export default function HomePageIndex() {
             </p>
           </div>
 
-          <button
-            onClick={() => setSignUpFormOpen(true)}
-            type="button"
-            className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
-          >
-            Get Started Now
-          </button>
+          <Link
+              to="/signup"
+              onClick={() => setSignUpFormOpen(true)}
+              type="button"
+              className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+            >
+              Get Started Now
+            </Link>
         </div>
       </div>
     </main>
