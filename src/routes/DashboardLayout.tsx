@@ -10,7 +10,7 @@ import signOutUrl from "../assets/sign-out.svg";
 // import searchIconUrl from "../assets/ic_Search.svg";
 import { User } from "firebase/auth";
 import notificationUrl from "../assets/notification.svg";
-import userImageUrl from "../assets/user.jpeg";
+// import userImageUrl from "../assets/user.jpeg";
 import { Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
@@ -18,6 +18,7 @@ import DashboardIndex from "./DashboardIndex";
 import { useRouteLoaderData } from "react-router-dom";
 import { authProvider } from "../auth";
 import { ToastContainer } from "react-toastify";
+import ImageUpload from "../components/ImageUpload";
 
 const navLinks = [
   { id: uuidv4(), title: "Graphing Calculator", link: "graphing-calculator" },
@@ -215,11 +216,12 @@ export default function DashboardLayout() {
                 <div className="font-semibold text-slate-950">{userName}.</div>
                 <div className="font-normal text-neutral-500">Free Account</div>
               </div>
-              <img
+{/*               <img
                 src={(user?.photoURL as string | undefined) || userImageUrl}
                 className="h-10 w-10 rounded-full"
                 alt=""
-              />
+              /> */}
+              <ImageUpload />
             </div>
           </div>
         </div>
