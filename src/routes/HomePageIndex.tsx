@@ -15,11 +15,17 @@ import groupUrl from "../assets/Group 48096042.svg";
 import iconUrl from "../assets/1_3.svg";
 import boxUrl from "../assets/Box1.png";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useRouteLoaderData } from "react-router-dom";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { Prop } from "./DashboardIndex";
+import heartIconUrl from "../assets/heart.png";
+import { EyeIcon } from "@heroicons/react/24/solid";
+import ellipseIconUrl from "../assets/Ellipse 1779.png";
 
 export default function HomePageIndex() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
+  const { lessons } = useRouteLoaderData("root") as Prop;
+  const { setJoinClassFormOpen } = useContext(FormsContext) as FormsContextType;
 
   return (
     <main className="mx-auto w-[1280px] max-w-full pt-[101px] text-center">
@@ -67,9 +73,95 @@ export default function HomePageIndex() {
             <img
               src={boxUrl}
               alt=""
-              className="mx-auto w-[100%] sm:w-[80%] cursor-pointer"
+              className="mx-auto w-[100%] cursor-pointer sm:w-[80%]"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="mx-auto mb-[48px] w-[1120px] max-w-full">
+        <h3 className="text-clamp1 font-bold text-slate-950">
+          Popular Classes
+        </h3>
+
+        <div className="p-4">
+          <ul className="flex gap-3 overflow-x-auto p-4 [&::-webkit-scrollbar]:hidden">
+            {lessons.map((lesson) => (
+              <li key={lesson.id} className="w-[338px] flex-shrink-0">
+                <div className="flex h-full flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
+                  <Link to={lesson.link}>
+                    <img
+                      src={lesson.video}
+                      alt=""
+                      className="h-[203px] w-full bg-white object-cover"
+                    />
+                    <img
+                      src={lesson.creatorImage}
+                      alt=""
+                      className="h-[46px] w-[46px]"
+                    />
+                  </Link>
+
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center justify-between">
+                      {lesson.status === "ongoing" ? (
+                        <p className="text-base font-medium text-black">
+                          <span className="font-semibold">Preview</span>:
+                          {lesson.title}
+                        </p>
+                      ) : (
+                        <p className="text-base font-medium text-black">
+                          {lesson.title}
+                        </p>
+                      )}
+
+                      <div className="flex items-center gap-1">
+                        <img src={heartIconUrl} alt="" />
+                        <span className="text-lg font-normal text-[#616161]">
+                          {lesson.likes}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap justify-between gap-3">
+                      <div className="text-lg font-normal text-[#616161]">
+                        <p>{lesson.creator}</p>
+                        <div className="flex items-center gap-1">
+                          <EyeIcon className="h-[13px] w-[13px]" />
+
+                          <span className="shrink-0 text-xs font-normal text-[#616161]">
+                            {lesson.views}
+                          </span>
+
+                          <img src={ellipseIconUrl} alt="" className="" />
+                          {lesson.status === "ongoing" ? (
+                            <span className="shrink-0 text-xs font-semibold text-[#06031E]">
+                              {lesson.status}
+                            </span>
+                          ) : (
+                            <span className="shrink-0 text-xs font-normal text-[#616161]">
+                              {lesson.status}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {lesson.status === "ongoing" ? (
+                        <button
+                          onClick={() => setJoinClassFormOpen(true)}
+                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                        >
+                          Join
+                        </button>
+                      ) : (
+                        <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                          Share
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
@@ -302,13 +394,13 @@ export default function HomePageIndex() {
           </div>
 
           <Link
-              to="/signup"
-              onClick={() => setSignUpFormOpen(true)}
-              type="button"
-              className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
-            >
-              Get Started Now
-            </Link>
+            to="/signup"
+            onClick={() => setSignUpFormOpen(true)}
+            type="button"
+            className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+          >
+            Get Started Now
+          </Link>
         </div>
       </div>
     </main>

@@ -1,5 +1,5 @@
 import CreateOrJoinClassButton from "../components/CreateOrJoinClassButton";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useRouteLoaderData } from "react-router-dom";
 import { useState, useMemo, useContext, useEffect } from "react";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
@@ -20,7 +20,7 @@ interface Classes {
   creatorImage: string;
 }
 
-interface Prop {
+export interface Prop {
   lessons: Classes[];
   search: string;
 }
@@ -48,7 +48,7 @@ const connectionOptions = {
 const socket = io(server, connectionOptions);
 
 export default function DashboardIndex() {
-  const { lessons } = useLoaderData() as Prop;
+  const { lessons } = useRouteLoaderData("dashboard") as Prop;
   const [currentPage] = useState(1);
   const currentLessons = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PAGESIZE;

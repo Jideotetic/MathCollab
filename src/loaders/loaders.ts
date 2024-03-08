@@ -7,11 +7,13 @@ import { authProvider } from "../auth";
 export async function homePageLoader() {
   try {
     await authProvider.checkAuth();
+    const lessons = classes;
     if (authProvider.user) {
       return redirect("/dashboard");
     }
     return {
       user: authProvider.user,
+      lessons,
     };
   } catch (error) {
     // handle error
