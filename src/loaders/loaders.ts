@@ -1,12 +1,41 @@
 import { classes } from "../data/classes";
 import { LoaderFunction, LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
-// import { server } from "../contexts/socket";
-// import { toast } from "react-toastify";
+import { db } from "../firebase";
+import { getDocs, collection } from "firebase/firestore";
+
+export interface LessonData {
+  id: string;
+  likes: number;
+  name: string;
+  status: string;
+  title: string;
+  user: string;
+  video: string;
+  views: number;
+}
 
 export async function homePageLoader() {
   try {
+    const lesson: LessonData[] = [];
     await authProvider.checkAuth();
+    const classesRef = collection(db, "classes");
+    const querySnapshot = await getDocs(classesRef);
+    querySnapshot.docs.forEach((doc) => {
+      lesson.push({
+        id: doc.id,
+        ...(doc.data() as {
+          likes: number;
+          name: string;
+          status: string;
+          title: string;
+          user: string;
+          video: string;
+          views: number;
+        }),
+      });
+    });
+
     const lessons = classes;
     if (authProvider.user) {
       return redirect("/dashboard");
@@ -14,9 +43,10 @@ export async function homePageLoader() {
     return {
       user: authProvider.user,
       lessons,
+      lesson,
     };
   } catch (error) {
-    // handle error
+    console.error(error);
   }
 }
 

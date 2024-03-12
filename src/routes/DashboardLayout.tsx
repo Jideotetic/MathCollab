@@ -35,9 +35,7 @@ const navLinks = [
 ];
 
 export default function DashboardLayout() {
-  const { user } = useRouteLoaderData("dashboard") as {
-    user: User;
-  };
+  const { user } = useRouteLoaderData("dashboard") as { user: User };
   const [userName, setUserName] = useState(user.displayName);
 
   console.log(user);
@@ -48,6 +46,8 @@ export default function DashboardLayout() {
 
   useEffect(() => {
     sessionStorage.removeItem("host");
+    sessionStorage.removeItem("id");
+    sessionStorage.removeItem("className");
     const names = userName?.split(" ");
     setUserName((names?.[0] + " " + names?.[1][0]) as string);
   }, [userName]);
@@ -216,7 +216,7 @@ export default function DashboardLayout() {
                 <div className="font-semibold text-slate-950">{userName}.</div>
                 <div className="font-normal text-neutral-500">Free Account</div>
               </div>
-{/*               <img
+              {/*               <img
                 src={(user?.photoURL as string | undefined) || userImageUrl}
                 className="h-10 w-10 rounded-full"
                 alt=""

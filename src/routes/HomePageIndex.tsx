@@ -17,15 +17,16 @@ import boxUrl from "../assets/Box1.png";
 import { useContext } from "react";
 import { Link, useRouteLoaderData } from "react-router-dom";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { Prop } from "./DashboardIndex";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
+import { LessonData } from "../loaders/loaders";
 
 export default function HomePageIndex() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { lessons } = useRouteLoaderData("root") as Prop;
-  const { setJoinClassFormOpen } = useContext(FormsContext) as FormsContextType;
+  const { lesson } = useRouteLoaderData("root") as {
+    lesson: LessonData[];
+  };
 
   return (
     <main className="mx-auto w-[1280px] max-w-full pt-[101px] text-center">
@@ -86,27 +87,27 @@ export default function HomePageIndex() {
 
         <div className="p-4">
           <ul className="flex gap-3 overflow-x-auto p-4 [&::-webkit-scrollbar]:hidden">
-            {lessons.map((lesson) => (
+            {lesson.map((lesson) => (
               <li key={lesson.id} className="w-[338px] flex-shrink-0">
                 <div className="flex h-full flex-col justify-between gap-2 rounded-[6.25px] border bg-[#dfdede43] p-2 shadow-sm shadow-[#dfdede43]">
-                  <Link to={lesson.link}>
-                    <img
+                  <div className="">
+                    <video
+                      controls
                       src={lesson.video}
-                      alt=""
                       className="h-[203px] w-full bg-white object-cover"
                     />
                     <img
-                      src={lesson.creatorImage}
+                      src={lesson.user}
                       alt=""
-                      className="h-[46px] w-[46px]"
+                      className="h-[46px] w-[46px] rounded-full object-cover"
                     />
-                  </Link>
+                  </div>
 
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center justify-between">
                       {lesson.status === "ongoing" ? (
                         <p className="text-base font-medium text-black">
-                          <span className="font-semibold">Preview</span>:
+                          <span className="font-semibold">Preview</span>:{" "}
                           {lesson.title}
                         </p>
                       ) : (
@@ -118,21 +119,21 @@ export default function HomePageIndex() {
                       <div className="flex items-center gap-1">
                         <img src={heartIconUrl} alt="" />
                         <span className="text-lg font-normal text-[#616161]">
-                          {lesson.likes}
+                          {lesson.likes > 0 && lesson.likes}
                         </span>
                       </div>
                     </div>
                     <div className="flex flex-wrap justify-between gap-3">
                       <div className="text-lg font-normal text-[#616161]">
-                        <p>{lesson.creator}</p>
+                        <p>{lesson.name}</p>
                         <div className="flex items-center gap-1">
                           <EyeIcon className="h-[13px] w-[13px]" />
 
-                          <span className="shrink-0 text-xs font-normal text-[#616161]">
-                            {lesson.views}
-                          </span>
+                          {/* <span className="shrink-0 text-xs font-normal text-[#616161]">
+                            {lesson.views > 0 && lesson.views} views
+                          </span> */}
 
-                          <img src={ellipseIconUrl} alt="" className="" />
+                          <img src={ellipseIconUrl} alt="" />
                           {lesson.status === "ongoing" ? (
                             <span className="shrink-0 text-xs font-semibold text-[#06031E]">
                               {lesson.status}
@@ -145,12 +146,13 @@ export default function HomePageIndex() {
                         </div>
                       </div>
                       {lesson.status === "ongoing" ? (
-                        <button
-                          onClick={() => setJoinClassFormOpen(true)}
+                        <Link
+                          to="/signup"
+                          onClick={() => setSignUpFormOpen(true)}
                           className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
                           Join
-                        </button>
+                        </Link>
                       ) : (
                         <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
                           Share

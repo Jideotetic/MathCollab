@@ -2,8 +2,9 @@ import { redirect, LoaderFunctionArgs } from "react-router-dom";
 import { toast } from "react-toastify";
 import emailjs from "emailjs-com";
 import { temp } from "../otp";
-import { server } from "../contexts/socket";
+import { server } from "../socket";
 import { authProvider } from "../auth";
+import { v4 as uuidv4 } from "uuid";
 
 export async function signUpFormAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
@@ -127,21 +128,24 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
 
   const className = formData.get("Class name");
   // const collaborators = formData.get("collaborators");
-  const user = authProvider.user;
+  // const user = authProvider.user;
+  const id = uuidv4();
 
-  // server.emit("user-create", { className, user, host: true });
-  server.emit("user-joined", { className, user, host: true });
+  server.emit("user-create", { className, host: true, id });
+  // server.emit("user-joined", { id, user, host: true });
 
-  return redirect(`/canvas/${className}`);
+  return redirect(`/canvas/${id}`);
 }
 
 export async function joinClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
-  const className = formData.get("Enter/Paste class name");
-  const user = authProvider.user;
+  const id = formData.get("Enter/Paste class id");
+  // const user = authProvider.user;
 
-  server.emit("user-joined", { className, user, host: false });
+  console.log(id);
+
+  server.emit("user-joined", { id, host: false });
 
   const inActiveClass = await new Promise((resolve) => {
     const timeout = setTimeout(() => {
@@ -157,14 +161,10 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
     });
   });
 
-  console.log(inActiveClass);
-
   if (inActiveClass) {
     toast.error("No active class");
-    console.log("inactive");
     return redirect(`${new URL(request.url).origin}/dashboard`);
   } else {
-    console.log("active");
-    return redirect(`/canvas/${className}`);
+    return redirect(`/canvas/${id}`);
   }
 }
