@@ -11,6 +11,7 @@ import instagramIconUrl from "../assets/Instagram.svg";
 import { NavLink } from "react-router-dom";
 import HomePageIndex from "./HomePageIndex";
 import { User } from "firebase/auth";
+import { QuerySnapshot } from "firebase/firestore";
 // import { auth } from "../firebase";
 
 // interface ConnectionOptionsProp {
@@ -37,12 +38,15 @@ const navLinks = [
 
 export default function HomePage() {
   const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { user } = useRouteLoaderData("root") as { user: User };
+  const { user, lesson } = useRouteLoaderData("root") as {
+    user: User;
+    lesson: QuerySnapshot;
+  };
 
   useEffect(() => {
     sessionStorage.removeItem("host");
   }, []);
-  console.log(user);
+  console.log(user, lesson);
 
   return (
     <>

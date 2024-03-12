@@ -9,7 +9,7 @@ import { Fragment, useContext, useEffect } from "react";
 import { Transition, Dialog } from "@headlessui/react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 
-const inputs = [{ label: "Enter/Paste class name", inputType: "text" }];
+const inputs = [{ label: "Enter/Paste class id", inputType: "text" }];
 
 // const headerContent = {
 //   title: "Join a class",

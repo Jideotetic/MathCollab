@@ -18,14 +18,15 @@ import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { ChangeEvent, useEffect, useState, useContext } from "react";
-import Collaborators from "./Collaborators";
-import ClassChat from "./ClassChat";
+import Collaborators from "../components/Collaborators";
+import ClassChat from "../components/ClassChat";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate, useRouteLoaderData } from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
 import { User } from "firebase/auth";
-import { server } from "../contexts/socket";
+import { server } from "../socket";
+// import rough from "roughjs";
 // import { HostContextType, RoomContext } from "../contexts/RoomContext";
 
 const penTools = [
@@ -57,19 +58,49 @@ const shapes = [
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   const [host, setHost] = useState(false);
+  const [id, setId] = useState<string | null>("");
   const [content, setContent] = useState("default");
+  const [className, setClassName] = useState<string | null>("");
   const [sharedContent, setSharedContent] = useState("Shared");
+  // const [element, setElement] = useState([]);
+  // const [isDrawing, setIsDrawing] = useState(false);
   const { user } = useRouteLoaderData("canvas") as {
     user: User;
   };
-
   const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
+  // const [drawing, setDrawing] = useState("");
+  // const roughGenerator = rough.generator();
 
-  // const { host, setHost } = useContext(RoomContext) as HostContextType;
+  // const handleMouseDown = (
+  //   e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>,
+  // ) => {
+  //   const { offsetX, offsetY } = e.nativeEvent;
 
-  const navigate = useNavigate();
+  //   console.log(offsetX, offsetY);
+  //   setIsDrawing(true);
+  // };
+
+  // const handleMouseUp = (
+  //   e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>,
+  // ) => {
+  //   const { offsetX, offsetY } = e.nativeEvent;
+
+  //   console.log(offsetX, offsetY);
+  //   setIsDrawing(false);
+  // };
+
+  // const handleMouseMove = (
+  //   e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>,
+  // ) => {
+  //   const { offsetX, offsetY } = e.nativeEvent;
+  //   if (isDrawing) {
+  //     console.log(offsetX, offsetY);
+  //   }
+  // };
+
+  // const navigate = useNavigate();
 
   useEffect(() => {
     server.on("user-joined", (data) => {
@@ -78,19 +109,32 @@ export default function Canvas() {
         toast.success(`${user.displayName} join`);
       }
     });
+  }, [user.displayName]);
 
-    server.on("host", (host) => {
-      setHost(host);
-      sessionStorage.setItem("host", host);
+  useEffect(() => {
+    server.on("host-create", (data) => {
+      setHost(data.host);
+      setId(data.id);
+      setClassName(data.className);
+      sessionStorage.setItem("host", data.host);
+      sessionStorage.setItem("id", data.id);
+      sessionStorage.setItem("className", data.className);
     });
 
-    const host = sessionStorage.getItem("host");
-    setHost(host === "true");
-  }, [user.displayName, navigate, setHost]);
+    const id = sessionStorage.getItem("id");
+    setId(id);
+    const tempHost = sessionStorage.getItem("host");
+    setHost(tempHost === "true");
+    const className = sessionStorage.getItem("className");
+    setClassName(className);
+    if (host === true) {
+      toast.info(`You start the ${className} class`);
+      toast.info(`Share the id ${id} with user to join`);
+    }
+  }, [host]);
 
   useEffect(() => {
     if (host === true) {
-      console.log("true host");
       server.emit("canvas-data", content);
     }
   }, [content, host]);
@@ -106,7 +150,7 @@ export default function Canvas() {
     setContent(e.target.value);
   }
 
-  console.log("host", "===>", host);
+  console.log("host", "===>", host, "id", "===>", id);
 
   useEffect(() => {
     setJoinClassFormOpen(false);
@@ -177,6 +221,7 @@ export default function Canvas() {
         <div className="flex flex-col  gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
           <input
             type="text"
+            defaultValue={className as string}
             className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
             placeholder="Type in the questions you are solving to keep collaborators informed"
           />
@@ -184,6 +229,9 @@ export default function Canvas() {
             <textarea
               value={content}
               onChange={handleChange}
+              // onMouseDown={handleMouseDown}
+              // onMouseMove={handleMouseMove}
+              // onMouseUp={handleMouseUp}
               className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
             ></textarea>
           ) : (

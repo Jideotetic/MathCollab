@@ -6,7 +6,7 @@ import DashboardLayout from "./routes/DashboardLayout";
 import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
 // import InputsContextProvider from "./contexts/InputsContext";
-import Canvas from "./components/Canvas";
+import Canvas from "./routes/Canvas";
 // import OtpContextProvider from "./contexts/OtpContext";
 import {
   canvasLoader,
@@ -33,7 +33,6 @@ import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm"
 import NewPasswordForm from "./components/NewPasswordForm";
 import CreateClassForm from "./components/CreateClassForm";
 import JoinClassForm from "./components/JoinClassForm";
-
 
 const router = createBrowserRouter([
   {
