@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
-import { getDocs, collection } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 export interface ClassData {
   id: string;
@@ -19,19 +19,23 @@ export async function homePageLoader() {
     await authProvider.checkAuth();
     const classes: ClassData[] = [];
     const classesRef = collection(db, "classes");
-    const querySnapshot = await getDocs(classesRef);
-    querySnapshot.docs.forEach((doc) => {
-      classes.push({
-        id: doc.id,
-        ...(doc.data() as {
-          likes: number;
-          name: string;
-          status: string;
-          title: string;
-          user: string;
-          video: string;
-          views: number;
-        }),
+    console.log(classesRef);
+    onSnapshot(classesRef, (snapshot) => {
+      console.log(snapshot);
+      snapshot.docChanges().forEach((change) => {
+        console.log(change);
+        classes.push({
+          id: change.doc.id,
+          ...(change.doc.data() as {
+            likes: number;
+            name: string;
+            status: string;
+            title: string;
+            user: string;
+            video: string;
+            views: number;
+          }),
+        });
       });
     });
 
@@ -53,19 +57,20 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
   const classes: ClassData[] = [];
   const classesRef = collection(db, "classes");
-  const querySnapshot = await getDocs(classesRef);
-  querySnapshot.docs.forEach((doc) => {
-    classes.push({
-      id: doc.id,
-      ...(doc.data() as {
-        likes: number;
-        name: string;
-        status: string;
-        title: string;
-        user: string;
-        video: string;
-        views: number;
-      }),
+  onSnapshot(classesRef, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      classes.push({
+        id: change.doc.id,
+        ...(change.doc.data() as {
+          likes: number;
+          name: string;
+          status: string;
+          title: string;
+          user: string;
+          video: string;
+          views: number;
+        }),
+      });
     });
   });
 

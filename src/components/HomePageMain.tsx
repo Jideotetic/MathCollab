@@ -31,7 +31,7 @@ export default function HomePageMain() {
     currentUser: User;
   };
 
-  console.log(currentUser);
+  console.log(currentUser, classes);
 
   return (
     <main className="mx-auto w-[1280px] max-w-full pt-[101px] text-center">

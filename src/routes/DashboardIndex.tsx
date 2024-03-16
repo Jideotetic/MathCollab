@@ -233,7 +233,7 @@ py-[6px] text-[#3A383C]`
             ))}
           </ul>
         ) : (
-          <p>Class not found</p>
+          <p>Classes not found</p>
         )}
       </div>
     </>
