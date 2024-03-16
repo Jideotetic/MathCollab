@@ -1,10 +1,9 @@
-import { classes } from "../data/classes";
-import { LoaderFunction, LoaderFunctionArgs, redirect } from "react-router-dom";
+import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
 import { getDocs, collection } from "firebase/firestore";
 
-export interface LessonData {
+export interface ClassData {
   id: string;
   likes: number;
   name: string;
@@ -17,12 +16,12 @@ export interface LessonData {
 
 export async function homePageLoader() {
   try {
-    const lesson: LessonData[] = [];
     await authProvider.checkAuth();
+    const classes: ClassData[] = [];
     const classesRef = collection(db, "classes");
     const querySnapshot = await getDocs(classesRef);
     querySnapshot.docs.forEach((doc) => {
-      lesson.push({
+      classes.push({
         id: doc.id,
         ...(doc.data() as {
           likes: number;
@@ -36,14 +35,13 @@ export async function homePageLoader() {
       });
     });
 
-    const lessons = classes;
-    if (authProvider.user) {
+    if (localStorage.getItem("user")) {
       return redirect("/dashboard");
     }
+
     return {
-      user: authProvider.user,
-      lessons,
-      lesson,
+      currentUser: authProvider.user,
+      classes,
     };
   } catch (error) {
     console.error(error);
@@ -52,14 +50,31 @@ export async function homePageLoader() {
 
 export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const search = url.searchParams.get("search");
+  const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
+  const classes: ClassData[] = [];
+  const classesRef = collection(db, "classes");
+  const querySnapshot = await getDocs(classesRef);
+  querySnapshot.docs.forEach((doc) => {
+    classes.push({
+      id: doc.id,
+      ...(doc.data() as {
+        likes: number;
+        name: string;
+        status: string;
+        title: string;
+        user: string;
+        video: string;
+        views: number;
+      }),
+    });
+  });
 
-  let lessons = classes.filter((lesson) => {
-    return lesson.link.includes(search!);
+  let filteredClasses = classes.filter((lesson) => {
+    return lesson.title.toLocaleLowerCase().includes(search!);
   });
 
   if (!search) {
-    lessons = classes;
+    filteredClasses = classes;
   }
 
   try {
@@ -68,12 +83,12 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
       return redirect("/");
     }
     return {
-      user: authProvider.user,
-      lessons,
+      currentUser: authProvider.user,
+      filteredClasses,
       search,
     };
   } catch (error) {
-    // handle error
+    console.error(error);
   }
 }
 
@@ -88,15 +103,15 @@ export async function canvasLoader() {
   }
 }
 
-export const classLoader: LoaderFunction<unknown> = async ({ params }) => {
-  const lessonTitle = params.class;
-  const lessons = classes.filter((lesson) => {
-    return lesson.link === lessonTitle;
-  });
+// export const classLoader: LoaderFunction<unknown> = async ({ params }) => {
+//   const lessonTitle = params.class;
+//   const lessons = classes.filter((lesson) => {
+//     return lesson.link === lessonTitle;
+//   });
 
-  const lesson = classes.find((lesson) => {
-    return lesson.link === lessonTitle;
-  });
+//   const lesson = classes.find((lesson) => {
+//     return lesson.link === lessonTitle;
+//   });
 
-  return { lesson, lessons };
-};
+//   return { lesson, lessons };
+// };

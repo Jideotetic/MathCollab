@@ -4,7 +4,9 @@ import emailjs from "emailjs-com";
 import { temp } from "../otp";
 import { server } from "../socket";
 import { authProvider } from "../auth";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+import { db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 export async function signUpFormAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
@@ -128,13 +130,23 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
 
   const className = formData.get("Class name");
   // const collaborators = formData.get("collaborators");
-  // const user = authProvider.user;
-  const id = uuidv4();
+  const user = authProvider.user;
+  // const id = uuidv4();
+  const classesRef = collection(db, "classes");
+  addDoc(classesRef, {
+    likes: 0,
+    name: user?.displayName,
+    status: "ongoing",
+    title: className,
+    user: user?.photoURL,
+    video: "",
+    views: 0,
+  });
 
-  server.emit("user-create", { className, host: true, id });
+  // server.emit("user-create", { className, host: true });
   // server.emit("user-joined", { id, user, host: true });
 
-  return redirect(`/canvas/${id}`);
+  return redirect(`/dashboard`);
 }
 
 export async function joinClassAction({ request }: LoaderFunctionArgs) {

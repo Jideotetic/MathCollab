@@ -1,13 +1,11 @@
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
-import DashboardLayout from "./routes/DashboardLayout";
+import Dashboard from "./routes/Dashboard";
 import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
-// import InputsContextProvider from "./contexts/InputsContext";
 import Canvas from "./routes/Canvas";
-// import OtpContextProvider from "./contexts/OtpContext";
 import {
   canvasLoader,
   dashboardLoader,
@@ -33,6 +31,7 @@ import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm"
 import NewPasswordForm from "./components/NewPasswordForm";
 import CreateClassForm from "./components/CreateClassForm";
 import JoinClassForm from "./components/JoinClassForm";
+import GlobalSpinner from "./components/GlobalSpinner";
 
 const router = createBrowserRouter([
   {
@@ -77,7 +76,7 @@ const router = createBrowserRouter([
   {
     path: "dashboard",
     id: "dashboard",
-    element: <DashboardLayout />,
+    element: <Dashboard />,
     loader: dashboardLoader,
     errorElement: <ErrorPage />,
     children: [
@@ -107,22 +106,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    {/* <RoomContextProvider> */}
+  <StrictMode>
     <FormsContextProvider>
-      {/* <OtpContextProvider> */}
-      {/* <InputsContextProvider> */}
-      <RouterProvider
-        router={router}
-        fallbackElement={
-          <p className="flex h-screen w-screen items-center justify-center">
-            Loading...
-          </p>
-        }
-      />
-      {/* </InputsContextProvider> */}
-      {/* </OtpContextProvider> */}
+      <RouterProvider router={router} fallbackElement={<GlobalSpinner />} />
     </FormsContextProvider>
-    {/* </RoomContextProvider> */}
-  </React.StrictMode>,
+  </StrictMode>,
 );

@@ -1,7 +1,14 @@
-import { useRouteError, isRouteErrorResponse, Link } from "react-router-dom";
+import {
+  useRouteError,
+  isRouteErrorResponse,
+  Link,
+  useNavigation,
+} from "react-router-dom";
+import GlobalSlider from "./components/GlobalSlider";
 
 export default function ErrorPage() {
   const error = useRouteError();
+  const navigation = useNavigation();
   let errorMessage;
   let errorCode;
 
@@ -17,14 +24,17 @@ export default function ErrorPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col justify-center gap-4 text-center">
-      <p className="text-clamp1 font-bold">{errorCode}</p>
-      <p>{errorMessage}</p>
-      <p>
-        <Link to="/" className="underline hover:no-underline">
-          Go Home
-        </Link>
-      </p>
-    </div>
+    <>
+      {navigation.state === "loading" && <GlobalSlider />}
+      <div className="flex h-screen flex-col justify-center gap-4 text-center">
+        <p className="text-clamp1 font-bold">{errorCode}</p>
+        <p>{errorMessage}</p>
+        <p>
+          <Link to="/" className="underline hover:no-underline">
+            Go Home
+          </Link>
+        </p>
+      </div>
+    </>
   );
 }

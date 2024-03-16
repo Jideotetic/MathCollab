@@ -2,7 +2,7 @@ import FormWrapper from "./FormWrapper";
 import { Dialog, Transition } from "@headlessui/react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { useContext, Fragment, useEffect } from "react";
-import { Form, useNavigate, Link } from "react-router-dom";
+import { Form, useNavigate, Link, useNavigation } from "react-router-dom";
 import Inputs from "./Inputs";
 import MathCollab from "./MathCollab";
 import lineUrl from "../assets/line.svg";
@@ -27,6 +27,8 @@ export default function SignUpForm() {
   }
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const busy = navigation.state === "submitting";
 
   useEffect(() => {
     if (signUpFormOpen === false) {
@@ -64,7 +66,6 @@ export default function SignUpForm() {
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
             action="."
-            replace
           >
             <ToastContainer />
             <div className="flex flex-col gap-8">
@@ -99,7 +100,7 @@ export default function SignUpForm() {
               type="submit"
               className="mx-auto w-[202px] rounded-lg bg-slate-950 py-[13px] text-center text-sm font-medium text-white hover:bg-slate-800"
             >
-              Create free Account
+              {busy ? "Creating Account..." : "Create free Account"}
             </button>
           </Form>
           {/* REACT ROUTER FORM */}

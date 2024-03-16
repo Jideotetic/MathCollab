@@ -1,5 +1,9 @@
 import MathCollab from "../components/MathCollab";
-import { Form, NavLink, Outlet } from "react-router-dom";
+import notificationUrl from "../assets/notification.svg";
+import { Popover, Transition } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import ImageUpload from "../components/ImageUpload";
+import { Form, NavLink, useRouteLoaderData } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import switchUserUrl from "../assets/switch-user.svg";
 import lineUrl from "../assets/line.svg";
@@ -7,18 +11,8 @@ import calenderUrl from "../assets/calender.svg";
 import settingsUrl from "../assets/settings.svg";
 import helpUrl from "../assets/help.svg";
 import signOutUrl from "../assets/sign-out.svg";
-// import searchIconUrl from "../assets/ic_Search.svg";
-import { User } from "firebase/auth";
-import notificationUrl from "../assets/notification.svg";
-// import userImageUrl from "../assets/user.jpeg";
-import { Popover, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
-import DashboardIndex from "./DashboardIndex";
-import { useRouteLoaderData } from "react-router-dom";
-import { authProvider } from "../auth";
-import { ToastContainer } from "react-toastify";
-import ImageUpload from "../components/ImageUpload";
+import { User } from "firebase/auth";
 
 const navLinks = [
   { id: uuidv4(), title: "Graphing Calculator", link: "graphing-calculator" },
@@ -34,27 +28,18 @@ const navLinks = [
   { id: uuidv4(), title: "Sign Out", link: "sign-out" },
 ];
 
-export default function DashboardLayout() {
-  const { user } = useRouteLoaderData("dashboard") as { user: User };
-  const [userName, setUserName] = useState(user.displayName);
-
-  console.log(user);
-
-  const handleLogout = () => {
-    authProvider.signout();
+export default function DashboardHeader() {
+  const { currentUser } = useRouteLoaderData("dashboard") as {
+    currentUser: User;
   };
-
+  const [userName, setUserName] = useState(currentUser.displayName);
   useEffect(() => {
-    sessionStorage.removeItem("host");
-    sessionStorage.removeItem("id");
-    sessionStorage.removeItem("className");
     const names = userName?.split(" ");
     setUserName((names?.[0] + " " + names?.[1][0]) as string);
   }, [userName]);
 
   return (
     <>
-      <ToastContainer />
       <header className="fixed left-0 right-0 top-0 z-10 mx-auto flex w-[1280px] max-w-full justify-between bg-white px-4 py-6">
         <h1 className="hidden text-[28px] font-bold leading-[32px] text-[#3A383C] lg:inline-block">
           Math
@@ -125,16 +110,17 @@ export default function DashboardLayout() {
                             <Fragment key={link.id}>
                               <li className="space-y-8">
                                 {link.link === "sign-out" ? (
-                                  <Form method="post" action="signout">
+                                  <Form
+                                    method="post"
+                                    action="signout"
+                                    className="flex w-full items-center gap-2 rounded px-4 py-1.5 font-poppins text-sm font-light leading-tight text-neutral-500"
+                                  >
+                                    <img src={signOutUrl} alt="" />
                                     <button type="submit">{link.title}</button>
                                   </Form>
                                 ) : (
                                   <NavLink
-                                    to={
-                                      link.link === "sign-out"
-                                        ? "/"
-                                        : `/${link.link}`
-                                    }
+                                    to={`/${link.link}`}
                                     className={({ isActive }) =>
                                       isActive
                                         ? "flex w-full items-center gap-2 rounded bg-gray-200 px-4 py-1.5 font-poppins text-sm font-light leading-tight text-slate-950"
@@ -142,17 +128,12 @@ export default function DashboardLayout() {
                                     }
                                     onClick={() => {
                                       close();
-                                      link.link === "sign-out"
-                                        ? handleLogout
-                                        : "";
                                     }}
                                   >
                                     {link.link === "settings" ? (
                                       <img src={settingsUrl} alt="" />
                                     ) : link.link === "help" ? (
                                       <img src={helpUrl} alt="" />
-                                    ) : link.link === "sign-out" ? (
-                                      <img src={signOutUrl} alt="" />
                                     ) : (
                                       <img src={calenderUrl} alt="" />
                                     )}
@@ -187,24 +168,6 @@ export default function DashboardLayout() {
           )}
         </Popover>
 
-        {/* <div className="mx-auto hidden w-[520px] max-w-full lg:block">
-          <form action="#" className="relative w-full">
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="Search"
-              className="w-full rounded-[80px] border border-[#666666] bg-white"
-            />
-            <button
-              type="button"
-              className="absolute right-3 top-[50%] -translate-y-[50%]"
-            >
-              <img src={searchIconUrl} alt="" />
-            </button>
-          </form>
-        </div> */}
-
         <div className="flex gap-5">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-100">
             <img src={notificationUrl} alt="" />
@@ -216,123 +179,11 @@ export default function DashboardLayout() {
                 <div className="font-semibold text-slate-950">{userName}.</div>
                 <div className="font-normal text-neutral-500">Free Account</div>
               </div>
-              {/*               <img
-                src={(user?.photoURL as string | undefined) || userImageUrl}
-                className="h-10 w-10 rounded-full"
-                alt=""
-              /> */}
               <ImageUpload />
             </div>
           </div>
         </div>
       </header>
-
-      <div className="relative mx-auto grid min-h-screen w-[1280px] max-w-full pb-2 pt-[110px] lg:grid-cols-layout lg:gap-2">
-        <nav className="fixed hidden h-screen w-[218px] bg-white pl-4 pt-[110px] lg:inline-block">
-          <div className="space-y-8">
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                isActive
-                  ? "flex w-full items-center gap-2 rounded bg-gray-200 px-4 py-1.5 font-poppins text-sm font-light leading-tight text-slate-950"
-                  : "flex w-full items-center gap-2 rounded px-4 py-1.5 font-poppins text-sm font-light leading-tight text-slate-950"
-              }
-            >
-              <img src={switchUserUrl} alt="" />
-              Dashboard
-            </NavLink>
-
-            <img src={lineUrl} alt="" className="mx-auto" />
-          </div>
-
-          <h2 className="my-3 text-xl font-semibold leading-[30px] text-neutral-700">
-            Math Tools
-          </h2>
-
-          {/* <ul className="w-full space-y-5">
-            {navLinks.map((link) => (
-              <Fragment key={link.id}>
-                <li className="w-full space-y-5">
-                  <NavLink
-                    to={link.link === "sign-out" ? "/" : `/${link.link}`}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "flex w-full items-center gap-2 rounded bg-gray-200 px-4 py-1.5 font-poppins text-sm font-light leading-tight text-slate-950"
-                        : "flex w-full items-center gap-2 rounded px-4 py-1.5 font-poppins text-sm font-light leading-tight text-neutral-500"
-                    }
-                    onClick={() => {
-                      close();
-                      link.link === "sign-out" ? handleLogout : "";
-                    }}
-                  >
-                    {link.link === "settings" ? (
-                      <img src={settingsUrl} alt="" />
-                    ) : link.link === "help" ? (
-                      <img src={helpUrl} alt="" />
-                    ) : link.link === "sign-out" ? (
-                      <img src={signOutUrl} alt="" />
-                    ) : (
-                      <img src={calenderUrl} alt="" />
-                    )}
-                    {link.title}
-                  </NavLink>
-                  {link.link === "geometry-tool" && (
-                    <img src={lineUrl} alt="" className="mx-auto" />
-                  )}
-                </li>
-              </Fragment>
-            ))}
-          </ul> */}
-          <ul className="space-y-5">
-            {navLinks.map((link) => (
-              <Fragment key={link.id}>
-                <li className="space-y-8">
-                  {link.link === "sign-out" ? (
-                    <Form method="post" action="signout">
-                      <button type="submit">{link.title}</button>
-                    </Form>
-                  ) : (
-                    <NavLink
-                      to={link.link === "sign-out" ? "/" : `/${link.link}`}
-                      className={({ isActive }) =>
-                        isActive
-                          ? "flex w-full items-center gap-2 rounded bg-gray-200 px-4 py-1.5 font-poppins text-sm font-light leading-tight text-slate-950"
-                          : "flex w-full items-center gap-2 rounded px-4 py-1.5 font-poppins text-sm font-light leading-tight text-neutral-500"
-                      }
-                      onClick={() => {
-                        close();
-                        link.link === "sign-out" ? handleLogout : "";
-                      }}
-                    >
-                      {link.link === "settings" ? (
-                        <img src={settingsUrl} alt="" />
-                      ) : link.link === "help" ? (
-                        <img src={helpUrl} alt="" />
-                      ) : link.link === "sign-out" ? (
-                        <img src={signOutUrl} alt="" />
-                      ) : (
-                        <img src={calenderUrl} alt="" />
-                      )}
-                      {link.title}
-                    </NavLink>
-                  )}
-
-                  {link.link === "geometry-tool" && (
-                    <img src={lineUrl} alt="" className="mx-auto" />
-                  )}
-                </li>
-              </Fragment>
-            ))}
-          </ul>
-        </nav>
-        {/* Empty container for grid style */}
-        <div className="hidden lg:block"></div>
-        {/* Empty container for grid style */}
-        <main className="rounded-[10px] border-2 border-[#E0E0E0] ">
-          <DashboardIndex />
-          <Outlet />
-        </main>
-      </div>
     </>
   );
 }

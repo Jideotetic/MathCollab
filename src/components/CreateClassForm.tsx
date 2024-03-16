@@ -3,7 +3,7 @@
 // import FormFooter from "./FormFooter";
 // import Form from "./CustomForm";
 import MathCollab from "./MathCollab";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useNavigate, useNavigation } from "react-router-dom";
 import Inputs from "./Inputs";
 import { useContext, useEffect, Fragment } from "react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
@@ -12,18 +12,14 @@ import { Transition, Dialog } from "@headlessui/react";
 
 const inputs = [{ label: "Class name", inputType: "text" }];
 
-// const headerContent = {
-//   title: "Create a class",
-//   description: "Provide your class information below",
-//   email: "",
-// };
-
 export default function CreateClassForm() {
   const { setCreateClassFormOpen, createClassFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const busy = navigation.state === "submitting";
 
   useEffect(() => {
     if (createClassFormOpen === false) {
@@ -40,7 +36,6 @@ export default function CreateClassForm() {
         }}
       >
         <FormWrapper>
-          {/* <FormHeader headerContent={headerContent} /> */}
           <div className="flex w-[359px] max-w-full flex-col items-center justify-center gap-2 text-center">
             <MathCollab />
 
@@ -54,7 +49,6 @@ export default function CreateClassForm() {
               </p>
             </div>
           </div>
-          {/* <Form inputs={inputs} formType="create-class" /> */}
 
           <Form
             className="flex w-full min-w-[202px] flex-col gap-8"
@@ -97,10 +91,9 @@ export default function CreateClassForm() {
               type="submit"
               className="mx-auto w-[202px] rounded-lg bg-slate-950 py-[13px] text-center text-sm font-medium text-white hover:bg-slate-800"
             >
-              Create
+              {busy ? "Creating class..." : "Create class"}
             </button>
           </Form>
-          {/* <FormFooter formType="create-class" /> */}
         </FormWrapper>
       </Dialog>
     </Transition>
