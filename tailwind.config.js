@@ -29,6 +29,19 @@ export default {
         customInner: "inset 0 0 100px 0 #00AAF81A",
         customInner1: "inset 0 0 100px 0 #3130330D",
       },
+      keyframes: {
+        slide: {
+          "0%": {
+            transform: "translatex(-100%)",
+          },
+          "100%": {
+            transform: "translatex(100%)",
+          },
+        },
+      },
+      animation: {
+        slide: "slide 1s linear infinite",
+      },
     },
   },
   plugins: [formsPlugin],

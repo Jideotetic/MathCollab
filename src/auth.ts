@@ -76,8 +76,7 @@ export const authProvider: AuthProvider = {
 
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        authProvider.user = userCredential.user;
-        updateProfile(authProvider.user!, {
+        updateProfile(userCredential.user!, {
           displayName: firstName + " " + lastName,
         });
         sendOTP();
@@ -90,23 +89,33 @@ export const authProvider: AuthProvider = {
         } else if (error.code === "auth/invalid-email") {
           temp.email = "";
           return toast.error("Invalid email");
+        } else if (error.code === "auth/network-request-failed") {
+          temp.email = "";
+          return toast.error("Check your network strength");
         }
       });
   },
 
   async login(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        authProvider.user = userCredential.user;
+      .then(() => {
         return redirect("/dashboard");
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
+        if (error.code === "auth/too-many-requests") {
+          return toast.error(
+            "Your account is temporarily blocked...try again later",
+          );
+        } else if (error.code === "auth/network-request-failed") {
+          return toast.error("Check your network strength");
+        }
         return toast.error("Password or Email invalid");
       });
   },
 
   async signout() {
+    localStorage.removeItem("user");
     signOut(auth);
-    authProvider.user = null;
   },
 };
