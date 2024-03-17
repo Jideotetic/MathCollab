@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 export interface ClassData {
   id: string;
@@ -19,23 +19,19 @@ export async function homePageLoader() {
     await authProvider.checkAuth();
     const classes: ClassData[] = [];
     const classesRef = collection(db, "classes");
-    console.log(classesRef);
-    onSnapshot(classesRef, (snapshot) => {
-      console.log(snapshot);
-      snapshot.docChanges().forEach((change) => {
-        console.log(change);
-        classes.push({
-          id: change.doc.id,
-          ...(change.doc.data() as {
-            likes: number;
-            name: string;
-            status: string;
-            title: string;
-            user: string;
-            video: string;
-            views: number;
-          }),
-        });
+    const snapshot = await getDocs(classesRef);
+    snapshot.forEach((doc) => {
+      classes.push({
+        id: doc.id,
+        ...(doc.data() as {
+          likes: number;
+          name: string;
+          status: string;
+          title: string;
+          user: string;
+          video: string;
+          views: number;
+        }),
       });
     });
 
@@ -57,20 +53,19 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
   const classes: ClassData[] = [];
   const classesRef = collection(db, "classes");
-  onSnapshot(classesRef, (snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-      classes.push({
-        id: change.doc.id,
-        ...(change.doc.data() as {
-          likes: number;
-          name: string;
-          status: string;
-          title: string;
-          user: string;
-          video: string;
-          views: number;
-        }),
-      });
+  const snapshot = await getDocs(classesRef);
+  snapshot.forEach((doc) => {
+    classes.push({
+      id: doc.id,
+      ...(doc.data() as {
+        likes: number;
+        name: string;
+        status: string;
+        title: string;
+        user: string;
+        video: string;
+        views: number;
+      }),
     });
   });
 
