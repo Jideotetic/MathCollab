@@ -23,8 +23,8 @@ import ClassChat from "../components/ClassChat";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
 import { ToastContainer, toast } from "react-toastify";
-import { useRouteLoaderData } from "react-router-dom";
-import { User } from "firebase/auth";
+// import { useRouteLoaderData } from "react-router-dom";
+// import { User } from "firebase/auth";
 import { server } from "../socket";
 // import rough from "roughjs";
 // import { HostContextType, RoomContext } from "../contexts/RoomContext";
@@ -57,16 +57,16 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const [host, setHost] = useState(false);
-  const [id, setId] = useState<string | null>("");
+  // const [host, setHost] = useState(false);
+  // const [id, setId] = useState<string | null>("");
   const [content, setContent] = useState("default");
-  const [className, setClassName] = useState<string | null>("");
-  const [sharedContent, setSharedContent] = useState("Shared");
+  // const [className, setClassName] = useState<string | null>("");
+  // const [sharedContent, setSharedContent] = useState("Shared");
   // const [element, setElement] = useState([]);
   // const [isDrawing, setIsDrawing] = useState(false);
-  const { user } = useRouteLoaderData("canvas") as {
-    user: User;
-  };
+  // const { user } = useRouteLoaderData("canvas") as {
+  //   user: User;
+  // };
   const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
@@ -103,54 +103,63 @@ export default function Canvas() {
   // const navigate = useNavigate();
 
   useEffect(() => {
-    server.on("user-joined", (data) => {
+    server.on("class-started", (data) => {
       const { success } = data;
       if (success) {
-        toast.success(`${user.displayName} join`);
+        toast.success("Class started successfully");
       }
     });
-  }, [user.displayName]);
-
-  useEffect(() => {
-    server.on("host-create", (data) => {
-      setHost(data.host);
-      setId(data.id);
-      setClassName(data.className);
-      sessionStorage.setItem("host", data.host);
-      sessionStorage.setItem("id", data.id);
-      sessionStorage.setItem("className", data.className);
-    });
-
-    const id = sessionStorage.getItem("id");
-    setId(id);
-    const tempHost = sessionStorage.getItem("host");
-    setHost(tempHost === "true");
-    const className = sessionStorage.getItem("className");
-    setClassName(className);
-    if (host === true) {
-      toast.info(`You start the ${className} class`);
-      toast.info(`Share the id ${id} with user to join`);
-    }
-  }, [host]);
-
-  useEffect(() => {
-    if (host === true) {
-      server.emit("canvas-data", content);
-    }
-  }, [content, host]);
-
-  useEffect(() => {
-    server.on("canvas-response", (data) => {
-      setSharedContent(data);
-      console.log(data);
-    });
   }, []);
+
+  // useEffect(() => {
+  //   server.on("user-joined", (data) => {
+  //     const { success } = data;
+  //     if (success) {
+  //       toast.success(`${user.displayName} join`);
+  //     }
+  //   });
+  // }, [user.displayName]);
+
+  // useEffect(() => {
+  //   server.on("host-create", (data) => {
+  //     setHost(data.host);
+  //     setId(data.id);
+  //     setClassName(data.className);
+  //     sessionStorage.setItem("host", data.host);
+  //     sessionStorage.setItem("id", data.id);
+  //     sessionStorage.setItem("className", data.className);
+  //   });
+
+  //   const id = sessionStorage.getItem("id");
+  //   setId(id);
+  //   const tempHost = sessionStorage.getItem("host");
+  //   setHost(tempHost === "true");
+  //   const className = sessionStorage.getItem("className");
+  //   setClassName(className);
+  //   if (host === true) {
+  //     toast.info(`You start the ${className} class`);
+  //     toast.info(`Share the id ${id} with user to join`);
+  //   }
+  // }, [host]);
+
+  // useEffect(() => {
+  //   if (host === true) {
+  //     server.emit("canvas-data", content);
+  //   }
+  // }, [content, host]);
+
+  // useEffect(() => {
+  //   server.on("canvas-response", (data) => {
+  //     // setSharedContent(data);
+  //     console.log(data);
+  //   });
+  // }, []);
 
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value);
   }
 
-  console.log("host", "===>", host, "id", "===>", id);
+  // console.log("host", "===>", host, "id", "===>", id);
 
   useEffect(() => {
     setJoinClassFormOpen(false);
@@ -221,11 +230,11 @@ export default function Canvas() {
         <div className="flex flex-col  gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
           <input
             type="text"
-            defaultValue={className as string}
+            // defaultValue={className as string}
             className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
             placeholder="Type in the questions you are solving to keep collaborators informed"
           />
-          {host === true ? (
+          {/* {host === true ? (
             <textarea
               value={content}
               onChange={handleChange}
@@ -240,13 +249,13 @@ export default function Canvas() {
               value={sharedContent}
               className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
             ></textarea>
-          )}
-          {/* <textarea
-            disabled={host ? false : true}
+          )} */}
+          <textarea
+            // disabled={host ? false : true}
             value={content}
             onChange={handleChange}
             className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
-          ></textarea> */}
+          ></textarea>
           <div className="flex h-[43px] justify-evenly rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
             <button
               type="button"

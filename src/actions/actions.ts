@@ -6,7 +6,7 @@ import { server } from "../socket";
 import { authProvider } from "../auth";
 // import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 
 export async function signUpFormAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
@@ -131,12 +131,12 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
   const className = formData.get("Class name");
   // const collaborators = formData.get("collaborators");
   const user = authProvider.user;
-  // const id = uuidv4();
+
   const classesRef = collection(db, "classes");
   addDoc(classesRef, {
     likes: 0,
     name: user?.displayName,
-    status: "ongoing",
+    status: "created",
     title: className,
     user: user?.photoURL,
     video: "",
@@ -149,6 +149,26 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
   return redirect(`/dashboard`);
 }
 
+export async function startClassAction({ request }: LoaderFunctionArgs) {
+  const formData = await request.formData();
+
+  const id = formData.get("id");
+  const classes = JSON.parse(formData.get("classes") as string);
+
+  console.log(id, classes);
+  const classesRef = doc(db, `classes/${id}`);
+
+  console.log(classesRef);
+
+  updateDoc(classesRef, {
+    status: "ongoing",
+  });
+
+  server.emit("start-class", { classes, id });
+
+  return redirect(`/canvas/${id}`);
+}
+
 export async function joinClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
@@ -157,26 +177,26 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
 
   console.log(id);
 
-  server.emit("user-joined", { id, host: false });
+  // server.emit("user-joined", { id, host: false });
 
-  const inActiveClass = await new Promise((resolve) => {
-    const timeout = setTimeout(() => {
-      clearTimeout(timeout);
-      resolve(false);
-      console.log("Timeout waiting for inactive-class event");
-    }, 1000);
+  // const inActiveClass = await new Promise((resolve) => {
+  //   const timeout = setTimeout(() => {
+  //     clearTimeout(timeout);
+  //     resolve(false);
+  //     console.log("Timeout waiting for inactive-class event");
+  //   }, 1000);
 
-    server.on("inactive-class", (data) => {
-      clearTimeout(timeout);
-      resolve(data.success);
-      console.log("inactive", data.success);
-    });
-  });
+  //   server.on("inactive-class", (data) => {
+  //     clearTimeout(timeout);
+  //     resolve(data.success);
+  //     console.log("inactive", data.success);
+  //   });
+  // });
 
-  if (inActiveClass) {
-    toast.error("No active class");
-    return redirect(`${new URL(request.url).origin}/dashboard`);
-  } else {
-    return redirect(`/canvas/${id}`);
-  }
+  // if (inActiveClass) {
+  //   toast.error("No active class");
+  //   return redirect(`${new URL(request.url).origin}/dashboard`);
+  // } else {
+  //   return redirect(`/canvas/${id}`);
+  // }
 }

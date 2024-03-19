@@ -1,7 +1,9 @@
 import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { server } from "../socket";
+import { toast } from "react-toastify";
 
 export interface ClassData {
   id: string;
@@ -51,34 +53,44 @@ export async function homePageLoader() {
 export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
-  const classes: ClassData[] = [];
-  const classesRef = collection(db, "classes");
-  const snapshot = await getDocs(classesRef);
-  snapshot.forEach((doc) => {
-    classes.push({
-      id: doc.id,
-      ...(doc.data() as {
-        likes: number;
-        name: string;
-        status: string;
-        title: string;
-        user: string;
-        video: string;
-        views: number;
-      }),
-    });
-  });
-
-  let filteredClasses = classes.filter((lesson) => {
-    return lesson.title.toLocaleLowerCase().includes(search!);
-  });
-
-  if (!search) {
-    filteredClasses = classes;
-  }
 
   try {
     await authProvider.checkAuth();
+    console.log(authProvider.user?.displayName);
+    const classes: ClassData[] = [];
+    const classesRef = collection(db, "classes");
+    const snapshot = await getDocs(classesRef);
+    snapshot.forEach((docs) => {
+      if (
+        docs.data().status === "ongoing" &&
+        docs.data().name === authProvider.user?.displayName
+      ) {
+        const docRef = doc(db, `classes/${docs.id}`);
+        updateDoc(docRef, {
+          status: "created",
+        });
+      }
+      classes.push({
+        id: docs.id,
+        ...(docs.data() as {
+          likes: number;
+          name: string;
+          status: string;
+          title: string;
+          user: string;
+          video: string;
+          views: number;
+        }),
+      });
+    });
+
+    let filteredClasses = classes.filter((lesson) => {
+      return lesson.title.toLocaleLowerCase().includes(search!);
+    });
+
+    if (!search) {
+      filteredClasses = classes;
+    }
     if (!authProvider.user) {
       return redirect("/");
     }
@@ -93,6 +105,13 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
 }
 
 export async function canvasLoader() {
+  server.on("inactive", (data) => {
+    if (data.success) {
+      redirect("/dashboard");
+      return toast.error("Class has not started");
+    }
+  });
+
   try {
     await authProvider.checkAuth();
     return {

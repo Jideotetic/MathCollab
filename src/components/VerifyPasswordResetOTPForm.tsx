@@ -11,17 +11,6 @@ import { temp } from "../otp";
 import { Transition, Dialog } from "@headlessui/react";
 import MathCollab from "./MathCollab";
 
-// const inputs = [
-//   { label: "Password", inputType: "password" },
-//   { label: "Password", inputType: "password" },
-// ];
-
-// const headerContent = {
-//   title: "Reset Password",
-//   description: "Enter the verification code send to",
-//   email: "Jideotetic@gmail.com",
-// };
-
 export default function VerifyPasswordResetOTPForm() {
   const [otp, setOtp] = useState("");
 
