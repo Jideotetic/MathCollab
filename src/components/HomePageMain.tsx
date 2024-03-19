@@ -154,7 +154,8 @@ export default function HomePageMain() {
                         )}
                       </div>
                     </div>
-                    {lesson.status === "ongoing" ? (
+                    {lesson.status === "ongoing" ||
+                    lesson.status === "created" ? (
                       <Link
                         to="/signup"
                         onClick={() => setSignUpFormOpen(true)}

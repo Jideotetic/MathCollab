@@ -3,9 +3,10 @@ import { Outlet, useNavigation, useRouteLoaderData } from "react-router-dom";
 import HomePageHeader from "../components/HomePageHeader";
 import HomePageMain from "../components/HomePageMain";
 import HomePageFooter from "../components/HomePageFooter";
-import { User, deleteUser } from "firebase/auth";
+import { User, signOut } from "firebase/auth";
 import GlobalSlider from "../components/GlobalSlider";
 import { useEffect } from "react";
+import { auth } from "../firebase";
 
 export default function HomePage() {
   const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
@@ -14,7 +15,7 @@ export default function HomePage() {
   console.log(currentUser);
   useEffect(() => {
     if (currentUser) {
-      deleteUser(currentUser);
+      signOut(auth);
     }
   }, [currentUser]);
   return (

@@ -1,4 +1,9 @@
-import { Form, useRouteLoaderData, useSubmit } from "react-router-dom";
+import {
+  Form,
+  // useNavigate,
+  useRouteLoaderData,
+  useSubmit,
+} from "react-router-dom";
 import { useState, useMemo, useContext, useEffect } from "react";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
@@ -10,6 +15,9 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import searchIconUrl from "../assets/ic_Search.svg";
 import userImageUrl from "../assets/user.jpeg";
 import { User } from "firebase/auth";
+// import { doc, updateDoc } from "firebase/firestore";
+// import { db } from "../firebase";
+// import { server } from "../socket";
 
 interface Classes {
   id: string;
@@ -49,13 +57,14 @@ export default function DashboardIndex() {
     search: string;
   };
   const [currentPage] = useState(1);
+
   const currentLessons = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PAGESIZE;
     const lastPageIndex = firstPageIndex + PAGESIZE;
     return filteredClasses.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, filteredClasses]);
 
-  const { setCreateClassFormOpen, setJoinClassFormOpen } = useContext(
+  const { setCreateClassFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
 
@@ -66,13 +75,38 @@ export default function DashboardIndex() {
     }
   }, [search]);
 
+  // useEffect(() => {
+  //   filteredClasses.forEach((lesson) => {
+  //     if (
+  //       lesson.status === "ongoing" &&
+  //       lesson.user === currentUser.displayName
+  //     ) {
+  //       const docRef = doc(db, `classes/${lesson.id}`);
+  //       updateDoc(docRef, {
+  //         status: "created",
+  //       });
+  //     }
+  //   });
+  // }, [currentUser.displayName, filteredClasses]);
+
   const submit = useSubmit();
+  // const navigate = useNavigate();
 
   // const totalPageCount = Math.ceil(lessons.length / PAGESIZE);
 
   // function handlePageClick(data: Data) {
   //   setCurrentPage(data.selected + 1);
   //   console.log(data.selected + 1);
+  // }
+
+  // function handleStartClass(lesson) {
+  //   server.emit("start-class", { lesson, filteredClasses });
+  //   navigate(`/canvas/${lesson.id}`);
+  // }
+
+  // function handleJoinClass(lesson) {
+  //   server.emit("join-class", { lesson });
+  //   navigate(`/canvas/${lesson.id}`);
   // }
 
   return (
@@ -167,7 +201,8 @@ py-[6px] text-[#3A383C]`
                     </div>
                   </div>
 
-                  {lesson.status === "ongoing" ? (
+                  {lesson.status === "ongoing" ||
+                  lesson.status === "created" ? (
                     <p className="text-left text-base font-medium text-black">
                       <span className="font-semibold">Preview</span>:{" "}
                       {lesson.title}
@@ -206,26 +241,48 @@ py-[6px] text-[#3A383C]`
                       <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
                         Share
                       </button>
-                    ) : currentUser.displayName === lesson.name ? (
-                      <Link
-                        to={`/canvas/${lesson.id}`}
-                        onClick={() => setJoinClassFormOpen(true)}
-                        className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
-                      >
-                        Start class
-                      </Link>
-                    ) : lesson.status === "ongoing" ? (
-                      <Link
-                        to="/signup"
-                        onClick={() => setJoinClassFormOpen(true)}
-                        className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
-                      >
-                        Join
-                      </Link>
+                    ) : lesson.status === "created" &&
+                      currentUser.displayName === lesson.name ? (
+                      <Form method="POST" action="start-class">
+                        <input
+                          type="hidden"
+                          name="classes"
+                          value={JSON.stringify(filteredClasses)}
+                        />
+                        <button
+                          type="submit"
+                          name="id"
+                          value={lesson.id}
+                          // to={`/canvas/${lesson.id}`}
+                          // onClick={() => handleStartClass(lesson)}
+                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                        >
+                          Start class
+                        </button>
+                      </Form>
+                    ) : lesson.status === "ongoing" &&
+                      currentUser.displayName === lesson.name ? (
+                      <Form method="POST" action="join-class">
+                        <button
+                          type="submit"
+                          name={lesson.id}
+                          // onClick={() => handleJoinClass(lesson)}
+                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                        >
+                          Start class
+                        </button>
+                      </Form>
                     ) : (
-                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
-                        Share
-                      </button>
+                      <Form method="POST" action="join-class">
+                        <button
+                          type="submit"
+                          name={lesson.id}
+                          // onClick={() => handleJoinClass(lesson)}
+                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                        >
+                          Join
+                        </button>
+                      </Form>
                     )}
                   </div>
                 </div>

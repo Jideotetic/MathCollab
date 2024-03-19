@@ -1,6 +1,10 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 import Dashboard from "./routes/Dashboard";
 import HomePage from "./routes/HomePage";
@@ -21,6 +25,7 @@ import {
   createClassAction,
   joinClassAction,
   signoutAction,
+  startClassAction,
 } from "./actions/actions";
 import "./index.css";
 import LoginForm from "./components/LoginForm";
@@ -30,7 +35,6 @@ import ResetPasswordForm from "./components/ResetPasswordForm";
 import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm";
 import NewPasswordForm from "./components/NewPasswordForm";
 import CreateClassForm from "./components/CreateClassForm";
-import JoinClassForm from "./components/JoinClassForm";
 import GlobalSpinner from "./components/GlobalSpinner";
 
 const router = createBrowserRouter([
@@ -86,8 +90,14 @@ const router = createBrowserRouter([
         action: createClassAction,
       },
       {
+        path: "start-class",
+        action: startClassAction,
+        loader: async () => {
+          redirect("/dashboard");
+        },
+      },
+      {
         path: "join-class",
-        element: <JoinClassForm />,
         action: joinClassAction,
       },
       {
