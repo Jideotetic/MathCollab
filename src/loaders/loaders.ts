@@ -105,13 +105,6 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
 }
 
 export async function canvasLoader() {
-  server.on("inactive", (data) => {
-    if (data.success) {
-      redirect("/dashboard");
-      return toast.error("Class has not started");
-    }
-  });
-
   try {
     await authProvider.checkAuth();
     return {

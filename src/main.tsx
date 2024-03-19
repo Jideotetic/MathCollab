@@ -93,12 +93,15 @@ const router = createBrowserRouter([
         path: "start-class",
         action: startClassAction,
         loader: async () => {
-          redirect("/dashboard");
+          return redirect("/dashboard");
         },
       },
       {
         path: "join-class",
         action: joinClassAction,
+        loader: async () => {
+          return redirect("/dashboard");
+        },
       },
       {
         path: "signout",
