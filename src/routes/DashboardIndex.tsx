@@ -265,8 +265,8 @@ py-[6px] text-[#3A383C]`
                       <Form method="POST" action="join-class">
                         <button
                           type="submit"
-                          name={lesson.id}
-                          // onClick={() => handleJoinClass(lesson)}
+                          name="id}"
+                          value={lesson.id}
                           className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
                           Start class
@@ -276,8 +276,8 @@ py-[6px] text-[#3A383C]`
                       <Form method="POST" action="join-class">
                         <button
                           type="submit"
-                          name={lesson.id}
-                          // onClick={() => handleJoinClass(lesson)}
+                          name="id"
+                          value={lesson.id}
                           className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
                           Join

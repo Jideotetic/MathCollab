@@ -21,11 +21,13 @@ import { ChangeEvent, useEffect, useState, useContext } from "react";
 import Collaborators from "../components/Collaborators";
 import ClassChat from "../components/ClassChat";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { useNavigation } from "react-router-dom";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
 import { ToastContainer, toast } from "react-toastify";
 // import { useRouteLoaderData } from "react-router-dom";
 // import { User } from "firebase/auth";
 import { server } from "../socket";
+import GlobalSlider from "../components/GlobalSlider";
 // import rough from "roughjs";
 // import { HostContextType, RoomContext } from "../contexts/RoomContext";
 
@@ -59,7 +61,7 @@ export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
   // const [host, setHost] = useState(false);
   // const [id, setId] = useState<string | null>("");
-  const [content, setContent] = useState("default");
+  const [content, setContent] = useState("");
   // const [className, setClassName] = useState<string | null>("");
   // const [sharedContent, setSharedContent] = useState("Shared");
   // const [element, setElement] = useState([]);
@@ -110,6 +112,18 @@ export default function Canvas() {
       }
     });
   }, []);
+
+  // useEffect(() => {
+  //   server.on("failed-join", (data) => {
+  //     const { success } = data;
+  //     if (success) {
+  //       toast.error("Failed to join class");
+  //       return navigate("/dashboard");
+  //     }
+  //   });
+  // }, []);
+
+  const navigation = useNavigation();
 
   // useEffect(() => {
   //   server.on("user-joined", (data) => {
@@ -167,6 +181,7 @@ export default function Canvas() {
   }, [setCreateClassFormOpen, setJoinClassFormOpen]);
   return (
     <>
+      {navigation.state === "loading" && <GlobalSlider />}
       <ToastContainer />
       <div></div>
       <div className="mx-auto grid min-h-screen max-w-[1280px] grid-cols-canvasLayout gap-1 bg-white px-4 py-4">

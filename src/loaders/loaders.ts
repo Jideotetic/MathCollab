@@ -2,8 +2,8 @@ import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
-import { server } from "../socket";
-import { toast } from "react-toastify";
+// import { server } from "../socket";
+// import { toast } from "react-toastify";
 
 export interface ClassData {
   id: string;
@@ -105,13 +105,6 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
 }
 
 export async function canvasLoader() {
-  server.on("inactive", (data) => {
-    if (data.success) {
-      redirect("/dashboard");
-      return toast.error("Class has not started");
-    }
-  });
-
   try {
     await authProvider.checkAuth();
     return {

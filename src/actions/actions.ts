@@ -172,10 +172,30 @@ export async function startClassAction({ request }: LoaderFunctionArgs) {
 export async function joinClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
-  const id = formData.get("Enter/Paste class id");
+  const id = formData.get("id");
   // const user = authProvider.user;
 
-  console.log(id);
+  server.emit("join-class", { id });
+  // server.on("failed-join", (data) => {
+  //   successStatus = data.success;
+  // });
+
+  const failedJoinPromise = new Promise((resolve) => {
+    server.on("failed-join", (data) => {
+      resolve(data.success);
+    });
+  });
+
+  const successStatus = await failedJoinPromise;
+
+  console.log(successStatus);
+
+  if (successStatus) {
+    toast.error("Class have not start yet");
+    return redirect("/");
+  } else {
+    return redirect(`/canvas/${id}`);
+  }
 
   // server.emit("user-joined", { id, host: false });
 
