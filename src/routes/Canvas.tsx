@@ -21,7 +21,7 @@ import { ChangeEvent, useEffect, useState, useContext } from "react";
 import Collaborators from "../components/Collaborators";
 import ClassChat from "../components/ClassChat";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { useNavigation, useNavigate } from "react-router-dom";
+import { useNavigation } from "react-router-dom";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
 import { ToastContainer, toast } from "react-toastify";
 // import { useRouteLoaderData } from "react-router-dom";
@@ -102,7 +102,7 @@ export default function Canvas() {
   //   }
   // };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     server.on("class-started", (data) => {

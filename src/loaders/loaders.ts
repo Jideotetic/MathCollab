@@ -2,8 +2,8 @@ import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
-import { server } from "../socket";
-import { toast } from "react-toastify";
+// import { server } from "../socket";
+// import { toast } from "react-toastify";
 
 export interface ClassData {
   id: string;
