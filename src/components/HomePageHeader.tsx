@@ -4,8 +4,7 @@ import MathCollab from "./MathCollab";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useRouteLoaderData } from "react-router-dom";
-import { User } from "firebase/auth";
+import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 const navLinks = [
@@ -17,9 +16,7 @@ const navLinks = [
 
 export default function HomePageHeader() {
   const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
-
-  console.log(currentUser);
+  
   return (
     <>
       <header className="fixed left-0 right-0 top-0 z-10 mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6 text-sm xl:px-20">

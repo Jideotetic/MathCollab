@@ -1,13 +1,10 @@
-import { Link, useRouteLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import facebookIconUrl from "../assets/Facebook.svg";
 import twitterIconUrl from "../assets/Twitter.svg";
 import instagramIconUrl from "../assets/Instagram.svg";
-import { User } from "firebase/auth";
+
 
 export default function HomePageFooter() {
-  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
-
-  console.log(currentUser);
   return (
     <>
       <div className="bg-[#06031E]">

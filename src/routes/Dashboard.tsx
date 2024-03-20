@@ -6,10 +6,8 @@ import calenderUrl from "../assets/calender.svg";
 import settingsUrl from "../assets/settings.svg";
 import helpUrl from "../assets/help.svg";
 import signOutUrl from "../assets/sign-out.svg";
-import { User } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
 import DashboardIndex from "./DashboardIndex";
-import { useRouteLoaderData } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import DashboardHeader from "../components/DashboardHeader";
 import GlobalSlider from "../components/GlobalSlider";
@@ -29,9 +27,7 @@ const navLinks = [
 ];
 
 export default function Dashboard() {
-  const { currentUser } = useRouteLoaderData("dashboard") as {
-    currentUser: User;
-  };
+  
   const navigation = useNavigation();
 
   // console.log(currentUser);
@@ -40,8 +36,7 @@ export default function Dashboard() {
     sessionStorage.removeItem("host");
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("className");
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
+  }, []);
 
   return (
     <>
