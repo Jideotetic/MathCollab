@@ -2,7 +2,7 @@ import FormWrapper from "./FormWrapper";
 import { Dialog, Transition } from "@headlessui/react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { useContext, Fragment, useEffect } from "react";
-import { Form, useNavigate, Link, useNavigation } from "react-router-dom";
+import { Form, useNavigate, Link, useNavigation, useRouteLoaderData } from "react-router-dom";
 import Inputs from "./Inputs";
 import MathCollab from "./MathCollab";
 import lineUrl from "../assets/line.svg";
@@ -20,6 +20,9 @@ export default function SignUpForm() {
   const { signUpFormOpen, setSignUpFormOpen, setLoginFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
+  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
+
+  console.log(currentUser);
 
   function goToSignInPage() {
     setSignUpFormOpen(false);

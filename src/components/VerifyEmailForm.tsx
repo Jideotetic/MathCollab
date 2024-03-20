@@ -8,7 +8,6 @@ import OTPInputs from "./OTPInputs";
 import { ToastContainer } from "react-toastify";
 import MathCollab from "./MathCollab";
 import { User, deleteUser } from "firebase/auth";
-import { authProvider } from "../auth";
 
 export default function VerifyEmailOTPForm() {
   const [otp, setOtp] = useState("");
@@ -17,9 +16,9 @@ export default function VerifyEmailOTPForm() {
     setOtp(value);
   }
 
-  const { user } = useRouteLoaderData("root") as { user: User };
+  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
 
-  console.log(user);
+  console.log(currentUser);
 
   const {
     verifyEmailFormOpen,
@@ -34,7 +33,7 @@ export default function VerifyEmailOTPForm() {
   function goToSignInPage() {
     setVerifyEmailFormOpen(false);
     setLoginFormOpen(true);
-    deleteUser(user);
+    deleteUser(currentUser);
     temp.email = "";
   }
 
@@ -44,7 +43,7 @@ export default function VerifyEmailOTPForm() {
 
     if (signUpFormOpen === false && verifyEmailFormOpen === false) {
       temp.email = "";
-      deleteUser(user);
+      deleteUser(currentUser);
       navigate("/");
     }
   }, [
@@ -53,7 +52,7 @@ export default function VerifyEmailOTPForm() {
     setSignUpFormOpen,
     verifyEmailFormOpen,
     setVerifyEmailFormOpen,
-    user,
+    currentUser,
   ]);
 
   return (
@@ -63,7 +62,7 @@ export default function VerifyEmailOTPForm() {
         onClose={() => {
           setVerifyEmailFormOpen(false);
           temp.email = "";
-          deleteUser(authProvider.user!);
+          deleteUser(currentUser);
           navigate("/");
         }}
       >

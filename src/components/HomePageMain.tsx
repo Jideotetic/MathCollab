@@ -21,17 +21,13 @@ import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../assets/Ellipse 1779.png";
 import { ClassData } from "../loaders/loaders";
-import { User } from "firebase/auth";
 import userImageUrl from "../assets/user.jpeg";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { classes, currentUser } = useRouteLoaderData("root") as {
-    classes: ClassData[];
-    currentUser: User;
+  const { lessons,  } = useRouteLoaderData("root") as {
+    lessons: ClassData[];
   };
-
-  console.log(currentUser, classes);
 
   return (
     <main className="mx-auto w-[1280px] max-w-full pt-[101px] text-center">
@@ -92,7 +88,7 @@ export default function HomePageMain() {
 
         <div className="p-4">
           <ul className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-            {classes.map((lesson) => (
+            {lessons.map((lesson) => (
               <li
                 key={lesson.id}
                 className="flex w-[338px] max-w-full flex-shrink-0 flex-col rounded-[5.85px] border-[0.94px] border-[#E0E0E0] bg-white"
@@ -143,15 +139,15 @@ export default function HomePageMain() {
                         </span>
 
                         <img src={ellipseIconUrl} alt="" />
-                        {lesson.status === "ongoing" ? (
+                        {/* {lesson.status === "ongoing" ? ( */}
                           <span className="shrink-0 text-xs font-semibold text-[#06031E]">
                             {lesson.status}
                           </span>
-                        ) : (
-                          <span className="shrink-0 text-xs font-normal text-[#616161]">
+                        {/* ) : ( */}
+                          {/* <span className="shrink-0 text-xs font-normal text-[#616161]">
                             {lesson.status}
                           </span>
-                        )}
+                        )} */}
                       </div>
                     </div>
                     {lesson.status === "ongoing" ||

@@ -29,9 +29,7 @@ const navLinks = [
 ];
 
 export default function Dashboard() {
-  const { currentUser } = useRouteLoaderData("dashboard") as {
-    currentUser: User;
-  };
+  
   const navigation = useNavigation();
 
   // console.log(currentUser);
@@ -40,8 +38,7 @@ export default function Dashboard() {
     sessionStorage.removeItem("host");
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("className");
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
+  }, []);
 
   return (
     <>

@@ -3,21 +3,25 @@ import { Outlet, useNavigation, useRouteLoaderData } from "react-router-dom";
 import HomePageHeader from "../components/HomePageHeader";
 import HomePageMain from "../components/HomePageMain";
 import HomePageFooter from "../components/HomePageFooter";
-import { User, signOut } from "firebase/auth";
+import { User, deleteUser } from "firebase/auth";
 import GlobalSlider from "../components/GlobalSlider";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { auth } from "../firebase";
+import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 
 export default function HomePage() {
   const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
+
   const navigation = useNavigation();
 
-  console.log(currentUser);
+  const { verifyEmailFormOpen } = useContext(FormsContext) as FormsContextType;
+
   useEffect(() => {
-    if (currentUser) {
-      signOut(auth);
+    if (currentUser && !verifyEmailFormOpen) {
+      deleteUser(currentUser);
     }
-  }, [currentUser]);
+  }, []);
+
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}

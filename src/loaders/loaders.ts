@@ -1,7 +1,13 @@
 import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  onSnapshot,
+} from "firebase/firestore";
 // import { server } from "../socket";
 // import { toast } from "react-toastify";
 
@@ -17,33 +23,39 @@ export interface ClassData {
 }
 
 export async function homePageLoader() {
+  console.log("Hompeage loader");
   try {
-    await authProvider.checkAuth();
-    const classes: ClassData[] = [];
-    const classesRef = collection(db, "classes");
-    const snapshot = await getDocs(classesRef);
-    snapshot.forEach((doc) => {
-      classes.push({
-        id: doc.id,
-        ...(doc.data() as {
-          likes: number;
-          name: string;
-          status: string;
-          title: string;
-          user: string;
-          video: string;
-          views: number;
-        }),
-      });
-    });
-
     if (localStorage.getItem("user")) {
       return redirect("/dashboard");
     }
+    await authProvider.checkAuth();
+    const classes: ClassData[] = [];
+    const fetchClasses = new Promise((resolve) => {
+      const classesRef = collection(db, "classes");
+      onSnapshot(classesRef, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          classes.push({
+            id: change.doc.id,
+            ...(change.doc.data() as {
+              likes: number;
+              name: string;
+              status: string;
+              title: string;
+              user: string;
+              video: string;
+              views: number;
+            }),
+          });
+        });
+        resolve(classes);
+      });
+    });
+
+    const lessons = await fetchClasses;
 
     return {
       currentUser: authProvider.user,
-      classes,
+      lessons,
     };
   } catch (error) {
     console.error(error);
@@ -94,6 +106,7 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
     if (!authProvider.user) {
       return redirect("/");
     }
+    localStorage.setItem("user", JSON.stringify(authProvider.user));
     return {
       currentUser: authProvider.user,
       filteredClasses,
