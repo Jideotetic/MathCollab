@@ -6,7 +6,6 @@ import HomePageFooter from "../components/HomePageFooter";
 import { User, deleteUser } from "firebase/auth";
 import GlobalSlider from "../components/GlobalSlider";
 import { useEffect, useContext } from "react";
-import { auth } from "../firebase";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 
 export default function HomePage() {

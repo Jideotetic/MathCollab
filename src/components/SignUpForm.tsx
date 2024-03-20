@@ -20,9 +20,6 @@ export default function SignUpForm() {
   const { signUpFormOpen, setSignUpFormOpen, setLoginFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
-  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
-
-  console.log(currentUser);
 
   function goToSignInPage() {
     setSignUpFormOpen(false);
