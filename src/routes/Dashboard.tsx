@@ -27,16 +27,33 @@ const navLinks = [
 ];
 
 export default function Dashboard() {
-  
   const navigation = useNavigation();
-
-  // console.log(currentUser);
 
   useEffect(() => {
     sessionStorage.removeItem("host");
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("className");
   }, []);
+
+  // useEffect(() => {
+  //   server.on("login-successfully", (data) => {
+  //     const { success } = data;
+  //     console.log(success);
+  //     if (success) {
+  //       toast.success("Login successfully");
+  //     }
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   server.on("connected-successfully", (data) => {
+  //     const { success } = data;
+  //     console.log(success);
+  //     if (success) {
+  //       toast.success("Connected successfully");
+  //     }
+  //   });
+  // }, []);
 
   return (
     <>

@@ -2,14 +2,20 @@ import FormWrapper from "./FormWrapper";
 import { Dialog, Transition } from "@headlessui/react";
 import { FormsContext, FormsContextType } from "../contexts/FormsContext";
 import { useContext, Fragment, useEffect } from "react";
-import { useNavigate, Form, Link, useNavigation, useRouteLoaderData } from "react-router-dom";
+import {
+  useNavigate,
+  Form,
+  Link,
+  useNavigation,
+  useRouteLoaderData,
+} from "react-router-dom";
 import Inputs from "./Inputs";
 import { ToastContainer } from "react-toastify";
 import MathCollab from "./MathCollab";
 import lineUrl from "../assets/line.svg";
 import googleLogoUrl from "../assets/Google-logo.svg";
-import {signOut, User} from "firebase/auth"
-import {auth} from "../firebase";
+import { signOut, User } from "firebase/auth";
+import { auth } from "../firebase";
 
 const inputs = [
   { label: "Email", inputType: "email" },
@@ -70,7 +76,7 @@ export default function LoginForm() {
     if (currentUser) {
       signOut(auth);
     }
-  }, [])
+  }, [currentUser]);
 
   return (
     <>
