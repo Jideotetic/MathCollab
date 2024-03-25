@@ -1,9 +1,4 @@
-import {
-  Form,
-  // useNavigate,
-  useRouteLoaderData,
-  useSubmit,
-} from "react-router-dom";
+import { Form, useRouteLoaderData, useSubmit } from "react-router-dom";
 import { useState, useMemo, useContext, useEffect } from "react";
 import heartIconUrl from "../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
@@ -15,9 +10,8 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import searchIconUrl from "../assets/ic_Search.svg";
 import userImageUrl from "../assets/user.jpeg";
 import { User } from "firebase/auth";
-// import { doc, updateDoc } from "firebase/firestore";
-// import { db } from "../firebase";
-// import { server } from "../socket";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 interface Classes {
   id: string;
@@ -58,6 +52,8 @@ export default function DashboardIndex() {
   };
   const [currentPage] = useState(1);
 
+  console.log(filteredClasses);
+
   const currentLessons = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PAGESIZE;
     const lastPageIndex = firstPageIndex + PAGESIZE;
@@ -75,19 +71,42 @@ export default function DashboardIndex() {
     }
   }, [search]);
 
+  useEffect(() => {
+    filteredClasses.forEach((lesson) => {
+      if (
+        lesson.status === "ongoing" &&
+        lesson.name === currentUser.displayName
+      ) {
+        const docRef = doc(db, `classes/${lesson.id}`);
+        updateDoc(docRef, {
+          status: "created",
+        });
+      }
+    });
+  }, [currentUser.displayName, filteredClasses]);
+
   // useEffect(() => {
-  //   filteredClasses.forEach((lesson) => {
-  //     if (
-  //       lesson.status === "ongoing" &&
-  //       lesson.user === currentUser.displayName
-  //     ) {
-  //       const docRef = doc(db, `classes/${lesson.id}`);
-  //       updateDoc(docRef, {
-  //         status: "created",
+  //   // Set up Firestore real-time listener to listen for changes in lessons collection
+  //   const unsubscribe = onSnapshot(
+  //     query(
+  //       collection(db, "classes"),
+  //       where("user", "==", currentUser.displayName),
+  //     ),
+  //     (snapshot) => {
+  //       const updatedLessons = [];
+  //       snapshot.forEach((doc) => {
+  //         updatedLessons.push({
+  //           id: doc.id,
+  //           ...doc.data(),
+  //         });
   //       });
-  //     }
-  //   });
-  // }, [currentUser.displayName, filteredClasses]);
+  //       setLesson(updatedLessons);
+  //     },
+  //   );
+
+  //   // Clean up listener when component unmounts
+  //   return () => unsubscribe();
+  // }, [currentUser.displayName]);
 
   const submit = useSubmit();
   // const navigate = useNavigate();
@@ -244,17 +263,10 @@ py-[6px] text-[#3A383C]`
                     ) : lesson.status === "created" &&
                       currentUser.displayName === lesson.name ? (
                       <Form method="POST" action="start-class">
-                        <input
-                          type="hidden"
-                          name="classes"
-                          value={JSON.stringify(filteredClasses)}
-                        />
                         <button
                           type="submit"
                           name="id"
                           value={lesson.id}
-                          // to={`/canvas/${lesson.id}`}
-                          // onClick={() => handleStartClass(lesson)}
                           className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
                           Start class
@@ -262,10 +274,10 @@ py-[6px] text-[#3A383C]`
                       </Form>
                     ) : lesson.status === "ongoing" &&
                       currentUser.displayName === lesson.name ? (
-                      <Form method="POST" action="join-class">
+                      <Form method="POST" action="start-class">
                         <button
                           type="submit"
-                          name="id}"
+                          name="id"
                           value={lesson.id}
                           className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >

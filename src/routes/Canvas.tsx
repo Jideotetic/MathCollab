@@ -17,17 +17,18 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useEffect, useState, useContext } from "react";
+import { ChangeEvent, useState } from "react";
 import Collaborators from "../components/Collaborators";
 import ClassChat from "../components/ClassChat";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { useNavigation } from "react-router-dom";
+// import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
 // import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 // import { useRouteLoaderData } from "react-router-dom";
 // import { User } from "firebase/auth";
-import { server } from "../socket";
 import GlobalSlider from "../components/GlobalSlider";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
 // import rough from "roughjs";
 // import { HostContextType, RoomContext } from "../contexts/RoomContext";
 
@@ -59,6 +60,9 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
+  // const { lessons } = useRouteLoaderData("canvas");
+
+  const { id } = useParams();
   // const [host, setHost] = useState(false);
   // const [id, setId] = useState<string | null>("");
   const [content, setContent] = useState("");
@@ -69,9 +73,9 @@ export default function Canvas() {
   // const { user } = useRouteLoaderData("canvas") as {
   //   user: User;
   // };
-  const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
-    FormsContext,
-  ) as FormsContextType;
+  // const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
+  //   FormsContext,
+  // ) as FormsContextType;
   // const [drawing, setDrawing] = useState("");
   // const roughGenerator = rough.generator();
 
@@ -104,26 +108,30 @@ export default function Canvas() {
 
   // const navigate = useNavigate();
 
-  useEffect(() => {
-    server.on("class-started", (data) => {
-      const { success } = data;
-      if (success) {
-        toast.success("Class started successfully");
-      }
-    });
-  }, []);
-
   // useEffect(() => {
-  //   server.on("failed-join", (data) => {
-  //     const { success } = data;
-  //     if (success) {
-  //       toast.error("Failed to join class");
-  //       return navigate("/dashboard");
-  //     }
-  //   });
+  //   console.log("canvas");
+
   // }, []);
 
   const navigation = useNavigation();
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   console.log(lessons);
+  //   // const docRef = doc(db, `classes/${id}`);
+  //   // updateDoc(docRef, {
+  //   //   status: "ongoing",
+  //   // });
+  // }, [lessons]);
+
+  function handleEndClass(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    const docRef = doc(db, `classes/${id}`);
+    updateDoc(docRef, {
+      status: "done",
+    });
+    navigate("/dashboard");
+  }
 
   // useEffect(() => {
   //   server.on("user-joined", (data) => {
@@ -175,10 +183,10 @@ export default function Canvas() {
 
   // console.log("host", "===>", host, "id", "===>", id);
 
-  useEffect(() => {
-    setJoinClassFormOpen(false);
-    setCreateClassFormOpen(false);
-  }, [setCreateClassFormOpen, setJoinClassFormOpen]);
+  // useEffect(() => {
+  //   setJoinClassFormOpen(false);
+  //   setCreateClassFormOpen(false);
+  // }, [setCreateClassFormOpen, setJoinClassFormOpen]);
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}
@@ -274,6 +282,7 @@ export default function Canvas() {
           <div className="flex h-[43px] justify-evenly rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
             <button
               type="button"
+              onClick={handleEndClass}
               className="flex flex-col items-center justify-center"
             >
               <img src={powerIconUrl} alt="" />

@@ -6,7 +6,14 @@ import { server } from "../socket";
 import { authProvider } from "../auth";
 // import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { ClassData } from "../loaders/loaders";
 
 export async function signUpFormAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
@@ -143,9 +150,6 @@ export async function createClassAction({ request }: LoaderFunctionArgs) {
     views: 0,
   });
 
-  // server.emit("user-create", { className, host: true });
-  // server.emit("user-joined", { id, user, host: true });
-
   return redirect(`/dashboard`);
 }
 
@@ -153,18 +157,41 @@ export async function startClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
   const id = formData.get("id");
-  const classes = JSON.parse(formData.get("classes") as string);
 
-  console.log(id, classes);
-  const classesRef = doc(db, `classes/${id}`);
+  const classeRef = doc(db, `classes/${id}`);
+  // const classesRef = doc(db, `classes/${id}`);
 
-  console.log(classesRef);
-
-  updateDoc(classesRef, {
+  // console.log(classesRef);
+  updateDoc(classeRef, {
     status: "ongoing",
   });
 
-  server.emit("start-class", { classes, id });
+  const fetchClasses = new Promise((resolve) => {
+    const classes: ClassData[] = [];
+    const classesRef = collection(db, "classes");
+    onSnapshot(classesRef, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        classes.push({
+          id: change.doc.id,
+          ...(change.doc.data() as {
+            likes: number;
+            name: string;
+            status: string;
+            title: string;
+            user: string;
+            video: string;
+            views: number;
+          }),
+        });
+      });
+      resolve(classes);
+    });
+  });
+
+  const lessons = await fetchClasses;
+
+  server.emit("start-class", id);
+  server.emit("connected", lessons);
 
   return redirect(`/canvas/${id}`);
 }
@@ -173,29 +200,70 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
   const id = formData.get("id");
-  // const user = authProvider.user;
 
-  server.emit("join-class", { id });
+  console.log(id);
+
+  server.emit("join-class", { id, user: authProvider.user });
+
+  // let joinedUser = {};
+
   // server.on("failed-join", (data) => {
-  //   successStatus = data.success;
+  //   const { success } = data;
+  //   console.log(success);
+  //   globalStatus = success;
   // });
 
-  const failedJoinPromise = new Promise((resolve) => {
+  // server.on("joined-successfully", (data) => {
+  //   const { success } = data;
+  //   console.log(success);
+  //   globalStatus = success;
+  // });
+
+  const joinPromise = new Promise((resolve) => {
+    // setTimeout(() => {
     server.on("failed-join", (data) => {
-      resolve(data.success);
+      const { success } = data;
+      console.log(success);
+      resolve(success);
     });
+
+    server.on("joined-successfully", (data) => {
+      const { success } = data;
+      console.log(success);
+      resolve(success);
+    });
+    // }, 500);
+    // resolve(globalStatus as boolean);
   });
 
-  const successStatus = await failedJoinPromise;
+  // const joinedSuccessfullyPromise = new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     server.on("join-successfully", (data) => {
+  //       resolve(data.success);
+  //     });
+  //   }, 500);
+  // });
+
+  const successStatus = await joinPromise;
+  // const joinedStatus = await joinedSuccessfullyPromise;
 
   console.log(successStatus);
 
-  if (successStatus) {
+  if (!successStatus) {
     toast.error("Class have not start yet");
-    return redirect("/");
-  } else {
+    return redirect("/dashboard");
+  }
+
+  if (successStatus) {
+    // toast.success(`${joinedUser.displayName} joined the class`);
     return redirect(`/canvas/${id}`);
   }
+
+  // console.log(globalStatus);
+
+  // if (joinedStatus) {
+  //   return redirect(`/canvas/${id}`);
+  // }
 
   // server.emit("user-joined", { id, host: false });
 
@@ -219,4 +287,5 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
   // } else {
   //   return redirect(`/canvas/${id}`);
   // }
+  // return null;
 }
