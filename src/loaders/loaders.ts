@@ -146,10 +146,8 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
   }
 }
 
-export async function canvasLoader({ request }: LoaderFunctionArgs) {
+export async function canvasLoader() {
   console.log("Canvas loader");
-  const url = new URL(request.url);
-  console.log(url);
 
   try {
     await authProvider.checkAuth();

@@ -17,7 +17,7 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Collaborators from "../components/Collaborators";
 import ClassChat from "../components/ClassChat";
 // import { FormsContext, FormsContextType } from "../contexts/FormsContext";
@@ -29,6 +29,7 @@ import { ToastContainer } from "react-toastify";
 import GlobalSlider from "../components/GlobalSlider";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { server } from "../socket";
 // import rough from "roughjs";
 // import { HostContextType, RoomContext } from "../contexts/RoomContext";
 
@@ -60,7 +61,6 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  // const { lessons } = useRouteLoaderData("canvas");
 
   const { id } = useParams();
   // const [host, setHost] = useState(false);
@@ -176,6 +176,17 @@ export default function Canvas() {
   //     console.log(data);
   //   });
   // }, []);
+
+  useEffect(() => {
+    server.emit("content", content);
+  }, [content]);
+
+  useEffect(() => {
+    server.on("content-data", (content) => {
+      setContent(content);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  }, []);
 
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value);
