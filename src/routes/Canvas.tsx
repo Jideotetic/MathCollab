@@ -17,21 +17,24 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Collaborators from "../components/Collaborators";
 import ClassChat from "../components/ClassChat";
-// import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
-// import { RoomContext, RoomContextType } from "../contexts/RoomContextType";
+import {
+  Form,
+  useNavigate,
+  useNavigation,
+  useParams,
+  useRouteLoaderData,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-// import { useRouteLoaderData } from "react-router-dom";
-// import { User } from "firebase/auth";
 import GlobalSlider from "../components/GlobalSlider";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { server } from "../socket";
-// import rough from "roughjs";
-// import { HostContextType, RoomContext } from "../contexts/RoomContext";
+import "katex/dist/katex.min.css";
+import { InlineMath } from "react-katex";
+import ReactDOM from "react-dom/client";
 
 const penTools = [
   arrowUrl,
@@ -61,11 +64,93 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-
+  const { initialTexts } = useRouteLoaderData("canvas") as {
+    initialTexts: string[];
+  };
   const { id } = useParams();
+  const [content, setContent] = useState("");
+  const listRef = useRef<HTMLUListElement>(null);
+
+  function parseCommand(input: string) {
+    const regex = /(\w+)\(([^)]+)\)/;
+    const match = input.match(regex);
+
+    if (!match) {
+      throw new Error("Invalid command format");
+    }
+
+    const command = match[1].trim().toLowerCase();
+    const args = match[2].split(",").map((arg) => arg.trim());
+
+    switch (command) {
+      case "sum":
+        console.log(args);
+        return `${args[0]} + ${args[1]} = ${
+          parseFloat(args[0]) + parseFloat(args[1])
+        }`;
+      case "sub":
+        console.log(args);
+        return `${args[0]} - ${args[1]} = ${
+          parseFloat(args[0]) - parseFloat(args[1])
+        }`;
+      case "mul":
+        console.log(args);
+        return `${args[0]} * ${args[1]} = ${
+          parseFloat(args[0]) * parseFloat(args[1])
+        }`;
+      case "div":
+        return `${args[0]} ÷ ${args[1]} = ${
+          parseFloat(args[0]) / parseFloat(args[1])
+        }`;
+      case "sqrt":
+        if (args.length !== 1) {
+          throw new Error("sqrt command requires exactly one operand");
+        }
+        return `\\sqrt${args[0]} = ${Math.sqrt(parseFloat(args[0]))}`;
+      // case "pow":
+      // if (args.length !== 2) {
+      //   throw new Error("pow command requires exactly two operands");
+      // }
+      // return {
+      //   operation: "pow",
+      //   base: parseFloat(args[0]),
+      //   exponent: parseFloat(args[1]),
+      // };
+      default:
+        throw new Error(`Unknown command: ${command}`);
+    }
+  }
+
+  useEffect(() => {
+    console.log(initialTexts);
+    initialTexts.forEach((text: string) => {
+      const li = document.createElement("li");
+      text = parseCommand(text);
+      console.log(text);
+      const val = <InlineMath>{text}</InlineMath>;
+      ReactDOM.createRoot(li).render(val);
+      listRef.current?.appendChild(li);
+    });
+  }, []);
+
+  useEffect(() => {
+    server.on("text", (globalTexts) => {
+      if (globalTexts.length > 0) {
+        let text = globalTexts[globalTexts.length - 1];
+        const li = document.createElement("li");
+        text = parseCommand(text);
+        console.log(text);
+        const val = <InlineMath>{text}</InlineMath>;
+        ReactDOM.createRoot(li).render(val);
+        listRef.current?.appendChild(li);
+      } else {
+        return;
+      }
+    });
+  }, []);
+
   // const [host, setHost] = useState(false);
   // const [id, setId] = useState<string | null>("");
-  const [content, setContent] = useState("");
   // const [className, setClassName] = useState<string | null>("");
   // const [sharedContent, setSharedContent] = useState("Shared");
   // const [element, setElement] = useState([]);
@@ -116,14 +201,6 @@ export default function Canvas() {
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   console.log(lessons);
-  //   // const docRef = doc(db, `classes/${id}`);
-  //   // updateDoc(docRef, {
-  //   //   status: "ongoing",
-  //   // });
-  // }, [lessons]);
-
   function handleEndClass(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     const docRef = doc(db, `classes/${id}`);
@@ -132,15 +209,6 @@ export default function Canvas() {
     });
     navigate("/dashboard");
   }
-
-  // useEffect(() => {
-  //   server.on("user-joined", (data) => {
-  //     const { success } = data;
-  //     if (success) {
-  //       toast.success(`${user.displayName} join`);
-  //     }
-  //   });
-  // }, [user.displayName]);
 
   // useEffect(() => {
   //   server.on("host-create", (data) => {
@@ -184,27 +252,33 @@ export default function Canvas() {
   useEffect(() => {
     server.on("content-data", (content) => {
       setContent(content);
-      window.scrollTo(0, document.body.scrollHeight);
     });
   }, []);
 
-  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
+  // useEffect(() => {
+  //   const canvas = canvasRef.current;
+  //   const ctx = canvas.getContext("2d");
+
+  //   // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  //   ctx.font = "12px serif italic";
+  //   ctx.fillStyle = "black";
+  //   ctx.fillText("text", 5, 160);
+  //   // texts.forEach((text, index) => {
+  //   // });
+  // }, []);
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setContent(e.target.value);
   }
 
-  // console.log("host", "===>", host, "id", "===>", id);
-
-  // useEffect(() => {
-  //   setJoinClassFormOpen(false);
-  //   setCreateClassFormOpen(false);
-  // }, [setCreateClassFormOpen, setJoinClassFormOpen]);
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}
       <ToastContainer />
-      <div></div>
-      <div className="mx-auto grid min-h-screen max-w-[1280px] grid-cols-canvasLayout gap-1 bg-white px-4 py-4">
-        <div className="rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
+      {/* <div></div> */}
+      <div className="mx-auto grid h-screen max-w-[1280px] grid-cols-canvasLayout gap-1 bg-white px-4 py-4">
+        <div className="rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
           <div className="text-base font-medium leading-normal text-neutral-700">
             Pen tools
           </div>
@@ -261,35 +335,30 @@ export default function Canvas() {
           </div>
         </div>
 
-        <div className="flex flex-col  gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
-          <input
-            type="text"
-            // defaultValue={className as string}
-            className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
-            placeholder="Type in the questions you are solving to keep collaborators informed"
-          />
-          {/* {host === true ? (
-            <textarea
+        <div className="flex flex-col gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
+          <Form
+            method="POST"
+            action="."
+            onSubmit={() => {
+              setContent("");
+            }}
+          >
+            <input
+              type="text"
+              name="text"
               value={content}
               onChange={handleChange}
-              // onMouseDown={handleMouseDown}
-              // onMouseMove={handleMouseMove}
-              // onMouseUp={handleMouseUp}
-              className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
-            ></textarea>
-          ) : (
-            <textarea
-              disabled
-              value={sharedContent}
-              className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
-            ></textarea>
-          )} */}
-          <textarea
-            // disabled={host ? false : true}
-            value={content}
-            onChange={handleChange}
-            className="h-[calc(100vh-135px)]  border-none bg-white focus:border-none focus:outline-none focus:ring-0"
-          ></textarea>
+              className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
+              placeholder="Type your command or equation here"
+            />
+            <input type="hidden" name="id" value={id} />
+          </Form>
+          {/* <div className="relative  w-full overflow-auto"> */}
+          <ul
+            ref={listRef}
+            className="relative z-0 h-[calc(100vh-135px)] overflow-auto rounded border border-neutral-200 bg-white p-2 text-xs font-normal leading-[18px] text-neutral-500 focus:border-none focus:outline-none focus:ring-0"
+          ></ul>
+          {/* </div> */}
           <div className="flex h-[43px] justify-evenly rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
             <button
               type="button"

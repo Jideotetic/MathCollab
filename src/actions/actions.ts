@@ -159,9 +159,6 @@ export async function startClassAction({ request }: LoaderFunctionArgs) {
   const id = formData.get("id");
 
   const classeRef = doc(db, `classes/${id}`);
-  // const classesRef = doc(db, `classes/${id}`);
-
-  // console.log(classesRef);
   updateDoc(classeRef, {
     status: "ongoing",
   });
@@ -288,4 +285,14 @@ export async function joinClassAction({ request }: LoaderFunctionArgs) {
   //   return redirect(`/canvas/${id}`);
   // }
   // return null;
+}
+
+export async function canvasAction({ request }: LoaderFunctionArgs) {
+  const formData = await request.formData();
+  const id = formData.get("id");
+  const text = formData.get("text");
+  server.emit("text", text);
+
+  console.log(id);
+  return redirect(`/canvas/${id}`);
 }

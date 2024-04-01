@@ -25,7 +25,7 @@ import userImageUrl from "../assets/user.jpeg";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { lessons,  } = useRouteLoaderData("root") as {
+  const { lessons } = useRouteLoaderData("root") as {
     lessons: ClassData[];
   };
 
@@ -67,7 +67,7 @@ export default function HomePageMain() {
               to="/signup"
               onClick={() => setSignUpFormOpen(true)}
               type="button"
-              className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+              className="mx-auto block w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
             >
               Get Started
             </Link>
@@ -75,7 +75,7 @@ export default function HomePageMain() {
             <img
               src={boxUrl}
               alt=""
-              className="mx-auto w-[100%] cursor-pointer sm:w-[80%]"
+              className="mx-auto h-auto w-[100%] cursor-pointer object-cover sm:w-[70%]"
             />
           </div>
         </div>
@@ -87,7 +87,7 @@ export default function HomePageMain() {
         </h3>
 
         <div className="p-4">
-          <ul className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          <ul className="flex gap-5 overflow-x-auto [&::-moz-scrollbar]:hidden [&::-webkit-scrollbar]:hidden">
             {lessons.map((lesson) => (
               <li
                 key={lesson.id}
@@ -131,23 +131,16 @@ export default function HomePageMain() {
                       <p className="text-[11.24px] text-gray-700">
                         {lesson.name}
                       </p>
+
                       <div className="flex items-center gap-1">
                         <EyeIcon className="h-[13px] w-[13px]" />
-
                         <span className="shrink-0 text-xs font-normal text-[#616161]">
                           {lesson.views > 0 && lesson.views} views
                         </span>
-
                         <img src={ellipseIconUrl} alt="" />
-                        {/* {lesson.status === "ongoing" ? ( */}
-                          <span className="shrink-0 text-xs font-semibold text-[#06031E]">
-                            {lesson.status}
-                          </span>
-                        {/* ) : ( */}
-                          {/* <span className="shrink-0 text-xs font-normal text-[#616161]">
-                            {lesson.status}
-                          </span>
-                        )} */}
+                        <span className="shrink-0 text-xs font-semibold text-[#06031E]">
+                          {lesson.status}
+                        </span>
                       </div>
                     </div>
                     {lesson.status === "ongoing" ||
@@ -155,7 +148,7 @@ export default function HomePageMain() {
                       <Link
                         to="/signup"
                         onClick={() => setSignUpFormOpen(true)}
-                        className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                       >
                         Join
                       </Link>
@@ -404,7 +397,7 @@ export default function HomePageMain() {
             to="/signup"
             onClick={() => setSignUpFormOpen(true)}
             type="button"
-            className="w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
+            className="mx-auto block w-[175px] rounded-lg border bg-slate-950 py-[13px] text-sm font-semibold leading-tight text-white hover:border-slate-950 hover:bg-white hover:text-slate-950"
           >
             Get Started Now
           </Link>

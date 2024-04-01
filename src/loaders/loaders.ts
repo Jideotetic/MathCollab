@@ -17,7 +17,6 @@ export interface ClassData {
 }
 
 export async function homePageLoader() {
-  console.log("Hompeage loader");
   try {
     if (localStorage.getItem("user")) {
       return redirect("/dashboard");
@@ -74,39 +73,6 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
       const classesRef = collection(db, "classes");
       onSnapshot(classesRef, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          // console.log(change);
-          // if (change.type === "modified") {
-          //   console.log("modified");
-          // }
-          // if (
-          //   change.type === "modified" &&
-          //   change.doc.data().name === authProvider.user?.displayName
-          // ) {
-          //   const docRef = doc(db, `classes/${change.doc.id}`);
-          //   updateDoc(docRef, {
-          //     status: "created",
-          //   });
-          // }
-          // if (
-          //   change.doc.data().name === authProvider.user?.displayName &&
-          //   change.doc.data().status === "ongoing"
-          // ) {
-          //   const docRef = doc(db, `classes/${change.doc.id}`);
-          //   updateDoc(docRef, {
-          //     status: "created",
-          //   });
-          // }
-          // if (
-          //   url.pathname.includes("dashboard") &&
-          //   change.doc.data().status === "ongoing" &&
-          //   change.doc.data().name === authProvider.user?.displayName
-          // ) {
-          //   console.log("dashboard");
-          //   const docRef = doc(db, `classes/${change.doc.id}`);
-          //   updateDoc(docRef, {
-          //     status: "created",
-          //   });
-          // }
           classes.push({
             id: change.doc.id,
             ...(change.doc.data() as {
@@ -142,7 +108,7 @@ export async function dashboardLoader({ request }: LoaderFunctionArgs) {
       search,
     };
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 
@@ -152,6 +118,7 @@ export async function canvasLoader() {
   try {
     await authProvider.checkAuth();
     const classes: ClassData[] = [];
+    let texts: string[] = [];
     const fetchClasses = new Promise((resolve) => {
       const classesRef = collection(db, "classes");
       onSnapshot(classesRef, (snapshot) => {
@@ -190,24 +157,35 @@ export async function canvasLoader() {
       toast.success(`${user.displayName} joined the class`);
     });
 
+    const fetchInitialTexts = new Promise((resolve) => {
+      server.on("initial-text", (globalTexts) => {
+        texts = globalTexts;
+        console.log(texts);
+        resolve(texts);
+      });
+    });
+
+    // const fetchTexts = new Promise((resolve) => {
+    //   server.on("text", (globalTexts) => {
+    //     texts = globalTexts;
+    //     console.log(texts);
+    //     resolve(texts);
+    //   });
+    // });
+
+    const initialTexts = (await fetchInitialTexts) as string[];
+    // if (initialLoad) {
+    //   initialLoad = false;
+    // } else {
+    //   globalTexts = (await fetchTexts) as string[];
+    // }
+
     return {
       currentUser: authProvider.user,
       lessons,
+      initialTexts,
     };
   } catch (error) {
     console.error(error);
   }
 }
-
-// export const classLoader: LoaderFunction<unknown> = async ({ params }) => {
-//   const lessonTitle = params.class;
-//   const lessons = classes.filter((lesson) => {
-//     return lesson.link === lessonTitle;
-//   });
-
-//   const lesson = classes.find((lesson) => {
-//     return lesson.link === lessonTitle;
-//   });
-
-//   return { lesson, lessons };
-// };
