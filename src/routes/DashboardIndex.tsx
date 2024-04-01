@@ -130,30 +130,7 @@ export default function DashboardIndex() {
 
   return (
     <>
-      <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border border-neutral-200 px-4">
-        {/* <ul className="flex flex-wrap gap-[10px] rounded-[8.19px] border-[0.68px] bg-[#F5F5F5] p-2">
-          {classesCategory.map((category) => (
-            <li
-              key={category}
-              // className="rounded-[8.19px] px-[11px]
-              // py-[6px] text-[#3A383C]"
-            >
-              <NavLink
-                to={category === "Explore" ? "/dashboard" : category}
-                className={({ isActive }) =>
-                  isActive
-                    ? `rounded-[8.19px] bg-white px-[11px]
-py-[6px] text-[#3A383C]`
-                    : `rounded-[8.19px] px-[11px]
-py-[6px] text-[#3A383C]`
-                }
-              >
-                {category}
-              </NavLink>
-            </li>
-          ))}
-        </ul> */}
-
+      <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4">
         <div className="flex-grow">
           <Form action="#" className="relative w-full">
             <button
@@ -175,7 +152,7 @@ py-[6px] text-[#3A383C]`
                 });
               }}
               placeholder="Search for classes"
-              className="w-full rounded-[80px] border border-[#666666] bg-white pl-10 sm:w-[70%]"
+              className="w-full rounded-[80px] border border-neutral-300 bg-white pl-10 sm:w-[70%]"
             />
           </Form>
         </div>
@@ -245,15 +222,10 @@ py-[6px] text-[#3A383C]`
                         </span>
 
                         <img src={ellipseIconUrl} alt="" />
-                        {lesson.status === "ongoing" ? (
-                          <span className="shrink-0 text-xs font-semibold text-[#06031E]">
-                            {lesson.status}
-                          </span>
-                        ) : (
-                          <span className="shrink-0 text-xs font-normal text-[#616161]">
-                            {lesson.status}
-                          </span>
-                        )}
+
+                        <span className="shrink-0 text-xs font-semibold text-[#616161]">
+                          {lesson.status}
+                        </span>
                       </div>
                     </div>
                     {lesson.status === "done" ? (
@@ -262,35 +234,42 @@ py-[6px] text-[#3A383C]`
                       </button>
                     ) : lesson.status === "created" &&
                       currentUser.displayName === lesson.name ? (
-                      <Form method="POST" action="start-class">
-                        <button
-                          type="submit"
-                          name="id"
-                          value={lesson.id}
-                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
-                        >
+                      <Form
+                        method="POST"
+                        action="start-class"
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
+                      >
+                        <button type="submit" name="id" value={lesson.id}>
                           Start class
                         </button>
                       </Form>
                     ) : lesson.status === "ongoing" &&
                       currentUser.displayName === lesson.name ? (
-                      <Form method="POST" action="start-class">
+                      <Form
+                        method="POST"
+                        action="start-class"
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
+                      >
                         <button
                           type="submit"
                           name="id"
                           value={lesson.id}
-                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                          // className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
                           Start class
                         </button>
                       </Form>
                     ) : (
-                      <Form method="POST" action="join-class">
+                      <Form
+                        method="POST"
+                        action="join-class"
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
+                      >
                         <button
                           type="submit"
                           name="id"
                           value={lesson.id}
-                          className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                          // className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
                           Join
                         </button>

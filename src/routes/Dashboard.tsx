@@ -53,7 +53,7 @@ export default function Dashboard() {
       <DashboardHeader />
 
       <div className="relative mx-auto grid min-h-screen w-[1280px] max-w-full pb-2 pt-[110px] lg:grid-cols-layout lg:gap-2">
-        <nav className="fixed hidden h-screen w-[218px] bg-white pl-4 pt-[110px] lg:inline-block">
+        <nav className="fixed hidden h-screen w-[218px] overflow-y-auto bg-white pl-4 pt-[110px] lg:inline-block">
           <div className="space-y-8">
             <NavLink
               to="/dashboard"
