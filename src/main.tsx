@@ -26,6 +26,7 @@ import {
   joinClassAction,
   signoutAction,
   startClassAction,
+  canvasAction,
 } from "./actions/actions";
 import "./index.css";
 import LoginForm from "./components/LoginForm";
@@ -115,6 +116,7 @@ const router = createBrowserRouter([
     element: <Canvas />,
     errorElement: <ErrorPage />,
     loader: canvasLoader,
+    action: canvasAction,
   },
 ]);
 

@@ -45,16 +45,6 @@ export default function Dashboard() {
   //   });
   // }, []);
 
-  // useEffect(() => {
-  //   server.on("connected-successfully", (data) => {
-  //     const { success } = data;
-  //     console.log(success);
-  //     if (success) {
-  //       toast.success("Connected successfully");
-  //     }
-  //   });
-  // }, []);
-
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}
