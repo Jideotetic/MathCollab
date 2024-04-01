@@ -87,7 +87,7 @@ export default function HomePageMain() {
         </h3>
 
         <div className="p-4">
-          <ul className="flex gap-5 overflow-x-auto [&::-moz-scrollbar]:hidden [&::-webkit-scrollbar]:hidden">
+          <ul className="no-scrollbar flex gap-5 overflow-x-auto">
             {lessons.map((lesson) => (
               <li
                 key={lesson.id}
