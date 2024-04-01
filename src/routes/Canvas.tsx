@@ -76,6 +76,7 @@ export default function Canvas() {
     const match = input.match(regex);
 
     if (!match) {
+      return input;
       throw new Error("Invalid command format");
     }
 
