@@ -1,25 +1,16 @@
 import { ToastContainer } from "react-toastify";
-// import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
 import { Link, Form, useNavigate } from "react-router-dom";
-// import Form from "./CustomForm";
 import Inputs from "./Inputs";
 import { useContext, useEffect, Fragment } from "react";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import MathCollab from "./MathCollab";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
+import MathCollab from "../MathCollab";
 import { Transition, Dialog } from "@headlessui/react";
 
 const inputs = [
   { label: "Enter new password", inputType: "password" },
   { label: "Confirm new password", inputType: "confirm-password" },
 ];
-
-// const headerContent = {
-//   title: "Reset Password",
-//   description: "Enter your new password below",
-//   email: "",
-// };
 
 export default function NewPasswordForm() {
   const {
@@ -82,8 +73,7 @@ export default function NewPasswordForm() {
               </p>
             </div>
           </div>
-          {/* <FormHeader headerContent={headerContent} /> */}
-          {/* <Form inputs={inputs} formType="new-password" /> */}
+
           <Form
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
@@ -109,7 +99,6 @@ export default function NewPasswordForm() {
           >
             Remember Password?
           </Link>
-          {/* <FormFooter formType="new-password" /> */}
 
           <div className="text-center text-base font-normal leading-normal text-neutral-500">
             Don't have an account?{" "}

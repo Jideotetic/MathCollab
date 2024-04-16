@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import facebookIconUrl from "../assets/Facebook.svg";
-import twitterIconUrl from "../assets/Twitter.svg";
-import instagramIconUrl from "../assets/Instagram.svg";
-
+import facebookIconUrl from "../../assets/Facebook.svg";
+import twitterIconUrl from "../../assets/Twitter.svg";
+import instagramIconUrl from "../../assets/Instagram.svg";
 
 export default function HomePageFooter() {
   return (

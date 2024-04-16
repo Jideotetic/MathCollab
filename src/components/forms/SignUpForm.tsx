@@ -1,12 +1,12 @@
 import FormWrapper from "./FormWrapper";
 import { Dialog, Transition } from "@headlessui/react";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import { useContext, Fragment, useEffect } from "react";
 import { Form, useNavigate, Link, useNavigation } from "react-router-dom";
 import Inputs from "./Inputs";
-import MathCollab from "./MathCollab";
-import lineUrl from "../assets/line.svg";
-import googleLogoUrl from "../assets/Google-logo.svg";
+import MathCollab from "../MathCollab";
+import lineUrl from "../../assets/line.svg";
+import googleLogoUrl from "../../assets/Google-logo.svg";
 import { ToastContainer } from "react-toastify";
 
 const inputs = [

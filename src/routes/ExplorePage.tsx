@@ -121,7 +121,7 @@ export default function ExplorePage() {
               type="button"
               className="min-w-[115px] rounded-[78px] border border-[#92929D] py-[5px] text-[#92929D]"
             >
-              Upcoming
+              upcoming
             </button>
           </div>
         </div>

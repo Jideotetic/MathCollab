@@ -1,21 +1,13 @@
-// import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
 import { Dialog, Transition } from "@headlessui/react";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import { useContext, Fragment, useEffect } from "react";
 import { useNavigate, Form, Link } from "react-router-dom";
 import Inputs from "./Inputs";
-import MathCollab from "./MathCollab";
+import MathCollab from "../MathCollab";
 import { ToastContainer } from "react-toastify";
 
 const inputs = [{ label: "Email", inputType: "email" }];
-
-// const headerContent = {
-//   title: "Reset Password",
-//   description: "Provide your registered email to reset your password",
-//   email: "",
-// };
 
 export default function ResetPasswordForm() {
   const {
@@ -54,8 +46,6 @@ export default function ResetPasswordForm() {
         }}
       >
         <FormWrapper>
-          {/* <FormHeader headerContent={headerContent} /> */}
-
           <div className="flex w-[359px] max-w-full flex-col items-center justify-center gap-2 text-center">
             <MathCollab />
 
@@ -95,9 +85,6 @@ export default function ResetPasswordForm() {
           >
             Remember Password?
           </Link>
-
-          {/* <Form inputs={inputs} formType="reset-password" /> */}
-          {/* <FormFooter formType="reset-password" /> */}
 
           <div className="text-center text-base font-normal leading-normal text-neutral-500">
             Don't have an account?{" "}

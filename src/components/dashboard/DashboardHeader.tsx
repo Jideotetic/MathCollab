@@ -1,16 +1,16 @@
-import MathCollab from "../components/MathCollab";
-import notificationUrl from "../assets/notification.svg";
+import MathCollab from "../MathCollab";
+import notificationUrl from "../../assets/notification.svg";
 import { Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import ImageUpload from "../components/ImageUpload";
+import ImageUpload from "../ImageUpload";
 import { Form, NavLink, useRouteLoaderData } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
-import switchUserUrl from "../assets/switch-user.svg";
-import lineUrl from "../assets/line.svg";
-import calenderUrl from "../assets/calender.svg";
-import settingsUrl from "../assets/settings.svg";
-import helpUrl from "../assets/help.svg";
-import signOutUrl from "../assets/sign-out.svg";
+import switchUserUrl from "../../assets/switch-user.svg";
+import lineUrl from "../../assets/line.svg";
+import calenderUrl from "../../assets/calender.svg";
+import settingsUrl from "../../assets/settings.svg";
+import helpUrl from "../../assets/help.svg";
+import signOutUrl from "../../assets/sign-out.svg";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "firebase/auth";
 
@@ -77,7 +77,7 @@ export default function DashboardHeader() {
               >
                 <Popover.Panel
                   as="nav"
-                  className="fixed left-0 top-0 z-50 flex h-screen justify-between overflow-auto bg-white px-4 py-6 max-[320px]:w-full min-[320px]:w-full min-[350px]:w-[80%] sm:w-[50%]"
+                  className="fixed left-0 top-0 z-50 flex h-screen justify-between overflow-auto bg-white px-4 py-6 max-[320px]:w-full min-[320px]:w-full min-[360px]:w-[80%] min-[500px]:w-[60%] sm:w-[50%]"
                 >
                   {({ close }) => (
                     <>
@@ -105,7 +105,7 @@ export default function DashboardHeader() {
                           Math Tools
                         </h2>
 
-                        <ul className="space-y-5">
+                        <ul className="space-y-5 pb-4">
                           {navLinks.map((link) => (
                             <Fragment key={link.id}>
                               <li className="space-y-8">
