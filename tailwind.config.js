@@ -10,11 +10,11 @@ export default {
       gridTemplateColumns: {
         layout: "218px 1fr",
         canvasLayout: "240px 1fr 240px",
-        classes: "repeat(auto-fill, minmax(200px, 1fr))",
-        classe1: "repeat(auto-fill, minmax(300px, 1fr))",
+        classes: "repeat(auto-fill, minmax(300px, 1fr))",
       },
       gridTemplateRows: {
         rowLayout: "50px 1fr",
+        rowLayout1: "repeat(auto-fill, minmax(300px, 1fr))",
       },
       backgroundImage: {
         image: "url('/src/assets/bg-image.png')",

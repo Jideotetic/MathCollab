@@ -1,8 +1,8 @@
 import { Fragment, useContext } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import MathCollab from "./MathCollab";
+import MathCollab from "../MathCollab";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
@@ -16,7 +16,7 @@ const navLinks = [
 
 export default function HomePageHeader() {
   const { setLoginFormOpen } = useContext(FormsContext) as FormsContextType;
-  
+
   return (
     <>
       <header className="fixed left-0 right-0 top-0 z-10 mx-auto flex h-[101px] w-[1280px] max-w-full items-center justify-between bg-white px-4 py-6 text-sm xl:px-20">
@@ -113,7 +113,6 @@ export default function HomePageHeader() {
           )}
         </Popover>
         {/* MOBILE NAV ENDS */}
-
         {/* LARGE SCREEN NAV STARTS */}
         <nav className="hidden lg:block">
           <ul className="gap-8 lg:flex">
@@ -137,7 +136,6 @@ export default function HomePageHeader() {
           </ul>
         </nav>
         {/* LARGE SCREEN NAV ENDS */}
-
         {/* LOGIN BUTTON */}
         <Link
           to="/login"

@@ -10,33 +10,29 @@ import Dashboard from "./routes/Dashboard";
 import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
 import Canvas from "./routes/Canvas";
-import {
-  canvasLoader,
-  dashboardLoader,
-  homePageLoader,
-} from "./loaders/loaders";
-import {
-  signUpFormAction,
-  verifyEmailFormAction,
-  loginFormAction,
-  resetPasswordFormAction,
-  verifyPasswordResetFormAction,
-  newPasswordFormAction,
-  createClassAction,
-  joinClassAction,
-  signoutAction,
-  startClassAction,
-  canvasAction,
-} from "./actions/actions";
 import "./index.css";
-import LoginForm from "./components/LoginForm";
-import SignUpForm from "./components/SignUpForm";
-import VerifyEmailOTPForm from "./components/VerifyEmailForm";
-import ResetPasswordForm from "./components/ResetPasswordForm";
-import VerifyPasswordResetOTPForm from "./components/VerifyPasswordResetOTPForm";
-import NewPasswordForm from "./components/NewPasswordForm";
-import CreateClassForm from "./components/CreateClassForm";
+import LoginForm from "./components/forms/LoginForm";
+import SignUpForm from "./components/forms/SignUpForm";
+import VerifyEmailOTPForm from "./components/forms/VerifyEmailForm";
+import ResetPasswordForm from "./components/forms/ResetPasswordForm";
+import VerifyPasswordResetOTPForm from "./components/forms/VerifyPasswordResetOTPForm";
+import NewPasswordForm from "./components/forms/NewPasswordForm";
+import CreateClassForm from "./components/forms/CreateClassForm";
 import GlobalSpinner from "./components/GlobalSpinner";
+import startClassAction from "./actions/startClassAction";
+import signUpFormAction from "./actions/signUpFormAction";
+import verifyEmailFormAction from "./actions/verifyEmailFormAction";
+import loginFormAction from "./actions/loginFormAction";
+import resetPasswordFormAction from "./actions/resetPasswordFormAction";
+import verifyPasswordResetFormAction from "./actions/verifyPasswordResetFormAction";
+import newPasswordFormAction from "./actions/newPasswordFormAction";
+import signoutAction from "./actions/signoutAction";
+import createClassAction from "./actions/createClassAction";
+import joinClassAction from "./actions/joinClassAction";
+import homePageLoader from "./loaders/homePageLoader";
+import dashboardLoader from "./loaders/dashboardLoader";
+import canvasAction from "./actions/canvasAction";
+import canvasLoader from "./loaders/canvasLoader";
 
 const router = createBrowserRouter([
   {

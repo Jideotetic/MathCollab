@@ -1,77 +1,78 @@
-// import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
-// import Form from "./CustomForm";
-import { Link, Form, useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext, Fragment } from "react";
-import { ToastContainer } from "react-toastify";
+import { Dialog, Transition } from "@headlessui/react";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
+import { useContext, Fragment, useEffect, useState } from "react";
+import { useNavigate, Form, Link, useRouteLoaderData } from "react-router-dom";
+import { temp } from "../../otp";
 import OTPInputs from "./OTPInputs";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { temp } from "../otp";
-import { Transition, Dialog } from "@headlessui/react";
-import MathCollab from "./MathCollab";
+import { ToastContainer } from "react-toastify";
+import MathCollab from "../MathCollab";
+import { User, deleteUser } from "firebase/auth";
 
-export default function VerifyPasswordResetOTPForm() {
+export default function VerifyEmailOTPForm() {
   const [otp, setOtp] = useState("");
 
   function onChange(value: string) {
     setOtp(value);
   }
 
-  const navigate = useNavigate();
+  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
+
+  console.log(currentUser);
 
   const {
-    verifyPasswordResetOTPFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
-    setResetPasswordFormOpen,
-    resetPasswordFormOpen,
+    verifyEmailFormOpen,
+    setVerifyEmailFormOpen,
+    setSignUpFormOpen,
+    signUpFormOpen,
     setLoginFormOpen,
   } = useContext(FormsContext) as FormsContextType;
 
+  const navigate = useNavigate();
+
   function goToSignInPage() {
-    setVerifyPasswordResetOTPFormOpen(false);
+    setVerifyEmailFormOpen(false);
     setLoginFormOpen(true);
+    deleteUser(currentUser);
     temp.email = "";
   }
 
   useEffect(() => {
-    setResetPasswordFormOpen(false);
-    setVerifyPasswordResetOTPFormOpen(true);
+    setSignUpFormOpen(false);
+    setVerifyEmailFormOpen(true);
 
-    if (
-      verifyPasswordResetOTPFormOpen === false &&
-      resetPasswordFormOpen === false
-    ) {
+    if (signUpFormOpen === false && verifyEmailFormOpen === false) {
       temp.email = "";
+      deleteUser(currentUser);
       navigate("/");
     }
   }, [
     navigate,
-    resetPasswordFormOpen,
-    setResetPasswordFormOpen,
-    setVerifyPasswordResetOTPFormOpen,
-    verifyPasswordResetOTPFormOpen,
+    signUpFormOpen,
+    setSignUpFormOpen,
+    verifyEmailFormOpen,
+    setVerifyEmailFormOpen,
+    currentUser,
   ]);
 
   return (
-    <Transition show={verifyPasswordResetOTPFormOpen} as={Fragment}>
+    <Transition show={verifyEmailFormOpen} as={Fragment}>
       <Dialog
         className="relative z-10"
         onClose={() => {
-          setVerifyPasswordResetOTPFormOpen(false);
+          setVerifyEmailFormOpen(false);
           temp.email = "";
+          deleteUser(currentUser);
           navigate("/");
         }}
       >
         <FormWrapper>
-          {/* <FormHeader headerContent={headerContent} /> */}
-
           <div className="flex w-[359px] max-w-full flex-col items-center justify-center gap-2 text-center">
             <MathCollab />
 
             <div className="space-y-2">
               <h2 className="text-xl font-semibold leading-[30px]">
-                Reset Password
+                Verify Email
               </h2>
 
               <p className="text-base font-normal leading-normal">
@@ -85,6 +86,7 @@ export default function VerifyPasswordResetOTPForm() {
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
             action="."
+            replace
           >
             <ToastContainer />
             <div className="flex flex-col gap-8">
@@ -112,9 +114,8 @@ export default function VerifyPasswordResetOTPForm() {
               Verify
             </button>
           </Form>
+          {/* <Form inputs={inputs} formType="verify-email" /> */}
 
-          {/* <Form inputs={inputs} formType="verify-password-reset" /> */}
-          {/* <FormFooter formType="verify-password-reset" /> */}
           <div className="text-center text-base font-normal leading-normal text-neutral-500">
             Already have an account?{" "}
             <Link

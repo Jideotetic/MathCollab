@@ -1,21 +1,12 @@
-// import FormHeader from "./FormHeader";
 import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
-// import Form from "./CustomForm";
-import MathCollab from "./MathCollab";
+import MathCollab from "../MathCollab";
 import { Form, useNavigate } from "react-router-dom";
 import Inputs from "./Inputs";
 import { Fragment, useContext, useEffect } from "react";
 import { Transition, Dialog } from "@headlessui/react";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 
 const inputs = [{ label: "Enter/Paste class id", inputType: "text" }];
-
-// const headerContent = {
-//   title: "Join a class",
-//   description: "Provide your class information below",
-//   email: "",
-// };
 
 export default function JoinClassForm() {
   const { setJoinClassFormOpen, joinClassFormOpen } = useContext(
@@ -39,7 +30,6 @@ export default function JoinClassForm() {
         }}
       >
         <FormWrapper>
-          {/* <FormHeader headerContent={headerContent} /> */}
           <div className="flex w-[359px] max-w-full flex-col items-center justify-center gap-2 text-center">
             <MathCollab />
 
@@ -70,7 +60,6 @@ export default function JoinClassForm() {
               Join a class
             </button>
           </Form>
-          {/* <FormFooter formType="join-class" /> */}
         </FormWrapper>
       </Dialog>
     </Transition>

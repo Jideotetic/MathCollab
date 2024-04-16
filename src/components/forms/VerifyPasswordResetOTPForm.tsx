@@ -1,79 +1,72 @@
 import FormWrapper from "./FormWrapper";
-import { Dialog, Transition } from "@headlessui/react";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { useContext, Fragment, useEffect, useState } from "react";
-import { useNavigate, Form, Link, useRouteLoaderData } from "react-router-dom";
-import { temp } from "../otp";
-import OTPInputs from "./OTPInputs";
+import { Link, Form, useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext, Fragment } from "react";
 import { ToastContainer } from "react-toastify";
-import MathCollab from "./MathCollab";
-import { User, deleteUser } from "firebase/auth";
+import OTPInputs from "./OTPInputs";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
+import { temp } from "../../otp";
+import { Transition, Dialog } from "@headlessui/react";
+import MathCollab from "../MathCollab";
 
-export default function VerifyEmailOTPForm() {
+export default function VerifyPasswordResetOTPForm() {
   const [otp, setOtp] = useState("");
 
   function onChange(value: string) {
     setOtp(value);
   }
 
-  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
-
-  console.log(currentUser);
+  const navigate = useNavigate();
 
   const {
-    verifyEmailFormOpen,
-    setVerifyEmailFormOpen,
-    setSignUpFormOpen,
-    signUpFormOpen,
+    verifyPasswordResetOTPFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    setResetPasswordFormOpen,
+    resetPasswordFormOpen,
     setLoginFormOpen,
   } = useContext(FormsContext) as FormsContextType;
 
-  const navigate = useNavigate();
-
   function goToSignInPage() {
-    setVerifyEmailFormOpen(false);
+    setVerifyPasswordResetOTPFormOpen(false);
     setLoginFormOpen(true);
-    deleteUser(currentUser);
     temp.email = "";
   }
 
   useEffect(() => {
-    setSignUpFormOpen(false);
-    setVerifyEmailFormOpen(true);
+    setResetPasswordFormOpen(false);
+    setVerifyPasswordResetOTPFormOpen(true);
 
-    if (signUpFormOpen === false && verifyEmailFormOpen === false) {
+    if (
+      verifyPasswordResetOTPFormOpen === false &&
+      resetPasswordFormOpen === false
+    ) {
       temp.email = "";
-      deleteUser(currentUser);
       navigate("/");
     }
   }, [
     navigate,
-    signUpFormOpen,
-    setSignUpFormOpen,
-    verifyEmailFormOpen,
-    setVerifyEmailFormOpen,
-    currentUser,
+    resetPasswordFormOpen,
+    setResetPasswordFormOpen,
+    setVerifyPasswordResetOTPFormOpen,
+    verifyPasswordResetOTPFormOpen,
   ]);
 
   return (
-    <Transition show={verifyEmailFormOpen} as={Fragment}>
+    <Transition show={verifyPasswordResetOTPFormOpen} as={Fragment}>
       <Dialog
         className="relative z-10"
         onClose={() => {
-          setVerifyEmailFormOpen(false);
+          setVerifyPasswordResetOTPFormOpen(false);
           temp.email = "";
-          deleteUser(currentUser);
           navigate("/");
         }}
       >
         <FormWrapper>
-          {/* <FormHeader headerContent={headerContent} /> */}
           <div className="flex w-[359px] max-w-full flex-col items-center justify-center gap-2 text-center">
             <MathCollab />
 
             <div className="space-y-2">
               <h2 className="text-xl font-semibold leading-[30px]">
-                Verify Email
+                Reset Password
               </h2>
 
               <p className="text-base font-normal leading-normal">
@@ -87,7 +80,6 @@ export default function VerifyEmailOTPForm() {
             className="flex w-full min-w-[202px] flex-col gap-8"
             method="post"
             action="."
-            replace
           >
             <ToastContainer />
             <div className="flex flex-col gap-8">
@@ -115,7 +107,6 @@ export default function VerifyEmailOTPForm() {
               Verify
             </button>
           </Form>
-          {/* <Form inputs={inputs} formType="verify-email" /> */}
 
           <div className="text-center text-base font-normal leading-normal text-neutral-500">
             Already have an account?{" "}
@@ -127,7 +118,6 @@ export default function VerifyEmailOTPForm() {
               Sign In
             </Link>
           </div>
-          {/* <FormFooter formType="verify-email" /> */}
         </FormWrapper>
       </Dialog>
     </Transition>

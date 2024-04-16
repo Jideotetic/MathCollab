@@ -1,12 +1,8 @@
-// import FormHeader from "./FormHeader";
-// import FormWrapper from "./FormWrapper";
-// import FormFooter from "./FormFooter";
-// import Form from "./CustomForm";
-import MathCollab from "./MathCollab";
+import MathCollab from "../MathCollab";
 import { Form, useNavigate, useNavigation } from "react-router-dom";
 import Inputs from "./Inputs";
 import { useContext, useEffect, Fragment } from "react";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import FormWrapper from "./FormWrapper";
 import { Transition, Dialog } from "@headlessui/react";
 

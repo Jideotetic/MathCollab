@@ -1,64 +1,31 @@
 import { Form, useRouteLoaderData, useSubmit } from "react-router-dom";
-import { useState, useMemo, useContext, useEffect } from "react";
-import heartIconUrl from "../assets/heart.png";
+import { useContext, useEffect } from "react";
+import heartIconUrl from "../../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
-import ellipseIconUrl from "../assets/Ellipse 1779.png";
+import ellipseIconUrl from "../../assets/Ellipse 1779.png";
 import { Link } from "react-router-dom";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import { ClassData } from "../loaders/loaders";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import searchIconUrl from "../assets/ic_Search.svg";
-import userImageUrl from "../assets/user.jpeg";
+import searchIconUrl from "../../assets/ic_Search.svg";
+import userImageUrl from "../../assets/user.jpeg";
 import { User } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
-
-interface Classes {
-  id: string;
-  creator: string;
-  title: string;
-  link: string;
-  views: string;
-  likes: string;
-  status: string;
-  video: string;
-  creatorImage: string;
-}
+import { Unsubscribe } from "firebase/firestore";
+import { ClassData } from "../../@types/types";
 
 export interface Prop {
-  lessons: Classes[];
+  lessons: ClassData[];
   search: string;
 }
 
-const PAGESIZE = 15;
-
-// const classesCategory = [
-//   "Explore",
-//   "Past",
-//   "Live",
-//   "Upcoming",
-//   "Trending",
-//   "Joined",
-//   "Mine",
-// ];
-
-export default function DashboardIndex() {
-  const { filteredClasses, currentUser, search } = useRouteLoaderData(
+export default function DashboardMain() {
+  const { filteredClasses, currentUser, search, cleanup } = useRouteLoaderData(
     "dashboard",
   ) as {
     filteredClasses: ClassData[];
     currentUser: User;
     search: string;
+    cleanup: Unsubscribe;
   };
-  const [currentPage] = useState(1);
-
-  console.log(filteredClasses);
-
-  const currentLessons = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PAGESIZE;
-    const lastPageIndex = firstPageIndex + PAGESIZE;
-    return filteredClasses.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, filteredClasses]);
 
   const { setCreateClassFormOpen } = useContext(
     FormsContext,
@@ -71,66 +38,16 @@ export default function DashboardIndex() {
     }
   }, [search]);
 
-  useEffect(() => {
-    filteredClasses.forEach((lesson) => {
-      if (
-        lesson.status === "ongoing" &&
-        lesson.name === currentUser.displayName
-      ) {
-        const docRef = doc(db, `classes/${lesson.id}`);
-        updateDoc(docRef, {
-          status: "created",
-        });
-      }
-    });
-  }, [currentUser.displayName, filteredClasses]);
-
-  // useEffect(() => {
-  //   // Set up Firestore real-time listener to listen for changes in lessons collection
-  //   const unsubscribe = onSnapshot(
-  //     query(
-  //       collection(db, "classes"),
-  //       where("user", "==", currentUser.displayName),
-  //     ),
-  //     (snapshot) => {
-  //       const updatedLessons = [];
-  //       snapshot.forEach((doc) => {
-  //         updatedLessons.push({
-  //           id: doc.id,
-  //           ...doc.data(),
-  //         });
-  //       });
-  //       setLesson(updatedLessons);
-  //     },
-  //   );
-
-  //   // Clean up listener when component unmounts
-  //   return () => unsubscribe();
-  // }, [currentUser.displayName]);
-
   const submit = useSubmit();
-  // const navigate = useNavigate();
 
-  // const totalPageCount = Math.ceil(lessons.length / PAGESIZE);
-
-  // function handlePageClick(data: Data) {
-  //   setCurrentPage(data.selected + 1);
-  //   console.log(data.selected + 1);
-  // }
-
-  // function handleStartClass(lesson) {
-  //   server.emit("start-class", { lesson, filteredClasses });
-  //   navigate(`/canvas/${lesson.id}`);
-  // }
-
-  // function handleJoinClass(lesson) {
-  //   server.emit("join-class", { lesson });
-  //   navigate(`/canvas/${lesson.id}`);
-  // }
+  useEffect(() => {
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
-      <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4">
+      <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4 py-2">
         <div className="flex-grow">
           <Form action="#" className="relative w-full">
             <button
@@ -168,12 +85,12 @@ export default function DashboardIndex() {
       </div>
 
       <div className="p-4">
-        {currentLessons.length ? (
-          <ul className="mx-auto grid max-w-full grid-cols-classes gap-x-2 gap-y-8 py-[15px] text-left sm:grid-cols-classe1">
-            {currentLessons.map((lesson) => (
+        {filteredClasses.length ? (
+          <ul className="mx-auto grid max-w-full gap-x-2 gap-y-8 py-[15px] text-left sm:grid-cols-classes">
+            {filteredClasses.map((lesson) => (
               <li
                 key={lesson.id}
-                className="flex max-w-full flex-shrink-0 flex-col rounded-[5.85px]  border-[0.94px] border-[#E0E0E0] bg-white"
+                className="flex max-w-full flex-col rounded-[5.85px]  border-[0.94px] border-[#E0E0E0] bg-white"
               >
                 <video
                   controls
@@ -198,7 +115,7 @@ export default function DashboardIndex() {
                   </div>
 
                   {lesson.status === "ongoing" ||
-                  lesson.status === "created" ? (
+                  lesson.status === "upcoming" ? (
                     <p className="text-left text-base font-medium text-black">
                       <span className="font-semibold">Preview</span>:{" "}
                       {lesson.title}
@@ -232,7 +149,7 @@ export default function DashboardIndex() {
                       <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
                         Share
                       </button>
-                    ) : lesson.status === "created" &&
+                    ) : lesson.status === "upcoming" &&
                       currentUser.displayName === lesson.name ? (
                       <Form
                         method="POST"
@@ -240,7 +157,7 @@ export default function DashboardIndex() {
                         className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
                       >
                         <button type="submit" name="id" value={lesson.id}>
-                          Start class
+                          Start
                         </button>
                       </Form>
                     ) : lesson.status === "ongoing" &&
@@ -256,7 +173,7 @@ export default function DashboardIndex() {
                           value={lesson.id}
                           // className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
                         >
-                          Start class
+                          Start
                         </button>
                       </Form>
                     ) : (

@@ -35,6 +35,7 @@ import { server } from "../socket";
 import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import ReactDOM from "react-dom/client";
+import { ClassData } from "../@types/types";
 
 const penTools = [
   arrowUrl,
@@ -64,12 +65,16 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const { initialTexts } = useRouteLoaderData("canvas") as {
+  const { initialTexts, classes, cleanup } = useRouteLoaderData("canvas") as {
     initialTexts: string[];
+    classes: ClassData[];
+    // cleanup: () => void;
   };
   const { id } = useParams();
   const [content, setContent] = useState("");
   const listRef = useRef<HTMLUListElement>(null);
+
+  console.log(classes);
 
   function parseCommand(input: string) {
     const regex = /(\w+)\(([^)]+)\)/;
@@ -77,7 +82,6 @@ export default function Canvas() {
 
     if (!match) {
       return input;
-      throw new Error("Invalid command format");
     }
 
     const command = match[1].trim().toLowerCase();
@@ -272,6 +276,8 @@ export default function Canvas() {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setContent(e.target.value);
   }
+
+  // useEffect(() => cleanup(), [cleanup]);
 
   return (
     <>

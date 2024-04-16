@@ -2,32 +2,39 @@ import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/24/outline";
-import ellipsisIconUrl from "../assets/Ellipse.svg";
-import testimonialImageUrl from "../assets/Mask group.png";
-import quoteUrl from "../assets/“.svg";
-import filledStarUrl from "../assets/star.svg";
-import emptyStarUrl from "../assets/star (1).svg";
-import joinUrl from "../assets/Join.png";
-import createUrl from "../assets/Create.png";
-import canvasUrl from "../assets/Canvas.png";
-import thorusUrl from "../assets/Thorus 2.svg";
-import groupUrl from "../assets/Group 48096042.svg";
-import iconUrl from "../assets/1_3.svg";
-import boxUrl from "../assets/Box1.png";
-import { useContext } from "react";
+import ellipsisIconUrl from "../../assets/Ellipse.svg";
+import testimonialImageUrl from "../../assets/Mask group.png";
+import quoteUrl from "../../assets/“.svg";
+import filledStarUrl from "../../assets/star.svg";
+import emptyStarUrl from "../../assets/star (1).svg";
+import joinUrl from "../../assets/Join.png";
+import createUrl from "../../assets/Create.png";
+import canvasUrl from "../../assets/Canvas.png";
+import thorusUrl from "../../assets/Thorus 2.svg";
+import groupUrl from "../../assets/Group 48096042.svg";
+import iconUrl from "../../assets/1_3.svg";
+import boxUrl from "../../assets/Box1.png";
+import { useContext, useEffect } from "react";
 import { Link, useRouteLoaderData } from "react-router-dom";
-import { FormsContext, FormsContextType } from "../contexts/FormsContext";
-import heartIconUrl from "../assets/heart.png";
+import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
+import heartIconUrl from "../../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
-import ellipseIconUrl from "../assets/Ellipse 1779.png";
-import { ClassData } from "../loaders/loaders";
-import userImageUrl from "../assets/user.jpeg";
+import ellipseIconUrl from "../../assets/Ellipse 1779.png";
+import userImageUrl from "../../assets/user.jpeg";
+import { ClassData } from "../../@types/types";
+import { Unsubscribe } from "firebase/firestore";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { lessons } = useRouteLoaderData("root") as {
-    lessons: ClassData[];
+  const { classes, cleanup } = useRouteLoaderData("root") as {
+    classes: ClassData[];
+    cleanup: Unsubscribe;
   };
+
+  useEffect(() => {
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="mx-auto w-[1280px] max-w-full pt-[101px] text-center">
@@ -88,7 +95,7 @@ export default function HomePageMain() {
 
         <div className="p-4">
           <ul className="no-scrollbar flex gap-5 overflow-x-auto">
-            {lessons.map((lesson) => (
+            {classes.map((lesson) => (
               <li
                 key={lesson.id}
                 className="flex w-[338px] max-w-full flex-shrink-0 flex-col rounded-[5.85px] border-[0.94px] border-[#E0E0E0] bg-white"
@@ -144,11 +151,11 @@ export default function HomePageMain() {
                       </div>
                     </div>
                     {lesson.status === "ongoing" ||
-                    lesson.status === "created" ? (
+                    lesson.status === "upcoming" ? (
                       <Link
                         to="/signup"
                         onClick={() => setSignUpFormOpen(true)}
-                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
                       >
                         Join
                       </Link>
