@@ -65,10 +65,9 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const { initialTexts, classes, cleanup } = useRouteLoaderData("canvas") as {
+  const { initialTexts, classes } = useRouteLoaderData("canvas") as {
     initialTexts: string[];
     classes: ClassData[];
-    // cleanup: () => void;
   };
   const { id } = useParams();
   const [content, setContent] = useState("");
