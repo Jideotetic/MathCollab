@@ -45,3 +45,5 @@ const TimePassed: React.FC<TimePassedProps> = ({ eventDate }) => {
 
   return <span>{timePassed}</span>;
 };
+
+export default TimePassed;
