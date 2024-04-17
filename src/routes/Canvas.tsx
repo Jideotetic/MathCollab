@@ -209,7 +209,7 @@ export default function Canvas() {
     e.preventDefault();
     const docRef = doc(db, `classes/${id}`);
     updateDoc(docRef, {
-      status: "done",
+      status: new Date(),
     });
     navigate("/dashboard");
   }
