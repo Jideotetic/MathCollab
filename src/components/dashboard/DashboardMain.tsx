@@ -12,8 +12,6 @@ import { User } from "firebase/auth";
 import { Unsubscribe } from "firebase/firestore";
 import { ClassData } from "../../@types/types";
 import TimePassed from "../TimePassed";
-// import { doc, updateDoc } from "firebase/firestore";
-// import { db } from "../../firebase";
 
 export interface Prop {
   lessons: ClassData[];
@@ -47,15 +45,6 @@ export default function DashboardMain() {
     return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function handleEndClass(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    const docRef = doc(db, `classes/${id}`);
-    updateDoc(docRef, {
-      status: new Date(),
-    });
-    navigate("/dashboard");
-  }
 
   return (
     <>

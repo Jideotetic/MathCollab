@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function TimePassed({ eventDate }) {
+export default function TimePassed({ eventDate }: { eventDate: string }) {
   const [timePassed, setTimePassed] = useState("");
 
   useEffect(() => {
