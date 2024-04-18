@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Timestamp } from "firebase/firestore";
 
 interface TimePassedProps {
-  eventDate: Timestamp;
+  eventDate: string;
 }
 
 const TimePassed: React.FC<TimePassedProps> = ({ eventDate }) => {
