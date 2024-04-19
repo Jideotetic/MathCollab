@@ -23,6 +23,7 @@ export default async function createClassAction({
     user: user?.photoURL,
     video: "",
     views: 0,
+    likedBy: [],
   });
 
   console.log("upcoming");

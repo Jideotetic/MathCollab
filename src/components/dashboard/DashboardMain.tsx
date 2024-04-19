@@ -1,4 +1,9 @@
-import { Form, useRouteLoaderData, useSubmit } from "react-router-dom";
+import {
+  Form,
+  useRouteLoaderData,
+  useSubmit,
+  useFetcher,
+} from "react-router-dom";
 import { useContext, useEffect } from "react";
 import heartIconUrl from "../../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
@@ -40,6 +45,7 @@ export default function DashboardMain() {
   }, [search]);
 
   const submit = useSubmit();
+  let fetcher = useFetcher();
 
   useEffect(() => {
     return cleanup;
@@ -108,9 +114,20 @@ export default function DashboardMain() {
                     />
 
                     <div className="flex items-center gap-1">
-                      <button>
-                        <img src={heartIconUrl} alt="" />
-                      </button>
+                      <fetcher.Form method="post" className="flex items-center">
+                        <button
+                          className="flex items-center"
+                          name="lesson"
+                          value={JSON.stringify(lesson)}
+                        >
+                          <img src={heartIconUrl} alt="" title="like" />
+                        </button>
+                        <input
+                          type="hidden"
+                          name="user"
+                          value={currentUser.displayName}
+                        />
+                      </fetcher.Form>
                       <span className="text-lg font-normal text-[#616161]">
                         {lesson.likes > 0 && lesson.likes}
                       </span>

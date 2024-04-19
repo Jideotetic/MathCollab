@@ -118,6 +118,7 @@ export default function HomePageMain() {
                     <div className="flex items-center gap-1">
                       <Link
                         to="/signup"
+                        className="flex items-center"
                         onClick={() => setSignUpFormOpen(true)}
                       >
                         <img src={heartIconUrl} alt="" />
