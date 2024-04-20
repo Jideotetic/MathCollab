@@ -1,4 +1,9 @@
-import { Form, useRouteLoaderData, useSubmit } from "react-router-dom";
+import {
+  Form,
+  useRouteLoaderData,
+  useSubmit,
+  useFetcher,
+} from "react-router-dom";
 import { useContext, useEffect } from "react";
 import heartIconUrl from "../../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
@@ -11,6 +16,7 @@ import userImageUrl from "../../assets/user.jpeg";
 import { User } from "firebase/auth";
 import { Unsubscribe } from "firebase/firestore";
 import { ClassData } from "../../@types/types";
+import TimePassed from "../TimePassed";
 
 export interface Prop {
   lessons: ClassData[];
@@ -39,6 +45,7 @@ export default function DashboardMain() {
   }, [search]);
 
   const submit = useSubmit();
+  let fetcher = useFetcher();
 
   useEffect(() => {
     return cleanup;
@@ -107,7 +114,20 @@ export default function DashboardMain() {
                     />
 
                     <div className="flex items-center gap-1">
-                      <img src={heartIconUrl} alt="" />
+                      <fetcher.Form method="post" className="flex items-center">
+                        <button
+                          className="flex items-center"
+                          name="lesson"
+                          value={JSON.stringify(lesson)}
+                        >
+                          <img src={heartIconUrl} alt="" title="like" />
+                        </button>
+                        <input
+                          type="hidden"
+                          name="user"
+                          value={currentUser.displayName}
+                        />
+                      </fetcher.Form>
                       <span className="text-lg font-normal text-[#616161]">
                         {lesson.likes > 0 && lesson.likes}
                       </span>
@@ -135,18 +155,24 @@ export default function DashboardMain() {
                         <EyeIcon className="h-[13px] w-[13px]" />
 
                         <span className="shrink-0 text-xs font-normal text-[#616161]">
-                          {lesson.views > 0 && lesson.views} views
+                          {lesson.views > 0 ? lesson.views : "0"} views
                         </span>
 
                         <img src={ellipseIconUrl} alt="" />
 
+                        <span className="shrink-0 text-xs font-semibold text-red-500">
+                          {lesson.status === "ongoing" ||
+                            (lesson.status === "upcoming" && lesson.status)}
+                        </span>
                         <span className="shrink-0 text-xs font-semibold text-[#616161]">
-                          {lesson.status}
+                          {typeof lesson.status !== "string" && (
+                            <TimePassed eventDate={lesson.status.toDate()} />
+                          )}
                         </span>
                       </div>
                     </div>
-                    {lesson.status === "done" ? (
-                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                    {typeof lesson.status !== "string" ? (
+                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[20px] text-sm font-semibold">
                         Share
                       </button>
                     ) : lesson.status === "upcoming" &&

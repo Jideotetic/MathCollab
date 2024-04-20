@@ -32,6 +32,7 @@ import joinClassAction from "./actions/joinClassAction";
 import homePageLoader from "./loaders/homePageLoader";
 import dashboardLoader from "./loaders/dashboardLoader";
 import canvasAction from "./actions/canvasAction";
+import likeButtonAction from "./actions/likeButtonAction";
 import canvasLoader from "./loaders/canvasLoader";
 
 const router = createBrowserRouter([
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
     id: "dashboard",
     element: <Dashboard />,
     loader: dashboardLoader,
+    action: likeButtonAction,
     errorElement: <ErrorPage />,
     children: [
       {

@@ -23,6 +23,7 @@ import ellipseIconUrl from "../../assets/Ellipse 1779.png";
 import userImageUrl from "../../assets/user.jpeg";
 import { ClassData } from "../../@types/types";
 import { Unsubscribe } from "firebase/firestore";
+import TimePassed from "../TimePassed";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
@@ -115,7 +116,14 @@ export default function HomePageMain() {
                     />
 
                     <div className="flex items-center gap-1">
-                      <img src={heartIconUrl} alt="" />
+                      <Link
+                        to="/signup"
+                        className="flex items-center"
+                        onClick={() => setSignUpFormOpen(true)}
+                      >
+                        <img src={heartIconUrl} alt="" />
+                      </Link>
+
                       <span className="text-lg font-normal text-[#616161]">
                         {lesson.likes > 0 && lesson.likes}
                       </span>
@@ -142,11 +150,17 @@ export default function HomePageMain() {
                       <div className="flex items-center gap-1">
                         <EyeIcon className="h-[13px] w-[13px]" />
                         <span className="shrink-0 text-xs font-normal text-[#616161]">
-                          {lesson.views > 0 && lesson.views} views
+                          {lesson.views > 0 ? lesson.views : "0"} views
                         </span>
                         <img src={ellipseIconUrl} alt="" />
-                        <span className="shrink-0 text-xs font-semibold text-[#06031E]">
-                          {lesson.status}
+                        <span className="shrink-0 text-xs font-semibold text-red-500">
+                          {lesson.status === "ongoing" ||
+                            (lesson.status === "upcoming" && lesson.status)}
+                        </span>
+                        <span className="shrink-0 text-xs font-semibold text-[#616161]">
+                          {typeof lesson.status !== "string" && (
+                            <TimePassed eventDate={lesson.status.toDate()} />
+                          )}
                         </span>
                       </div>
                     </div>
@@ -160,7 +174,7 @@ export default function HomePageMain() {
                         Join
                       </Link>
                     ) : (
-                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold">
+                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[20px] text-sm font-semibold">
                         Share
                       </button>
                     )}
