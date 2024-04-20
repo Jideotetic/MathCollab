@@ -45,7 +45,7 @@ export default function DashboardMain() {
   }, [search]);
 
   const submit = useSubmit();
-  let fetcher = useFetcher();
+  const fetcher = useFetcher();
 
   useEffect(() => {
     return cleanup;
@@ -125,7 +125,7 @@ export default function DashboardMain() {
                         <input
                           type="hidden"
                           name="user"
-                          value={currentUser.displayName}
+                          value={currentUser.displayName as string}
                         />
                       </fetcher.Form>
                       <span className="text-lg font-normal text-[#616161]">
