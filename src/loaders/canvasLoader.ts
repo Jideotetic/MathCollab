@@ -33,6 +33,7 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
               ...(change.doc.data() as {
                 likes: number;
                 name: string;
+                likedBy: string[];
                 status: string;
                 title: string;
                 user: string;
@@ -46,6 +47,7 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
               ...(change.doc.data() as {
                 likes: number;
                 name: string;
+                likedBy: string[];
                 status: string;
                 title: string;
                 user: string;

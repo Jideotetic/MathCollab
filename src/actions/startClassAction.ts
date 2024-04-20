@@ -34,6 +34,7 @@ export default async function startClassAction({
           id: change.doc.id,
           ...(change.doc.data() as {
             likes: number;
+            likedBy: string[];
             name: string;
             status: string;
             title: string;
