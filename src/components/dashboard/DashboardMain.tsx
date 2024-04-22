@@ -45,7 +45,7 @@ export default function DashboardMain() {
   }, [search]);
 
   const submit = useSubmit();
-  let fetcher = useFetcher();
+  const fetcher = useFetcher();
 
   useEffect(() => {
     return cleanup;
@@ -125,7 +125,7 @@ export default function DashboardMain() {
                         <input
                           type="hidden"
                           name="user"
-                          value={currentUser.displayName}
+                          value={currentUser.displayName as string}
                         />
                       </fetcher.Form>
                       <span className="text-lg font-normal text-[#616161]">
@@ -166,7 +166,9 @@ export default function DashboardMain() {
                         </span>
                         <span className="shrink-0 text-xs font-semibold text-[#616161]">
                           {typeof lesson.status !== "string" && (
-                            <TimePassed eventDate={lesson.status.toDate()} />
+                            <TimePassed
+                              eventDate={lesson.status.toDate().toDateString()}
+                            />
                           )}
                         </span>
                       </div>

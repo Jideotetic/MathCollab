@@ -32,6 +32,7 @@ export default async function homePageLoader() {
                 likes: number;
                 name: string;
                 status: string;
+                likedBy: string[];
                 title: string;
                 user: string;
                 video: string;
@@ -44,6 +45,7 @@ export default async function homePageLoader() {
               ...(change.doc.data() as {
                 likes: number;
                 name: string;
+                likedBy: string[];
                 status: string;
                 title: string;
                 user: string;
