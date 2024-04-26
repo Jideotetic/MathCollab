@@ -14,6 +14,7 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
     await authProvider.checkAuth();
 
     let texts: string[] = [];
+    let host: boolean = false;
 
     const fetchClasses = new Promise<{
       classes: ClassData[];
@@ -69,7 +70,8 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
 
     server.on("class-started", (data) => {
       const { success } = data;
-      console.log(success);
+      host = data.host
+      console.log(success, host);
       if (success) {
         toast.success("Class started successfully");
       }
@@ -79,6 +81,11 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
       const { user } = data;
       toast.success(`${user.displayName} joined the class`);
     });
+
+    server.on("joined-successfully", (data) => {
+      // host = data.host
+      console.log(data);
+    })
 
     const fetchInitialTexts = new Promise((resolve) => {
       server.on("initial-text", (globalTexts) => {
@@ -95,6 +102,7 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
       currentUser: authProvider.user,
       classes: res.classes,
       initialTexts,
+      host,
       cleanup: res.unsubscribe,
     };
   } catch (error) {

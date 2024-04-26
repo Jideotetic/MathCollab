@@ -65,9 +65,10 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const { initialTexts, classes } = useRouteLoaderData("canvas") as {
+  const { initialTexts, classes, host } = useRouteLoaderData("canvas") as {
     initialTexts: string[];
     classes: ClassData[];
+    host: boolean;
   };
   const { id } = useParams();
   const [content, setContent] = useState("");
@@ -354,6 +355,7 @@ export default function Canvas() {
               name="text"
               value={content}
               onChange={handleChange}
+              disabled={host}
               className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
               placeholder="Type your command or equation here"
             />
