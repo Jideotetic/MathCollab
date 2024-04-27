@@ -8,13 +8,6 @@ import { Transition, Dialog } from "@headlessui/react";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 
-const styles = {
-  width: "100%",
-  height: "80px",
-  border: "8px solid grey",
-  background: "white",
-};
-
 const inputs = [{ label: "Class name", inputType: "text" }];
 
 export default function CreateClassForm() {
@@ -22,7 +15,7 @@ export default function CreateClassForm() {
     FormsContext,
   ) as FormsContextType;
   const [collaborators, setCollaborators] = useState<string[]>([]);
-  const [focused, setFocused] = useState(false);
+  // const [focused, setFocused] = useState(false);
 
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -84,9 +77,9 @@ export default function CreateClassForm() {
                   className="h-20 w-full overflow-auto rounded-lg border-2 bg-white text-sm shadow-sm focus:border-sky-500"
                   inputClassName="form-input focus:border-none focus:outline-none focus:ring-0"
                   autoFocus={true}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  getLabel={(email, index, removeEmail) => {
+                  // onFocus={() => setFocused(true)}
+                  // onBlur={() => setFocused(false)}
+                  getLabel={(email: string, index: number, removeEmail) => {
                     return (
                       <div data-tag key={index}>
                         <div data-tag-item>{email}</div>

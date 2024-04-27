@@ -159,11 +159,13 @@ export default function HomePageMain() {
                             lesson.status
                           ) : (
                             <span className="shrink-0 text-xs font-semibold text-[#616161]">
-                              <TimePassed
-                                eventDate={lesson.status
-                                  .toDate()
-                                  .toDateString()}
-                              />
+                              {typeof lesson.status !== "string" && (
+                                <TimePassed
+                                  eventDate={lesson.status
+                                    .toDate()
+                                    .toDateString()}
+                                />
+                              )}
                             </span>
                           )}
                         </span>
