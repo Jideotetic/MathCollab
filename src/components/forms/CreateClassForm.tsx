@@ -1,10 +1,12 @@
 import MathCollab from "../MathCollab";
 import { Form, useNavigate, useNavigation } from "react-router-dom";
 import Inputs from "./Inputs";
-import { useContext, useEffect, Fragment } from "react";
+import { useContext, useEffect, Fragment, useState } from "react";
 import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import FormWrapper from "./FormWrapper";
 import { Transition, Dialog } from "@headlessui/react";
+import { ReactMultiEmail } from "react-multi-email";
+import "react-multi-email/dist/style.css";
 
 const inputs = [{ label: "Class name", inputType: "text" }];
 
@@ -12,6 +14,8 @@ export default function CreateClassForm() {
   const { setCreateClassFormOpen, createClassFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
+  const [collaborators, setCollaborators] = useState<string[]>([]);
+  // const [focused, setFocused] = useState(false);
 
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -57,14 +61,43 @@ export default function CreateClassForm() {
                 <label htmlFor="collaborators">
                   Invite Collaborators/Students
                 </label>
-                <input
+                {/* <input
                   type="email"
                   name="collaborators"
                   id="collaborators"
                   multiple
                   required
                   className="form-input  inline-block h-20 w-full rounded-lg border-neutral-200 bg-white pb-3 pr-8 pt-3 text-sm placeholder-transparent shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
-                ></input>
+                /> */}
+                <ReactMultiEmail
+                  emails={collaborators}
+                  onChange={(_collaborators: string[]) => {
+                    setCollaborators(_collaborators);
+                  }}
+                  className="h-20 w-full overflow-auto rounded-lg border-2 bg-white text-sm shadow-sm focus:border-sky-500"
+                  inputClassName="form-input focus:border-none focus:outline-none focus:ring-0"
+                  autoFocus={true}
+                  // onFocus={() => setFocused(true)}
+                  // onBlur={() => setFocused(false)}
+                  getLabel={(email: string, index: number, removeEmail) => {
+                    return (
+                      <div data-tag key={index}>
+                        <div data-tag-item>{email}</div>
+                        <span
+                          data-tag-handle
+                          onClick={() => removeEmail(index)}
+                        >
+                          ×
+                        </span>
+                      </div>
+                    );
+                  }}
+                />
+                <input
+                  type="hidden"
+                  value={collaborators}
+                  name="collaborators"
+                />
                 <div className="flex items-start gap-2">
                   <input
                     type="checkbox"

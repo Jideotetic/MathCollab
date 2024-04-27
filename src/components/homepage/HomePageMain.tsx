@@ -155,13 +155,18 @@ export default function HomePageMain() {
                         <img src={ellipseIconUrl} alt="" />
                         <span className="shrink-0 text-xs font-semibold text-red-500">
                           {lesson.status === "ongoing" ||
-                            (lesson.status === "upcoming" && lesson.status)}
-                        </span>
-                        <span className="shrink-0 text-xs font-semibold text-[#616161]">
-                          {typeof lesson.status !== "string" && (
-                            <TimePassed
-                              eventDate={lesson.status.toDate().toDateString()}
-                            />
+                          lesson.status === "upcoming" ? (
+                            lesson.status
+                          ) : (
+                            <span className="shrink-0 text-xs font-semibold text-[#616161]">
+                              {typeof lesson.status !== "string" && (
+                                <TimePassed
+                                  eventDate={lesson.status
+                                    .toDate()
+                                    .toDateString()}
+                                />
+                              )}
+                            </span>
                           )}
                         </span>
                       </div>
