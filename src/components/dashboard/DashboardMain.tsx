@@ -57,7 +57,7 @@ export default function DashboardMain() {
   const revalidator = useRevalidator();
 
   useEffect(() => {
-    server.on("liked", (data) => {
+    server.on("liked", () => {
       revalidator.revalidate();
     });
   }, []);
