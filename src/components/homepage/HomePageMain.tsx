@@ -14,7 +14,7 @@ import thorusUrl from "../../assets/Thorus 2.svg";
 import groupUrl from "../../assets/Group 48096042.svg";
 import iconUrl from "../../assets/1_3.svg";
 import boxUrl from "../../assets/Box1.png";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useRouteLoaderData } from "react-router-dom";
 import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import heartIconUrl from "../../assets/heart.png";

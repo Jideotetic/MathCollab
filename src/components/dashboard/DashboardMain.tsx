@@ -60,6 +60,7 @@ export default function DashboardMain() {
     server.on("liked", () => {
       revalidator.revalidate();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
