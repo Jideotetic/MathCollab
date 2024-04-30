@@ -3,12 +3,13 @@ import {
   useRouteLoaderData,
   useSubmit,
   useFetcher,
+  useRevalidator,
+  Link,
 } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import heartIconUrl from "../../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../../assets/Ellipse 1779.png";
-import { Link } from "react-router-dom";
 import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import searchIconUrl from "../../assets/ic_Search.svg";
@@ -17,6 +18,7 @@ import { User } from "firebase/auth";
 import { Unsubscribe } from "firebase/firestore";
 import { ClassData } from "../../@types/types";
 import TimePassed from "../TimePassed";
+import { server } from "../../socket";
 
 export interface Prop {
   lessons: ClassData[];
@@ -50,6 +52,14 @@ export default function DashboardMain() {
   useEffect(() => {
     return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const revalidator = useRevalidator();
+
+  useEffect(() => {
+    server.on("liked", (data) => {
+      revalidator.revalidate();
+    });
   }, []);
 
   return (

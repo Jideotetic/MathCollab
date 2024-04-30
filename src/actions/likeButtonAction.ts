@@ -1,6 +1,7 @@
-import { LoaderFunctionArgs, redirect } from "react-router-dom";
+import { LoaderFunctionArgs } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { server } from "../socket";
 
 export default async function likeButtonAction({
   request,
@@ -24,8 +25,9 @@ export default async function likeButtonAction({
     });
   }
 
-  console.log(lesson.likedBy);
-
-  redirect("/dashboard");
+  server.emit("like", {
+    lesson,
+  });
+  
   return null;
 }
