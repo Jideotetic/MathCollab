@@ -24,6 +24,7 @@ import userImageUrl from "../../assets/user.jpeg";
 import { ClassData } from "../../@types/types";
 import { Unsubscribe } from "firebase/firestore";
 import TimePassed from "../TimePassed";
+import { server } from "../../socket";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
@@ -35,6 +36,12 @@ export default function HomePageMain() {
   useEffect(() => {
     return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("liked", (data) => {
+      console.log(data);
+    });
   }, []);
 
   return (
@@ -126,6 +133,8 @@ export default function HomePageMain() {
 
                       <span className="text-lg font-normal text-[#616161]">
                         {lesson.likes > 0 && lesson.likes}
+                        {/* <span className="text-sm"> {lesson.likes > 0 && lesson.likes > 1 ? "Likes" : "Like"}
+                          </span> */}
                       </span>
                     </div>
                   </div>
