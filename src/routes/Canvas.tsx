@@ -36,7 +36,7 @@ import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import ReactDOM from "react-dom/client";
 import { ClassData } from "../@types/types";
-import { Popover, Menu } from "@headlessui/react";
+import { Popover } from "@headlessui/react";
 
 const penTools = [
   arrowUrl,
