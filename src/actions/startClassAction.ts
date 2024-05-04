@@ -55,7 +55,5 @@ export default async function startClassAction({
   server.emit("send-classes", res.classes);
   server.emit("start-class", id);
 
-  // res.unsubscribe();
-
   return redirect(`/canvas/${id}`);
 }

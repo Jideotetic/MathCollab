@@ -9,6 +9,7 @@ export default {
       },
       gridTemplateColumns: {
         layout: "218px 1fr",
+        mediumCanvasLayout: "1fr 240px",
         canvasLayout: "240px 1fr 240px",
         classes: "repeat(auto-fill, minmax(300px, 1fr))",
       },
