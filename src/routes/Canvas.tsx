@@ -36,6 +36,7 @@ import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import ReactDOM from "react-dom/client";
 import { ClassData } from "../@types/types";
+import { Popover } from "@headlessui/react";
 
 const penTools = [
   arrowUrl,
@@ -284,8 +285,8 @@ export default function Canvas() {
       {navigation.state === "loading" && <GlobalSlider />}
       <ToastContainer />
       {/* <div></div> */}
-      <div className="mx-auto grid h-screen max-w-[1280px] grid-cols-canvasLayout gap-1 bg-white px-4 py-4">
-        <div className="rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
+      <div className="mx-auto grid h-screen max-w-[1280px] gap-1 bg-white px-4 py-4 sm:grid-cols-mediumCanvasLayout md:grid-cols-canvasLayout">
+        <div className="hidden rounded-lg border bg-white p-1 shadow-sm md:block">
           <div className="text-base font-medium leading-normal text-neutral-700">
             Pen tools
           </div>
@@ -340,6 +341,9 @@ export default function Canvas() {
               </pre>
             </code>
           </div>
+          {/* <div >
+
+          </div> */}
         </div>
 
         <div className="flex flex-col gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
@@ -361,81 +365,168 @@ export default function Canvas() {
             />
             <input type="hidden" name="id" value={id} />
           </Form>
-          {/* <div className="relative  w-full overflow-auto"> */}
+
           <ul
             ref={listRef}
             className="relative z-0 h-[calc(100vh-135px)] overflow-auto rounded border border-neutral-200 bg-white p-2 text-xs font-normal leading-[18px] text-neutral-500 focus:border-none focus:outline-none focus:ring-0"
           ></ul>
-          {/* </div> */}
-          <div className="flex h-[43px] justify-evenly rounded-lg border  border-neutral-200 bg-white p-1 shadow-sm">
+
+          <div className="item-center flex h-[43px] justify-evenly rounded-lg border border-2 border-neutral-200  border-red-500 bg-white p-1 shadow-sm">
+            <Popover className="flex items-center justify-center md:hidden">
+              <Popover.Button
+                className="flex w-[15px] items-center justify-center"
+                title="Pen tools"
+              >
+                <img src={arrowUrl} />
+              </Popover.Button>
+
+              <Popover.Panel className="absolute bottom-20 left-0 ml-4 w-[280px] rounded-lg border bg-white p-1 shadow-sm">
+                <div className="text-base font-medium leading-normal text-neutral-700">
+                  Pen tools
+                </div>
+                <div className="m-1 flex  flex-wrap gap-5 rounded-lg border border-neutral-200 bg-white p-2">
+                  {penTools.map((tool) => (
+                    <button
+                      type="button"
+                      key={tool}
+                      className="rounded p-1 hover:bg-gray-200"
+                    >
+                      <img src={tool} alt="" />
+                    </button>
+                  ))}
+                </div>
+                <div className="text-base font-medium leading-normal text-neutral-700">
+                  Shapes
+                </div>
+                <div className="m-1 rounded-lg  border border-neutral-200 bg-white p-2">
+                  <div className="text-xs font-normal leading-[18px] text-neutral-700">
+                    Basic Shapes
+                  </div>
+                  <div>
+                    {shapes.map((shape, i) => (
+                      <button
+                        type="button"
+                        key={i}
+                        className="rounded hover:bg-gray-200"
+                      >
+                        <img src={shape} alt="" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </Popover.Panel>
+            </Popover>
+
             <button
               type="button"
               onClick={handleEndClass}
               className="flex flex-col items-center justify-center"
+              title="End class"
             >
               <img src={powerIconUrl} alt="" />
-              <span className="text-xs font-normal leading-[18px] text-neutral-500">
+              {/* <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 End
-              </span>
+              </span> */}
             </button>
             <button
               type="button"
               className="flex flex-col items-center justify-center"
+              title="Turn off microphone"
             >
               <img src={micIconUrl} alt="" />
-              <span className="text-xs font-normal leading-[18px] text-neutral-500">
+              {/* <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 Mic On
-              </span>
+              </span> */}
             </button>
             <button
               type="button"
               className="flex flex-col items-center justify-center"
+              title="Turn off camera"
             >
               <img src={cameraIconUrl} alt="" />
-              <span className="text-xs font-normal leading-[18px] text-neutral-500">
+              {/* <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 Cam Off
-              </span>
+              </span> */}
             </button>
             <button
               type="button"
               className="flex flex-col items-center justify-center"
+              title="Record"
             >
               <img src={recordIconUrl} alt="" className="h-4 w-4" />
-              <span className="text-xs font-normal leading-[18px] text-neutral-500">
+              {/* <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 Record
-              </span>
+              </span> */}
             </button>
             <button
               type="button"
               className="flex flex-col items-center justify-center"
+              title="Share"
             >
               <img src={shareIconUrl} alt="" />
-              <span className="text-xs font-normal leading-[18px] text-neutral-500">
+              {/* <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 Share
-              </span>
+              </span> */}
             </button>
             <button
               type="button"
               className="flex flex-col items-center justify-center"
+              title="Raise hand"
             >
               🖐️
-              <span className="text-xs font-normal leading-[18px] text-neutral-500">
+              {/* <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 Reactions
-              </span>
+              </span> */}
             </button>
-            <button
+            {/* <button
               type="button"
-              className="flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center sm:hidden"
+              title="Show collaborators"
             >
               <UserPlusIcon className="h-4 w-4" />
               <span className="text-xs font-normal leading-[18px] text-neutral-500">
                 Invite
               </span>
-            </button>
+            </button> */}
+
+            <Popover className="flex items-center justify-center sm:hidden">
+              <Popover.Button
+                className="flex items-center justify-center"
+                title="Show collaborators"
+              >
+                <UserPlusIcon className="h-4 w-4" />
+              </Popover.Button>
+
+              <Popover.Panel className="absolute right-0 top-0 h-full w-[280px] rounded-lg border bg-white p-1 shadow-sm">
+                <div className="mb-2 flex justify-between text-base font-medium leading-normal text-neutral-700">
+                  <button
+                    type="button"
+                    onClick={() => setCollaboratorsViewActive(true)}
+                    className={`${
+                      collaboratorsViewActive ? "border-b-4 border-black" : ""
+                    }`}
+                  >
+                    Collaborators
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCollaboratorsViewActive(false)}
+                    className={`${
+                      collaboratorsViewActive ? "" : "border-b-4 border-black"
+                    }`}
+                  >
+                    Class Chat
+                  </button>
+                </div>
+                <div>
+                  {collaboratorsViewActive ? <Collaborators /> : <ClassChat />}
+                </div>
+              </Popover.Panel>
+            </Popover>
           </div>
         </div>
 
-        <div className="rounded-lg border  border-neutral-200 bg-white p-2 shadow-sm">
+        <div className="hidden rounded-lg border border-neutral-200 bg-white p-2 shadow-sm sm:block">
           <div className="mb-2 flex justify-between text-base font-medium leading-normal text-neutral-700">
             <button
               type="button"
