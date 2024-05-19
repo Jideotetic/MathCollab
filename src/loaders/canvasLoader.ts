@@ -64,10 +64,10 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
       }
     });
 
-    // server.on("joined", (data) => {
-    //   const { user } = data;
-    //   toast.success(`${user.displayName} joined the class`);
-    // });
+    server.on("joined", (data) => {
+      const { user } = data;
+      toast.success(`${user.displayName} joined the class`);
+    });
 
     // server.on("joined-successfully", (data) => {
     //   // host = data.host
