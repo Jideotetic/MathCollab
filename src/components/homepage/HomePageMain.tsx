@@ -15,7 +15,7 @@ import groupUrl from "../../assets/Group 48096042.svg";
 import iconUrl from "../../assets/1_3.svg";
 import boxUrl from "../../assets/Box1.png";
 import { useContext, useEffect } from "react";
-import { Link, useRouteLoaderData } from "react-router-dom";
+import { Link, useRevalidator, useRouteLoaderData } from "react-router-dom";
 import { FormsContext, FormsContextType } from "../../contexts/FormsContext";
 import heartIconUrl from "../../assets/heart.png";
 import { EyeIcon } from "@heroicons/react/24/solid";
@@ -28,10 +28,12 @@ import { server } from "../../socket";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { classes, cleanup } = useRouteLoaderData("root") as {
+  const { classes, cleanup } = useRouteLoaderData("homepage") as {
     classes: ClassData[];
     cleanup: Unsubscribe;
   };
+
+  const revalidator = useRevalidator();
 
   useEffect(() => {
     return cleanup;
@@ -39,9 +41,10 @@ export default function HomePageMain() {
   }, []);
 
   useEffect(() => {
-    server.on("liked", (data) => {
-      console.log(data);
+    server.on("liked", () => {
+      revalidator.revalidate();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -117,7 +120,7 @@ export default function HomePageMain() {
                 <div className="flex flex-col gap-2 p-2">
                   <div className="flex justify-between">
                     <img
-                      src={lesson.user || userImageUrl}
+                      src={lesson.creatorImage || userImageUrl}
                       alt=""
                       className="h-[46px] w-[46px] rounded-full object-cover"
                     />
@@ -132,56 +135,82 @@ export default function HomePageMain() {
                       </Link>
 
                       <span className="text-lg font-normal text-[#616161]">
-                        {lesson.likes > 0 && lesson.likes}
-                        {/* <span className="text-sm"> {lesson.likes > 0 && lesson.likes > 1 ? "Likes" : "Like"}
-                          </span> */}
+                        {lesson.likes.length > 0 && lesson.likes.length}
+                        <span className="text-sm">
+                          {" "}
+                          {lesson.likes.length > 1 ? "Likes" : "Like"}
+                        </span>
                       </span>
                     </div>
                   </div>
 
-                  {lesson.status === "ongoing" ? (
-                    <p className="text-left text-base font-medium text-black">
-                      <span className="font-semibold">Preview</span>:{" "}
-                      {lesson.title}
-                    </p>
-                  ) : (
-                    <p className="text-left text-base font-medium text-black">
-                      {lesson.title}
-                    </p>
-                  )}
+                  <p className="text-left text-base font-medium text-black">
+                    {lesson.status === "upcoming" && (
+                      <span className="font-semibold">Preview: </span>
+                    )}
+                    <span>{lesson.classTitle}</span>
+                  </p>
 
                   <div className="flex flex-wrap justify-between gap-3 text-left">
                     <div className="text-lg font-normal text-[#616161]">
                       <p className="text-[11.24px] text-gray-700">
-                        {lesson.name}
+                        {lesson.creatorName}
                       </p>
 
                       <div className="flex items-center gap-1">
-                        <EyeIcon className="h-[13px] w-[13px]" />
-                        <span className="shrink-0 text-xs font-normal text-[#616161]">
-                          {lesson.views > 0 ? lesson.views : "0"} views
-                        </span>
+                        {lesson.status === "ongoing" ? (
+                          ""
+                        ) : lesson.status === "upcoming" ? (
+                          <p className="shrink-0 text-xs font-normal text-[#616161]">
+                            {lesson.collaborators.length} Registered
+                          </p>
+                        ) : lesson.status === "completed" ? (
+                          <>
+                            <EyeIcon className="h-[13px] w-[13px]" />
+
+                            <span className="shrink-0 text-xs font-normal text-[#616161]">
+                              {lesson.views}{" "}
+                              {lesson.views > 1 ? "views" : "view"}
+                            </span>
+                          </>
+                        ) : (
+                          ""
+                        )}
+
                         <img src={ellipseIconUrl} alt="" />
+
                         <span className="shrink-0 text-xs font-semibold text-red-500">
-                          {lesson.status === "ongoing" ||
-                          lesson.status === "upcoming" ? (
+                          {lesson.status === "ongoing" ? (
                             lesson.status
                           ) : (
                             <span className="shrink-0 text-xs font-semibold text-[#616161]">
-                              {typeof lesson.status !== "string" && (
-                                <TimePassed
-                                  eventDate={lesson.status
-                                    .toDate()
-                                    .toDateString()}
-                                />
-                              )}
+                              <TimePassed
+                                eventDate={
+                                  lesson.endClassDate
+                                    ? lesson.endClassDate
+                                        .toDate()
+                                        .toDateString()
+                                    : lesson.startClassDate
+                                      ? lesson.startClassDate
+                                          .toDate()
+                                          .toDateString()
+                                      : ""
+                                }
+                              />
                             </span>
                           )}
                         </span>
                       </div>
                     </div>
-                    {lesson.status === "ongoing" ||
-                    lesson.status === "upcoming" ? (
+                    {lesson.status === "upcoming" ? (
+                      <Link
+                        to="/signup"
+                        onClick={() => setSignUpFormOpen(true)}
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
+                      >
+                        Register
+                      </Link>
+                    ) : lesson.status === "ongoing" ? (
                       <Link
                         to="/signup"
                         onClick={() => setSignUpFormOpen(true)}

@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "react-router-dom";
+import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { server } from "../socket";
 import { toast } from "react-toastify";
@@ -12,6 +12,11 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
 
   try {
     await authProvider.checkAuth();
+
+    if (!authProvider.user) {
+      toast.info("Sign in to access class");
+      return redirect("/");
+    }
 
     let texts: string[] = [];
     let host: boolean = false;
@@ -31,30 +36,12 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
           if (existingIndex !== -1) {
             classes[existingIndex] = {
               id: change.doc.id,
-              ...(change.doc.data() as {
-                likes: number;
-                name: string;
-                likedBy: string[];
-                status: string;
-                title: string;
-                user: string;
-                video: string;
-                views: number;
-              }),
+              ...(change.doc.data() as ClassData),
             };
           } else {
             classes.push({
               id: change.doc.id,
-              ...(change.doc.data() as {
-                likes: number;
-                name: string;
-                likedBy: string[];
-                status: string;
-                title: string;
-                user: string;
-                video: string;
-                views: number;
-              }),
+              ...(change.doc.data() as ClassData),
             });
           }
         });
@@ -70,7 +57,7 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
 
     server.on("class-started", (data) => {
       const { success } = data;
-      host = data.host
+      host = data.host;
       console.log(success, host);
       if (success) {
         toast.success("Class started successfully");
@@ -82,10 +69,10 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
       toast.success(`${user.displayName} joined the class`);
     });
 
-    server.on("joined-successfully", (data) => {
-      // host = data.host
-      console.log(data);
-    })
+    // server.on("joined-successfully", (data) => {
+    //   // host = data.host
+    //   console.log(data);
+    // });
 
     const fetchInitialTexts = new Promise((resolve) => {
       server.on("initial-text", (globalTexts) => {

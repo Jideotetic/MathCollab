@@ -35,9 +35,14 @@ export default function DashboardMain() {
     cleanup: Unsubscribe;
   };
 
+  const submit = useSubmit();
+  const fetcher = useFetcher();
+  const revalidator = useRevalidator();
   const { setCreateClassFormOpen } = useContext(
     FormsContext,
   ) as FormsContextType;
+
+  console.log(filteredClasses);
 
   useEffect(() => {
     const searchElement = document.getElementById("search") as HTMLInputElement;
@@ -46,15 +51,10 @@ export default function DashboardMain() {
     }
   }, [search]);
 
-  const submit = useSubmit();
-  const fetcher = useFetcher();
-
   useEffect(() => {
     return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const revalidator = useRevalidator();
 
   useEffect(() => {
     server.on("liked", () => {
@@ -64,11 +64,26 @@ export default function DashboardMain() {
   }, []);
 
   useEffect(() => {
-    server.on("class-started", () => {
+    server.on("registered", () => {
       revalidator.revalidate();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    server.on("start-class", () => {
+      revalidator.revalidate();
+      console.log("revalidate");
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // useEffect(() => {
+  //   server.on("class-started", () => {
+  //     revalidator.revalidate();
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // useEffect(() => {
   //   server.emit("class-status")
@@ -86,7 +101,7 @@ export default function DashboardMain() {
     <>
       <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4 py-2">
         <div className="flex-grow">
-          <Form action="#" className="relative w-full">
+          <Form className="relative w-full">
             <button
               type="submit"
               className="absolute left-3 top-[50%] -translate-y-[50%]"
@@ -98,6 +113,7 @@ export default function DashboardMain() {
               name="search"
               role="search"
               id="search"
+              autoComplete="off"
               defaultValue={search}
               onChange={(e) => {
                 const isFirstSearch = search == null;
@@ -138,7 +154,7 @@ export default function DashboardMain() {
                 <div className="flex flex-col gap-2 p-2">
                   <div className="flex justify-between">
                     <img
-                      src={lesson.user || userImageUrl}
+                      src={lesson.creatorImage || userImageUrl}
                       alt=""
                       className="h-[46px] w-[46px] rounded-full object-cover"
                     />
@@ -159,101 +175,125 @@ export default function DashboardMain() {
                         />
                       </fetcher.Form>
                       <span className="text-lg font-normal text-[#616161]">
-                        {lesson.likes > 0 && lesson.likes}
+                        {lesson.likes.length > 0 && lesson.likes.length}
+                        <span className="text-sm">
+                          {" "}
+                          {lesson.likes.length > 1 ? "Likes" : "Like"}
+                        </span>
                       </span>
                     </div>
                   </div>
 
-                  {lesson.status === "ongoing" ||
-                  lesson.status === "upcoming" ? (
-                    <p className="text-left text-base font-medium text-black">
-                      <span className="font-semibold">Preview</span>:{" "}
-                      {lesson.title}
-                    </p>
-                  ) : (
-                    <p className="text-left text-base font-medium text-black">
-                      {lesson.title}
-                    </p>
-                  )}
+                  <p className="text-left text-base font-medium text-black">
+                    {lesson.status === "upcoming" && (
+                      <span className="font-semibold">Preview: </span>
+                    )}
+                    <span>{lesson.classTitle}</span>
+                  </p>
 
                   <div className="flex flex-wrap justify-between gap-3 text-left">
                     <div className="text-lg font-normal text-[#616161]">
                       <p className="text-[11.24px] text-gray-700">
-                        {lesson.name}
+                        {lesson.creatorName}
                       </p>
-                      <div className="flex items-center gap-1">
-                        <EyeIcon className="h-[13px] w-[13px]" />
 
-                        <span className="shrink-0 text-xs font-normal text-[#616161]">
-                          {lesson.views > 0 ? lesson.views : "0"} views
-                        </span>
+                      <div className="flex items-center gap-1">
+                        {lesson.status === "ongoing" ? (
+                          ""
+                        ) : lesson.status === "upcoming" ? (
+                          <p className="shrink-0 text-xs font-normal text-[#616161]">
+                            {lesson.collaborators.length} Registered
+                          </p>
+                        ) : lesson.status === "completed" ? (
+                          <>
+                            <EyeIcon className="h-[13px] w-[13px]" />
+
+                            <span className="shrink-0 text-xs font-normal text-[#616161]">
+                              {lesson.views}{" "}
+                              {lesson.views > 1 ? "views" : "view"}
+                            </span>
+                          </>
+                        ) : (
+                          ""
+                        )}
 
                         <img src={ellipseIconUrl} alt="" />
 
                         <span className="shrink-0 text-xs font-semibold text-red-500">
-                          {lesson.status === "ongoing" ||
-                          lesson.status === "upcoming" ? (
+                          {lesson.status === "ongoing" ? (
                             lesson.status
                           ) : (
                             <span className="shrink-0 text-xs font-semibold text-[#616161]">
-                              {typeof lesson.status !== "string" && (
-                                <TimePassed
-                                  eventDate={lesson.status
-                                    .toDate()
-                                    .toDateString()}
-                                />
-                              )}
+                              <TimePassed
+                                eventDate={
+                                  lesson.endClassDate
+                                    ? lesson.endClassDate
+                                        .toDate()
+                                        .toDateString()
+                                    : lesson.startClassDate
+                                      ? lesson.startClassDate
+                                          .toDate()
+                                          .toDateString()
+                                      : ""
+                                }
+                              />
                             </span>
                           )}
                         </span>
                       </div>
                     </div>
-                    {typeof lesson.status !== "string" ? (
-                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[20px] text-sm font-semibold">
-                        Share
-                      </button>
+
+                    {lesson.status === "upcoming" &&
+                    currentUser.displayName !== lesson.creatorName ? (
+                      <fetcher.Form
+                        method="POST"
+                        action="register"
+                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
+                      >
+                        <input
+                          type="hidden"
+                          name="email"
+                          value={currentUser.email as string}
+                        />
+                        <button
+                          type="submit"
+                          name="lesson"
+                          value={JSON.stringify(lesson)}
+                        >
+                          Register
+                        </button>
+                      </fetcher.Form>
                     ) : lesson.status === "upcoming" &&
-                      currentUser.displayName === lesson.name ? (
-                      <Form
+                      currentUser.displayName === lesson.creatorName ? (
+                      <fetcher.Form
                         method="POST"
                         action="start-class"
                         className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
                       >
+                        <input
+                          type="hidden"
+                          name="start-date"
+                          value={lesson.startClassDate?.toDate().toDateString()}
+                        />
                         <button type="submit" name="id" value={lesson.id}>
                           Start
                         </button>
-                      </Form>
+                      </fetcher.Form>
                     ) : lesson.status === "ongoing" &&
-                      currentUser.displayName === lesson.name ? (
-                      <Form
-                        method="POST"
-                        action="start-class"
-                        className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
-                      >
-                        <button
-                          type="submit"
-                          name="id"
-                          value={lesson.id}
-                          // className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
-                        >
-                          Start
-                        </button>
-                      </Form>
-                    ) : (
+                      currentUser.displayName !== lesson.creatorName ? (
                       <Form
                         method="POST"
                         action="join-class"
                         className="flex h-[28px] items-center justify-center self-end rounded-[32px] bg-red-500 px-[28px] text-sm font-semibold text-white"
                       >
-                        <button
-                          type="submit"
-                          name="id"
-                          value={lesson.id}
-                          // className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[28px] text-sm font-semibold"
-                        >
+                        <button type="submit" name="id" value={lesson.id}>
                           Join
                         </button>
                       </Form>
+                    ) : (
+                      <button className="h-[28px] self-end rounded-[32px] border-2 border-[#06031E] px-[20px] text-sm font-semibold">
+                        Share
+                      </button>
                     )}
                   </div>
                 </div>

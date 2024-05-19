@@ -34,7 +34,9 @@ export default function LoginForm() {
     newPasswordFormOpen,
     setNewPasswordFormOpen,
   } = useContext(FormsContext) as FormsContextType;
-  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
+  const { currentUser } = useRouteLoaderData("homepage") as {
+    currentUser: User;
+  };
 
   const navigate = useNavigate();
   const navigation = useNavigation();
