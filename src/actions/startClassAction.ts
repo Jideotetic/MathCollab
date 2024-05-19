@@ -9,6 +9,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { ClassData } from "../@types/types";
+import { toast } from "react-toastify";
 
 export default async function startClassAction({
   request,
@@ -16,6 +17,13 @@ export default async function startClassAction({
   const formData = await request.formData();
 
   const id = formData.get("id") as string;
+  const startDate = formData.get("start-date") as string;
+  const tempStartDate = new Date(startDate);
+  const currentDate = new Date();
+
+  if (currentDate < tempStartDate) {
+    return toast.error("Time to start class not reached");
+  }
 
   const classeRef = doc(db, `classes`, id);
   await updateDoc(classeRef, {
@@ -32,16 +40,7 @@ export default async function startClassAction({
       snapshot.docChanges().forEach((change) => {
         classes.push({
           id: change.doc.id,
-          ...(change.doc.data() as {
-            likes: number;
-            likedBy: string[];
-            name: string;
-            status: string;
-            title: string;
-            user: string;
-            video: string;
-            views: number;
-          }),
+          ...(change.doc.data() as ClassData),
         });
       });
       resolve({ classes, unsubscribe });
@@ -49,8 +48,6 @@ export default async function startClassAction({
   });
 
   const res = await fetchClasses;
-
-  console.log(res.classes);
 
   server.emit("send-classes", res.classes);
   server.emit("start-class", id);

@@ -16,7 +16,9 @@ export default function VerifyEmailOTPForm() {
     setOtp(value);
   }
 
-  const { currentUser } = useRouteLoaderData("root") as { currentUser: User };
+  const { currentUser } = useRouteLoaderData("homepage") as {
+    currentUser: User;
+  };
 
   console.log(currentUser);
 

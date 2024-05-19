@@ -19,6 +19,7 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
 
   try {
     await authProvider.checkAuth();
+
     if (!authProvider.user) {
       return redirect("/");
     }
@@ -35,12 +36,13 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
         snapshot.docChanges().forEach(async (change) => {
           if (
             change.doc.data().status === "ongoing" &&
-            change.doc.data().name === authProvider.user?.displayName
+            change.doc.data().creatorName === authProvider.user?.displayName
           ) {
             const docRef = doc(db, `classes`, change.doc.id);
             await updateDoc(docRef, {
               status: "upcoming",
             });
+            server.emit("end-class", "end");
           }
 
           const existingIndex = classes.findIndex(
@@ -50,30 +52,12 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
           if (existingIndex !== -1) {
             classes[existingIndex] = {
               id: change.doc.id,
-              ...(change.doc.data() as {
-                likes: number;
-                name: string;
-                likedBy: string[];
-                status: string;
-                title: string;
-                user: string;
-                video: string;
-                views: number;
-              }),
+              ...(change.doc.data() as ClassData),
             };
           } else {
             classes.push({
               id: change.doc.id,
-              ...(change.doc.data() as {
-                likes: number;
-                name: string;
-                likedBy: string[];
-                status: string;
-                title: string;
-                user: string;
-                video: string;
-                views: number;
-              }),
+              ...(change.doc.data() as ClassData),
             });
           }
         });
@@ -85,12 +69,14 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
 
     server.emit("send-classes", res.classes);
 
-    let filteredClasses = res.classes.filter((lesson) => {
-      return lesson.title.toLocaleLowerCase().includes(search!);
-    });
+    let filteredClasses;
 
     if (!search) {
       filteredClasses = res.classes;
+    } else {
+      filteredClasses = res.classes.filter((lesson) => {
+        return lesson.classTitle.toLocaleLowerCase().includes(search!);
+      });
     }
 
     return {

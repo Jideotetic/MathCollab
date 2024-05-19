@@ -29,7 +29,7 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import GlobalSlider from "../components/GlobalSlider";
-import { doc, updateDoc } from "firebase/firestore";
+import { Unsubscribe, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { server } from "../socket";
 import "katex/dist/katex.min.css";
@@ -66,10 +66,13 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const { initialTexts, classes, host } = useRouteLoaderData("canvas") as {
+  const { initialTexts, classes, host, cleanup } = useRouteLoaderData(
+    "canvas",
+  ) as {
     initialTexts: string[];
     classes: ClassData[];
     host: boolean;
+    cleanup: Unsubscribe;
   };
   const { id } = useParams();
   const [content, setContent] = useState("");
@@ -278,13 +281,16 @@ export default function Canvas() {
     setContent(e.target.value);
   }
 
-  // useEffect(() => cleanup(), [cleanup]);
+  useEffect(() => {
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}
       <ToastContainer />
-      {/* <div></div> */}
+      <div></div>
       <div className="mx-auto grid h-screen max-w-[1280px] gap-1 bg-white px-4 py-4 sm:grid-cols-mediumCanvasLayout md:grid-cols-canvasLayout">
         <div className="hidden rounded-lg border bg-white p-1 shadow-sm md:block">
           <div className="text-base font-medium leading-normal text-neutral-700">
@@ -371,7 +377,7 @@ export default function Canvas() {
             className="relative z-0 h-[calc(100vh-135px)] overflow-auto rounded border border-neutral-200 bg-white p-2 text-xs font-normal leading-[18px] text-neutral-500 focus:border-none focus:outline-none focus:ring-0"
           ></ul>
 
-          <div className="item-center flex h-[43px] justify-evenly rounded-lg border border-2 border-neutral-200  border-red-500 bg-white p-1 shadow-sm">
+          <div className="item-center flex h-[43px] justify-evenly rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
             <Popover className="flex items-center justify-center md:hidden">
               <Popover.Button
                 className="flex w-[15px] items-center justify-center"

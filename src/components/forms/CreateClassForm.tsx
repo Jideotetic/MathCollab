@@ -15,7 +15,7 @@ export default function CreateClassForm() {
     FormsContext,
   ) as FormsContextType;
   const [collaborators, setCollaborators] = useState<string[]>([]);
-  // const [focused, setFocused] = useState(false);
+  const [notifyRequired, setNotifyRequired] = useState(false);
 
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -26,6 +26,11 @@ export default function CreateClassForm() {
       navigate("/dashboard");
     }
   }, [createClassFormOpen, navigate]);
+
+  useEffect(() => {
+    setNotifyRequired(collaborators.length > 0);
+  }, [collaborators]);
+
   return (
     <Transition show={createClassFormOpen} as={Fragment}>
       <Dialog
@@ -57,9 +62,26 @@ export default function CreateClassForm() {
           >
             <div className=" flex flex-col gap-8">
               <Inputs inputs={inputs} />
+
+              <div className="relative flex flex-col items-start gap-2">
+                <label
+                  htmlFor="class-start-date"
+                  className="text-md text-neutral-600"
+                >
+                  Start Date
+                </label>
+                <input
+                  type="datetime-local"
+                  name="Class start date"
+                  id="class-start-date"
+                  required
+                  className="peer w-full rounded-lg border-neutral-200 bg-white pb-3 pr-8 pt-3 text-sm placeholder-transparent shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
+                />
+              </div>
+
               <div className="flex flex-col items-start gap-2">
                 <label htmlFor="collaborators">
-                  Invite Collaborators/Students
+                  Invite Collaborators/Students via email
                 </label>
                 {/* <input
                   type="email"
@@ -77,8 +99,6 @@ export default function CreateClassForm() {
                   className="h-20 w-full overflow-auto rounded-lg border-2 bg-white text-sm shadow-sm focus:border-sky-500"
                   inputClassName="form-input focus:border-none focus:outline-none focus:ring-0"
                   autoFocus={true}
-                  // onFocus={() => setFocused(true)}
-                  // onBlur={() => setFocused(false)}
                   getLabel={(email: string, index: number, removeEmail) => {
                     return (
                       <div data-tag key={index}>
@@ -98,12 +118,13 @@ export default function CreateClassForm() {
                   value={collaborators}
                   name="collaborators"
                 />
+
                 <div className="flex items-start gap-2">
                   <input
                     type="checkbox"
                     name="notify"
                     id="notify"
-                    required
+                    required={notifyRequired}
                     className="form-checkbox ml-1 mt-1 inline-block cursor-pointer rounded-sm border-neutral-300 text-slate-950 shadow-sm hover:text-slate-800 focus:ring-slate-950 hover:focus:ring-slate-800"
                   />
                   <label

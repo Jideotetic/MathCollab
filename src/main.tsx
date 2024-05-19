@@ -1,10 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  redirect,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 import Dashboard from "./routes/Dashboard";
 import HomePage from "./routes/HomePage";
@@ -34,11 +30,12 @@ import dashboardLoader from "./loaders/dashboardLoader";
 import canvasAction from "./actions/canvasAction";
 import likeButtonAction from "./actions/likeButtonAction";
 import canvasLoader from "./loaders/canvasLoader";
+import registerAction from "./actions/registerAction";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    id: "root",
+    id: "homepage",
     element: <HomePage />,
     errorElement: <ErrorPage />,
     loader: homePageLoader,
@@ -89,18 +86,16 @@ const router = createBrowserRouter([
         action: createClassAction,
       },
       {
+        path: "register",
+        action: registerAction,
+      },
+      {
         path: "start-class",
         action: startClassAction,
-        loader: async () => {
-          return redirect("/dashboard");
-        },
       },
       {
         path: "join-class",
         action: joinClassAction,
-        loader: async () => {
-          return redirect("/dashboard");
-        },
       },
       {
         path: "signout",
@@ -121,7 +116,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <FormsContextProvider>
-      <RouterProvider router={router} fallbackElement={<GlobalSpinner />} />
+      <RouterProvider router={router} fallbackElement={<GlobalSpinner />} />,
     </FormsContextProvider>
   </StrictMode>,
 );

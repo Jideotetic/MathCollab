@@ -2,30 +2,26 @@ import { LoaderFunctionArgs } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { server } from "../socket";
+import { toast } from "react-toastify";
 
-export default async function likeButtonAction({
-  request,
-}: LoaderFunctionArgs) {
+export default async function registerAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
 
   const lesson = JSON.parse(formData.get("lesson") as string);
-  const name = formData.get("user");
+  const email = formData.get("email");
 
-  if (lesson.likes.includes(name)) {
-    const docRef = doc(db, `classes/${lesson.id}`);
-    await updateDoc(docRef, {
-      likes: lesson.likes.filter((item: string) => item !== name),
-    });
+  if (lesson.collaborators.includes(email)) {
+    return toast.error("You are registered already!");
   } else {
     const docRef = doc(db, `classes/${lesson.id}`);
     await updateDoc(docRef, {
-      likes: [...lesson.likes, name],
+      collaborators: [...lesson.collaborators, email],
     });
   }
 
-  server.emit("like", {
+  server.emit("register", {
     lesson,
   });
 
-  return null;
+  return toast.success("Successfully registered");
 }
