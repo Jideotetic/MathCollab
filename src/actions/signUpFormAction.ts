@@ -1,9 +1,9 @@
-import { LoaderFunctionArgs } from "react-router-dom";
+import { ActionFunctionArgs } from "react-router-dom";
 import { authProvider } from "../auth";
 
 export default async function signUpFormAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
   const firstName = formData.get("First Name")!.toString();
   const lastName = formData.get("Last Name")!.toString();

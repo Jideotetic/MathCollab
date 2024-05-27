@@ -1,7 +1,7 @@
-import { LoaderFunctionArgs } from "react-router-dom";
+import { ActionFunctionArgs } from "react-router-dom";
 import { authProvider } from "../auth";
 
-export default async function loginFormAction({ request }: LoaderFunctionArgs) {
+export default async function loginFormAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const email = formData.get("Email")!.toString();

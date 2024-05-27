@@ -12,8 +12,6 @@ import {
 import { db } from "../firebase";
 
 export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
-  console.log("dashboard");
-
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
 
@@ -42,7 +40,7 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
             await updateDoc(docRef, {
               status: "upcoming",
             });
-            server.emit("end-class", "end");
+            server.emit("stopped-class", "end");
           }
 
           const existingIndex = classes.findIndex(
@@ -66,8 +64,6 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
     });
 
     const res = await fetchClasses;
-
-    server.emit("send-classes", res.classes);
 
     let filteredClasses;
 

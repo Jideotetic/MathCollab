@@ -1,8 +1,8 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { server } from "../socket";
 import { authProvider } from "../auth";
 
-export default async function joinClassAction({ request }: LoaderFunctionArgs) {
+export default async function joinClassAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const id = formData.get("id");

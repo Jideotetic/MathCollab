@@ -1,11 +1,11 @@
-import { LoaderFunctionArgs } from "react-router-dom";
+import { ActionFunctionArgs } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { server } from "../socket";
 
 export default async function likeButtonAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const lesson = JSON.parse(formData.get("lesson") as string);
@@ -23,9 +23,7 @@ export default async function likeButtonAction({
     });
   }
 
-  server.emit("like", {
-    lesson,
-  });
+  server.emit("like");
 
   return null;
 }

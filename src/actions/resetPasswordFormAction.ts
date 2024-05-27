@@ -1,11 +1,11 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { toast } from "react-toastify";
 import emailjs from "emailjs-com";
 import { temp } from "../otp";
 
 export default async function resetPasswordFormAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const email = formData.get("Email")!.toString();

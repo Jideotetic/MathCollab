@@ -52,29 +52,42 @@ export default function DashboardMain() {
   }, [search]);
 
   useEffect(() => {
+    server.on("class-created-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("like-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("register-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("start-class-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("stopped-class-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     return cleanup;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    server.on("liked", () => {
-      revalidator.revalidate();
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    server.on("registered", () => {
-      revalidator.revalidate();
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    server.on("start-class", () => {
-      revalidator.revalidate();
-      console.log("revalidate");
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
