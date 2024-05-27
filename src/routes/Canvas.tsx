@@ -26,17 +26,19 @@ import {
   useNavigation,
   useParams,
   useRouteLoaderData,
+  // useRouteLoaderData,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import GlobalSlider from "../components/GlobalSlider";
-import { Unsubscribe, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { server } from "../socket";
+// import { server } from "../socket";
 import "katex/dist/katex.min.css";
-import { InlineMath } from "react-katex";
-import ReactDOM from "react-dom/client";
-import { ClassData } from "../@types/types";
+// import { InlineMath } from "react-katex";
+// import ReactDOM from "react-dom/client";
+// import { ClassData } from "../@types/types";
 import { Popover } from "@headlessui/react";
+import { Unsubscribe } from "firebase/auth";
 
 const penTools = [
   arrowUrl,
@@ -66,11 +68,7 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const { initialTexts, classes, host, cleanup } = useRouteLoaderData(
-    "canvas",
-  ) as {
-    initialTexts: string[];
-    classes: ClassData[];
+  const { host, cleanup } = useRouteLoaderData("canvas") as {
     host: boolean;
     cleanup: Unsubscribe;
   };
@@ -78,85 +76,87 @@ export default function Canvas() {
   const [content, setContent] = useState("");
   const listRef = useRef<HTMLUListElement>(null);
 
-  console.log(classes);
+  // useEffect(() => {
+  //   toast.info("Class started");
+  // });
 
-  function parseCommand(input: string) {
-    const regex = /(\w+)\(([^)]+)\)/;
-    const match = input.match(regex);
+  // function parseCommand(input: string) {
+  //   const regex = /(\w+)\(([^)]+)\)/;
+  //   const match = input.match(regex);
 
-    if (!match) {
-      return input;
-    }
+  //   if (!match) {
+  //     return input;
+  //   }
 
-    const command = match[1].trim().toLowerCase();
-    const args = match[2].split(",").map((arg) => arg.trim());
+  //   const command = match[1].trim().toLowerCase();
+  //   const args = match[2].split(",").map((arg) => arg.trim());
 
-    switch (command) {
-      case "sum":
-        console.log(args);
-        return `${args[0]} + ${args[1]} = ${
-          parseFloat(args[0]) + parseFloat(args[1])
-        }`;
-      case "sub":
-        console.log(args);
-        return `${args[0]} - ${args[1]} = ${
-          parseFloat(args[0]) - parseFloat(args[1])
-        }`;
-      case "mul":
-        console.log(args);
-        return `${args[0]} * ${args[1]} = ${
-          parseFloat(args[0]) * parseFloat(args[1])
-        }`;
-      case "div":
-        return `${args[0]} ÷ ${args[1]} = ${
-          parseFloat(args[0]) / parseFloat(args[1])
-        }`;
-      case "sqrt":
-        if (args.length !== 1) {
-          throw new Error("sqrt command requires exactly one operand");
-        }
-        return `\\sqrt${args[0]} = ${Math.sqrt(parseFloat(args[0]))}`;
-      // case "pow":
-      // if (args.length !== 2) {
-      //   throw new Error("pow command requires exactly two operands");
-      // }
-      // return {
-      //   operation: "pow",
-      //   base: parseFloat(args[0]),
-      //   exponent: parseFloat(args[1]),
-      // };
-      default:
-        throw new Error(`Unknown command: ${command}`);
-    }
-  }
+  //   switch (command) {
+  //     case "sum":
+  //       console.log(args);
+  //       return `${args[0]} + ${args[1]} = ${
+  //         parseFloat(args[0]) + parseFloat(args[1])
+  //       }`;
+  //     case "sub":
+  //       console.log(args);
+  //       return `${args[0]} - ${args[1]} = ${
+  //         parseFloat(args[0]) - parseFloat(args[1])
+  //       }`;
+  //     case "mul":
+  //       console.log(args);
+  //       return `${args[0]} * ${args[1]} = ${
+  //         parseFloat(args[0]) * parseFloat(args[1])
+  //       }`;
+  //     case "div":
+  //       return `${args[0]} ÷ ${args[1]} = ${
+  //         parseFloat(args[0]) / parseFloat(args[1])
+  //       }`;
+  //     case "sqrt":
+  //       if (args.length !== 1) {
+  //         throw new Error("sqrt command requires exactly one operand");
+  //       }
+  //       return `\\sqrt${args[0]} = ${Math.sqrt(parseFloat(args[0]))}`;
+  //     // case "pow":
+  //     // if (args.length !== 2) {
+  //     //   throw new Error("pow command requires exactly two operands");
+  //     // }
+  //     // return {
+  //     //   operation: "pow",
+  //     //   base: parseFloat(args[0]),
+  //     //   exponent: parseFloat(args[1]),
+  //     // };
+  //     default:
+  //       throw new Error(`Unknown command: ${command}`);
+  //   }
+  // }
 
-  useEffect(() => {
-    console.log(initialTexts);
-    initialTexts.forEach((text: string) => {
-      const li = document.createElement("li");
-      text = parseCommand(text);
-      console.log(text);
-      const val = <InlineMath>{text}</InlineMath>;
-      ReactDOM.createRoot(li).render(val);
-      listRef.current?.appendChild(li);
-    });
-  }, []);
+  // useEffect(() => {
+  //   console.log(initialTexts);
+  //   initialTexts.forEach((text: string) => {
+  //     const li = document.createElement("li");
+  //     text = parseCommand(text);
+  //     console.log(text);
+  //     const val = <InlineMath>{text}</InlineMath>;
+  //     ReactDOM.createRoot(li).render(val);
+  //     listRef.current?.appendChild(li);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    server.on("text", (globalTexts) => {
-      if (globalTexts.length > 0) {
-        let text = globalTexts[globalTexts.length - 1];
-        const li = document.createElement("li");
-        text = parseCommand(text);
-        console.log(text);
-        const val = <InlineMath>{text}</InlineMath>;
-        ReactDOM.createRoot(li).render(val);
-        listRef.current?.appendChild(li);
-      } else {
-        return;
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   server.on("text", (globalTexts) => {
+  //     if (globalTexts.length > 0) {
+  //       let text = globalTexts[globalTexts.length - 1];
+  //       const li = document.createElement("li");
+  //       text = parseCommand(text);
+  //       console.log(text);
+  //       const val = <InlineMath>{text}</InlineMath>;
+  //       ReactDOM.createRoot(li).render(val);
+  //       listRef.current?.appendChild(li);
+  //     } else {
+  //       return;
+  //     }
+  //   });
+  // }, []);
 
   // const [host, setHost] = useState(false);
   // const [id, setId] = useState<string | null>("");
@@ -254,15 +254,15 @@ export default function Canvas() {
   //   });
   // }, []);
 
-  useEffect(() => {
-    server.emit("content", content);
-  }, [content]);
+  // useEffect(() => {
+  //   server.emit("content", content);
+  // }, [content]);
 
-  useEffect(() => {
-    server.on("content-data", (content) => {
-      setContent(content);
-    });
-  }, []);
+  // useEffect(() => {
+  //   server.on("content-data", (content) => {
+  //     setContent(content);
+  //   });
+  // }, []);
 
   // useEffect(() => {
   //   const canvas = canvasRef.current;

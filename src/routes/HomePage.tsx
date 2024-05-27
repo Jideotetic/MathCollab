@@ -9,7 +9,6 @@ import { ToastContainer } from "react-toastify";
 export default function HomePage() {
   const navigation = useNavigation();
 
-  console.log("classes");
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}

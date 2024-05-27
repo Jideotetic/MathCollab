@@ -1,19 +1,12 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { doc, updateDoc } from "firebase/firestore";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { server } from "../socket";
-import { db } from "../firebase";
-import {
-  Unsubscribe,
-  collection,
-  doc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
-import { ClassData } from "../@types/types";
 import { toast } from "react-toastify";
+import { db } from "../firebase";
 
 export default async function startClassAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const id = formData.get("id") as string;
@@ -30,26 +23,28 @@ export default async function startClassAction({
     status: "ongoing",
   });
 
-  const fetchClasses = new Promise<{
-    classes: ClassData[];
-    unsubscribe: Unsubscribe;
-  }>((resolve) => {
-    const classes: ClassData[] = [];
-    const classesRef = collection(db, "classes");
-    const unsubscribe = onSnapshot(classesRef, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        classes.push({
-          id: change.doc.id,
-          ...(change.doc.data() as ClassData),
-        });
-      });
-      resolve({ classes, unsubscribe });
-    });
-  });
+  console.log(id);
 
-  const res = await fetchClasses;
+  // const fetchClasses = new Promise<{
+  //   classes: ClassData[];
+  //   unsubscribe: Unsubscribe;
+  // }>((resolve) => {
+  //   const classes: ClassData[] = [];
+  //   const classesRef = collection(db, "classes");
+  //   const unsubscribe = onSnapshot(classesRef, (snapshot) => {
+  //     snapshot.docChanges().forEach((change) => {
+  //       classes.push({
+  //         id: change.doc.id,
+  //         ...(change.doc.data() as ClassData),
+  //       });
+  //     });
+  //     resolve({ classes, unsubscribe });
+  //   });
+  // });
 
-  server.emit("send-classes", res.classes);
+  // const res = await fetchClasses;
+
+  // server.emit("send-classes", res.classes);
   server.emit("start-class", id);
 
   return redirect(`/canvas/${id}`);

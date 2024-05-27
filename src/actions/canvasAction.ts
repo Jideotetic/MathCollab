@@ -1,7 +1,7 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { server } from "../socket";
 
-export default async function canvasAction({ request }: LoaderFunctionArgs) {
+export default async function canvasAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const id = formData.get("id");
   const text = formData.get("text");

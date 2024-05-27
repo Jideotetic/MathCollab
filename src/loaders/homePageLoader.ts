@@ -1,12 +1,10 @@
 import { redirect } from "react-router-dom";
 import { authProvider } from "../auth";
-import { server } from "../socket";
 import { ClassData } from "../@types/types";
 import { Unsubscribe, collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default async function homePageLoader() {
-  console.log("homepage");
   try {
     // checks if a user is logged in and redirects to dashboard
     if (localStorage.getItem("user")) {
@@ -49,8 +47,6 @@ export default async function homePageLoader() {
     });
 
     const res = await fetchClasses;
-
-    server.emit("send-classes", res.classes);
 
     return {
       classes: res.classes,

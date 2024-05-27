@@ -36,14 +36,35 @@ export default function HomePageMain() {
   const revalidator = useRevalidator();
 
   useEffect(() => {
-    return cleanup;
+    server.on("class-created-successfully", () => {
+      revalidator.revalidate();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    server.on("liked", () => {
+    server.on("like-successfully", () => {
       revalidator.revalidate();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("register-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("start-class-successfully", () => {
+      revalidator.revalidate();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

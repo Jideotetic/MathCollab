@@ -1,10 +1,10 @@
-import { LoaderFunctionArgs } from "react-router-dom";
+import { ActionFunctionArgs } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { server } from "../socket";
 import { toast } from "react-toastify";
 
-export default async function registerAction({ request }: LoaderFunctionArgs) {
+export default async function registerAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const lesson = JSON.parse(formData.get("lesson") as string);
@@ -19,9 +19,7 @@ export default async function registerAction({ request }: LoaderFunctionArgs) {
     });
   }
 
-  server.emit("register", {
-    lesson,
-  });
+  server.emit("register");
 
   return toast.success("Successfully registered");
 }

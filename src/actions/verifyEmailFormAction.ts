@@ -1,10 +1,10 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { toast } from "react-toastify";
 import { temp } from "../otp";
 
 export default async function verifyEmailFormAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
   const box1 = formData.get("0")!.toString();
   const box2 = formData.get("1")!.toString();

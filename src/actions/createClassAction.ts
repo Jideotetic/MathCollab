@@ -1,15 +1,16 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { authProvider } from "../auth";
 import { db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import emailjs from "emailjs-com";
 import { toast } from "react-toastify";
+import { server } from "../socket";
 
 type collaboratorsList = string[] | string;
 
 export default async function createClassAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const className = formData.get("Class name");
@@ -20,12 +21,10 @@ export default async function createClassAction({
     collaboratorsList = collaborators.split(",");
     collaboratorsList = [...collaboratorsList];
   } else if (collaborators === "") {
-    //
+    // do nothing
   } else {
     collaboratorsList = [collaborators];
   }
-
-  console.log(collaboratorsList.length);
 
   const startClassDate = new Date(formData.get("Class start date") as string);
   const user = authProvider.user;
@@ -48,10 +47,11 @@ export default async function createClassAction({
     views: 0,
   });
 
+  server.emit("class-created");
+
   const classId = docRef.id;
   const formatDate = `${startClassDate.getDate()}/${startClassDate.getDay()}/${startClassDate.getFullYear()} at ${startClassDate.getHours()}:${startClassDate.getMinutes()}`;
 
-  console.log(formatDate);
   const message = { classId, className, formatDate };
 
   toast.success("Class created successfully!");

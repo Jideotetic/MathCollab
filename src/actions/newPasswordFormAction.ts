@@ -1,9 +1,9 @@
-import { redirect, LoaderFunctionArgs } from "react-router-dom";
+import { redirect, ActionFunctionArgs } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default async function newPasswordFormAction({
   request,
-}: LoaderFunctionArgs) {
+}: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const newPassword = formData.get("Enter new password")!.toString();
