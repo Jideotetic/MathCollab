@@ -6,31 +6,8 @@ import { server } from "../socket";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { ClassData } from "../@types/types";
-// import { ClassData } from "../@types/types";
-// import { Unsubscribe, collection, onSnapshot } from "firebase/firestore";
-// import { db } from "../firebase";
-
-// function fetchDocumentById(docId: string) {
-//   collection(db, "classes")
-//     .doc(docId)
-//     .get()
-//     .then((doc) => {
-//       if (doc.exists) {
-//         const item = doc.data();
-//         console.log(item);
-//       } else {
-//         console.log("No such document!");
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching document:", error);
-//     });
-// }
 
 export default async function canvasLoader({ params }: LoaderFunctionArgs) {
-  console.log("Canvas");
-  console.log(params.id);
-
   try {
     await authProvider.checkAuth();
 
@@ -100,16 +77,6 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
     server.on("class-started", () => {
       toast.success("Class started successfully");
     });
-
-    // server.on("joined", (data) => {
-    //   const { user } = data;
-    //   toast.success(`${user.displayName} joined the class`);
-    // });
-
-    // server.on("joined-successfully", (data) => {
-    //   // host = data.host
-    //   console.log(data);
-    // });
 
     // const fetchInitialTexts = new Promise((resolve) => {
     //   server.on("initial-text", (globalTexts) => {
