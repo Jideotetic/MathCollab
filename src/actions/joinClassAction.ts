@@ -11,19 +11,19 @@ export default async function joinClassAction({ request }: ActionFunctionArgs) {
 
   server.emit("join-class", { id, user: authProvider.user });
 
-  const joinPromise = new Promise((resolve) => {
-    server.on("joined-successfully", (data) => {
-      const { success } = data;
-      console.log(success);
-      resolve(success);
-    });
-  });
+  // const joinPromise = new Promise((resolve) => {
+  //   server.on("joined-successfully", (data) => {
+  //     const { success } = data;
+  //     console.log(success);
+  //     resolve(success);
+  //   });
+  // });
 
-  const successStatus = await joinPromise;
+  // const successStatus = await joinPromise;
 
-  console.log(successStatus);
+  // console.log(successStatus);
 
-  if (successStatus) {
-    return redirect(`/canvas/${id}`);
-  }
+  // if (successStatus) {
+  return redirect(`/canvas/${id}`);
+  // }
 }

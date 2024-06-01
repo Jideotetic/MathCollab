@@ -28,7 +28,7 @@ import {
   useRouteLoaderData,
   // useRouteLoaderData,
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import GlobalSlider from "../components/GlobalSlider";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -38,7 +38,8 @@ import "katex/dist/katex.min.css";
 // import ReactDOM from "react-dom/client";
 // import { ClassData } from "../@types/types";
 import { Popover } from "@headlessui/react";
-import { Unsubscribe } from "firebase/auth";
+import { User } from "firebase/auth";
+import { server } from "../socket";
 
 const penTools = [
   arrowUrl,
@@ -68,14 +69,31 @@ const shapes = [
 
 export default function Canvas() {
   const [collaboratorsViewActive, setCollaboratorsViewActive] = useState(true);
-  const { host, cleanup } = useRouteLoaderData("canvas") as {
-    host: boolean;
-    cleanup: Unsubscribe;
+  const { currentUser } = useRouteLoaderData("canvas") as {
+    currentUser: User;
   };
   const { id } = useParams();
   const [content, setContent] = useState("");
   const listRef = useRef<HTMLUListElement>(null);
+  const [joinedUser, setJoinedUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    server.on("joined-successfully", (data) => {
+      const { user } = data;
+      setJoinedUser(user);
+      toast.success("Joined class successfully");
+    });
+  }, []);
+
+  useEffect(() => {
+    server.on("joined", (data) => {
+      console.log("joined");
+      const { user } = data;
+      toast.success(`${user.displayName} joined the class`);
+    });
+  }, []);
+
+  console.log(currentUser, joinedUser);
   // useEffect(() => {
   //   toast.info("Class started");
   // });
@@ -281,11 +299,6 @@ export default function Canvas() {
     setContent(e.target.value);
   }
 
-  useEffect(() => {
-    return cleanup;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       {navigation.state === "loading" && <GlobalSlider />}
@@ -365,8 +378,8 @@ export default function Canvas() {
               name="text"
               value={content}
               onChange={handleChange}
-              disabled={host}
-              className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm"
+              disabled={currentUser.displayName === joinedUser?.displayName}
+              className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm disabled:cursor-not-allowed"
               placeholder="Type your command or equation here"
             />
             <input type="hidden" name="id" value={id} />

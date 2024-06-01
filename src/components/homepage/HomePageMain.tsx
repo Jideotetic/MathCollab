@@ -22,15 +22,13 @@ import { EyeIcon } from "@heroicons/react/24/solid";
 import ellipseIconUrl from "../../assets/Ellipse 1779.png";
 import userImageUrl from "../../assets/user.jpeg";
 import { ClassData } from "../../@types/types";
-import { Unsubscribe } from "firebase/firestore";
 import TimePassed from "../TimePassed";
 import { server } from "../../socket";
 
 export default function HomePageMain() {
   const { setSignUpFormOpen } = useContext(FormsContext) as FormsContextType;
-  const { classes, cleanup } = useRouteLoaderData("homepage") as {
+  const { classes } = useRouteLoaderData("homepage") as {
     classes: ClassData[];
-    cleanup: Unsubscribe;
   };
 
   const revalidator = useRevalidator();
@@ -60,11 +58,6 @@ export default function HomePageMain() {
     server.on("start-class-successfully", () => {
       revalidator.revalidate();
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
