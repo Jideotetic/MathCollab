@@ -15,10 +15,10 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import searchIconUrl from "../../assets/ic_Search.svg";
 import userImageUrl from "../../assets/user.jpeg";
 import { User } from "firebase/auth";
-import { Unsubscribe } from "firebase/firestore";
 import { ClassData } from "../../@types/types";
 import TimePassed from "../TimePassed";
 import { server } from "../../socket";
+import { toast } from "react-toastify";
 
 export interface Prop {
   lessons: ClassData[];
@@ -26,13 +26,12 @@ export interface Prop {
 }
 
 export default function DashboardMain() {
-  const { filteredClasses, currentUser, search, cleanup } = useRouteLoaderData(
+  const { filteredClasses, currentUser, search } = useRouteLoaderData(
     "dashboard",
   ) as {
     filteredClasses: ClassData[];
     currentUser: User;
     search: string;
-    cleanup: Unsubscribe;
   };
 
   const submit = useSubmit();
@@ -56,6 +55,12 @@ export default function DashboardMain() {
       revalidator.revalidate();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    server.on("class-created", () => {
+      toast.success("Class created succesfully");
+    });
   }, []);
 
   useEffect(() => {
@@ -83,11 +88,6 @@ export default function DashboardMain() {
     server.on("stopped-class-successfully", () => {
       revalidator.revalidate();
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

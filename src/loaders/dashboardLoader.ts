@@ -2,19 +2,10 @@ import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { server } from "../socket";
 import { ClassData } from "../@types/types";
-import {
-  Unsubscribe,
-  collection,
-  doc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
-  const url = new URL(request.url);
-  const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
-
   try {
     await authProvider.checkAuth();
 
@@ -24,53 +15,84 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
 
     localStorage.setItem("user", JSON.stringify(authProvider.user));
 
-    const fetchClasses = new Promise<{
-      classes: ClassData[];
-      unsubscribe: Unsubscribe;
-    }>((resolve) => {
-      const classes: ClassData[] = [];
-      const classesRef = collection(db, "classes");
-      const unsubscribe = onSnapshot(classesRef, async (snapshot) => {
-        snapshot.docChanges().forEach(async (change) => {
-          if (
-            change.doc.data().status === "ongoing" &&
-            change.doc.data().creatorName === authProvider.user?.displayName
-          ) {
-            const docRef = doc(db, `classes`, change.doc.id);
-            await updateDoc(docRef, {
-              status: "upcoming",
-            });
-            server.emit("stopped-class", "end");
-          }
+    const classes: ClassData[] = [];
 
-          const existingIndex = classes.findIndex(
-            (item) => item.id === change.doc.id,
-          );
+    const docRef = collection(db, "classes");
+    const docSnap = await getDocs(docRef);
 
-          if (existingIndex !== -1) {
-            classes[existingIndex] = {
-              id: change.doc.id,
-              ...(change.doc.data() as ClassData),
-            };
-          } else {
-            classes.push({
-              id: change.doc.id,
-              ...(change.doc.data() as ClassData),
-            });
-          }
+    if (docSnap.docChanges()) {
+      docSnap.docChanges().forEach(async (snapshot) => {
+        if (
+          snapshot.doc.data().status === "ongoing" &&
+          snapshot.doc.data().creatorName === authProvider.user?.displayName
+        ) {
+          const docRef = doc(db, `classes`, snapshot.doc.id);
+          await updateDoc(docRef, {
+            status: "upcoming",
+          });
+          server.emit("stopped-class");
+        }
+
+        classes.push({
+          id: snapshot.doc.id,
+          ...(snapshot.doc.data() as ClassData),
         });
-        resolve({ classes, unsubscribe });
       });
-    });
+    } else {
+      // return empty classes
+      return classes;
+    }
 
-    const res = await fetchClasses;
+    const url = new URL(request.url);
+    const search = url.searchParams.get("search")?.toLocaleLowerCase() || "";
+
+    // const fetchClasses = new Promise<{
+    //   classes: ClassData[];
+    //   unsubscribe: Unsubscribe;
+    // }>((resolve) => {
+    //   const classes: ClassData[] = [];
+    //   const classesRef = collection(db, "classes");
+    //   const unsubscribe = onSnapshot(classesRef, async (snapshot) => {
+    //     snapshot.docChanges().forEach(async (change) => {
+    //       if (
+    //         change.doc.data().status === "ongoing" &&
+    //         change.doc.data().creatorName === authProvider.user?.displayName
+    //       ) {
+    //         const docRef = doc(db, `classes`, change.doc.id);
+    //         await updateDoc(docRef, {
+    //           status: "upcoming",
+    //         });
+    //         server.emit("stopped-class", "end");
+    //       }
+
+    //       const existingIndex = classes.findIndex(
+    //         (item) => item.id === change.doc.id,
+    //       );
+
+    //       if (existingIndex !== -1) {
+    //         classes[existingIndex] = {
+    //           id: change.doc.id,
+    //           ...(change.doc.data() as ClassData),
+    //         };
+    //       } else {
+    //         classes.push({
+    //           id: change.doc.id,
+    //           ...(change.doc.data() as ClassData),
+    //         });
+    //       }
+    //     });
+    //     resolve({ classes, unsubscribe });
+    //   });
+    // });
+
+    // const res = await fetchClasses;
 
     let filteredClasses;
 
     if (!search) {
-      filteredClasses = res.classes;
+      filteredClasses = classes;
     } else {
-      filteredClasses = res.classes.filter((lesson) => {
+      filteredClasses = classes.filter((lesson) => {
         return lesson.classTitle.toLocaleLowerCase().includes(search!);
       });
     }
@@ -79,7 +101,6 @@ export default async function dashboardLoader({ request }: LoaderFunctionArgs) {
       currentUser: authProvider.user,
       filteredClasses,
       search,
-      cleanup: () => res.unsubscribe(),
     };
   } catch (error) {
     console.log(error);

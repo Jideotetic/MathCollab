@@ -20,8 +20,6 @@ export default function VerifyEmailOTPForm() {
     currentUser: User;
   };
 
-  console.log(currentUser);
-
   const {
     verifyEmailFormOpen,
     setVerifyEmailFormOpen,

@@ -27,13 +27,13 @@ export default async function createClassAction({
   }
 
   const startClassDate = new Date(formData.get("Class start date") as string);
-  const user = authProvider.user;
   const currentDate = new Date();
 
   if (currentDate > startClassDate) {
     return toast.error("Choose a future date");
   }
 
+  const user = authProvider.user;
   const classesRef = collection(db, "classes");
   const docRef = await addDoc(classesRef, {
     collaborators: collaboratorsList,
@@ -47,14 +47,10 @@ export default async function createClassAction({
     views: 0,
   });
 
-  server.emit("class-created");
-
   const classId = docRef.id;
   const formatDate = `${startClassDate.getDate()}/${startClassDate.getDay()}/${startClassDate.getFullYear()} at ${startClassDate.getHours()}:${startClassDate.getMinutes()}`;
 
   const message = { classId, className, formatDate };
-
-  toast.success("Class created successfully!");
 
   function sendMail() {
     const templateParams = {
@@ -84,6 +80,8 @@ export default async function createClassAction({
   } else {
     // do nothing
   }
+
+  server.emit("class-created");
 
   return redirect(`/dashboard`);
 }

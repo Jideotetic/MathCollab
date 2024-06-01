@@ -32,6 +32,7 @@ export default function DashboardHeader() {
   const { currentUser } = useRouteLoaderData("dashboard") as {
     currentUser: User;
   };
+
   const [userName, setUserName] = useState(currentUser.displayName);
   useEffect(() => {
     const names = userName?.split(" ");

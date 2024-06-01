@@ -23,28 +23,6 @@ export default async function startClassAction({
     status: "ongoing",
   });
 
-  console.log(id);
-
-  // const fetchClasses = new Promise<{
-  //   classes: ClassData[];
-  //   unsubscribe: Unsubscribe;
-  // }>((resolve) => {
-  //   const classes: ClassData[] = [];
-  //   const classesRef = collection(db, "classes");
-  //   const unsubscribe = onSnapshot(classesRef, (snapshot) => {
-  //     snapshot.docChanges().forEach((change) => {
-  //       classes.push({
-  //         id: change.doc.id,
-  //         ...(change.doc.data() as ClassData),
-  //       });
-  //     });
-  //     resolve({ classes, unsubscribe });
-  //   });
-  // });
-
-  // const res = await fetchClasses;
-
-  // server.emit("send-classes", res.classes);
   server.emit("start-class", id);
 
   return redirect(`/canvas/${id}`);
