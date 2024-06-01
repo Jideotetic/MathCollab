@@ -17,16 +17,14 @@ import micIconUrl from "../assets/microphone-slash.svg";
 import cameraIconUrl from "../assets/video-slash.svg";
 import recordIconUrl from "../assets/record-circle.svg";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import Collaborators from "../components/Collaborators";
 import ClassChat from "../components/ClassChat";
 import {
-  Form,
   useNavigate,
   useNavigation,
   useParams,
   useRouteLoaderData,
-  // useRouteLoaderData,
 } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import GlobalSlider from "../components/GlobalSlider";
@@ -35,11 +33,12 @@ import { db } from "../firebase";
 // import { server } from "../socket";
 import "katex/dist/katex.min.css";
 // import { InlineMath } from "react-katex";
-// import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom/client";
 // import { ClassData } from "../@types/types";
 import { Popover } from "@headlessui/react";
 import { User } from "firebase/auth";
 import { server } from "../socket";
+import { InlineMath } from "react-katex";
 
 const penTools = [
   arrowUrl,
@@ -73,8 +72,6 @@ export default function Canvas() {
     currentUser: User;
   };
   const { id } = useParams();
-  const [content, setContent] = useState("");
-  const listRef = useRef<HTMLUListElement>(null);
   const [joinedUser, setJoinedUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -93,72 +90,55 @@ export default function Canvas() {
     });
   }, []);
 
-  console.log(currentUser, joinedUser);
-  // useEffect(() => {
-  //   toast.info("Class started");
-  // });
+  function parseCommand(input: string) {
+    const regex = /(\w+)\(([^)]+)\)/;
+    const match = input.match(regex);
 
-  // function parseCommand(input: string) {
-  //   const regex = /(\w+)\(([^)]+)\)/;
-  //   const match = input.match(regex);
+    if (!match) {
+      return input;
+    }
 
-  //   if (!match) {
-  //     return input;
-  //   }
+    const command = match[1].trim().toLowerCase();
+    const args = match[2].split(",").map((arg) => arg.trim());
 
-  //   const command = match[1].trim().toLowerCase();
-  //   const args = match[2].split(",").map((arg) => arg.trim());
-
-  //   switch (command) {
-  //     case "sum":
-  //       console.log(args);
-  //       return `${args[0]} + ${args[1]} = ${
-  //         parseFloat(args[0]) + parseFloat(args[1])
-  //       }`;
-  //     case "sub":
-  //       console.log(args);
-  //       return `${args[0]} - ${args[1]} = ${
-  //         parseFloat(args[0]) - parseFloat(args[1])
-  //       }`;
-  //     case "mul":
-  //       console.log(args);
-  //       return `${args[0]} * ${args[1]} = ${
-  //         parseFloat(args[0]) * parseFloat(args[1])
-  //       }`;
-  //     case "div":
-  //       return `${args[0]} ÷ ${args[1]} = ${
-  //         parseFloat(args[0]) / parseFloat(args[1])
-  //       }`;
-  //     case "sqrt":
-  //       if (args.length !== 1) {
-  //         throw new Error("sqrt command requires exactly one operand");
-  //       }
-  //       return `\\sqrt${args[0]} = ${Math.sqrt(parseFloat(args[0]))}`;
-  //     // case "pow":
-  //     // if (args.length !== 2) {
-  //     //   throw new Error("pow command requires exactly two operands");
-  //     // }
-  //     // return {
-  //     //   operation: "pow",
-  //     //   base: parseFloat(args[0]),
-  //     //   exponent: parseFloat(args[1]),
-  //     // };
-  //     default:
-  //       throw new Error(`Unknown command: ${command}`);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   console.log(initialTexts);
-  //   initialTexts.forEach((text: string) => {
-  //     const li = document.createElement("li");
-  //     text = parseCommand(text);
-  //     console.log(text);
-  //     const val = <InlineMath>{text}</InlineMath>;
-  //     ReactDOM.createRoot(li).render(val);
-  //     listRef.current?.appendChild(li);
-  //   });
-  // }, []);
+    switch (command) {
+      case "sum":
+        console.log(args);
+        return `${args[0]} + ${args[1]} = ${
+          parseFloat(args[0]) + parseFloat(args[1])
+        }`;
+      case "sub":
+        console.log(args);
+        return `${args[0]} - ${args[1]} = ${
+          parseFloat(args[0]) - parseFloat(args[1])
+        }`;
+      case "mul":
+        console.log(args);
+        return `${args[0]} * ${args[1]} = ${
+          parseFloat(args[0]) * parseFloat(args[1])
+        }`;
+      case "div":
+        return `${args[0]} ÷ ${args[1]} = ${
+          parseFloat(args[0]) / parseFloat(args[1])
+        }`;
+      case "sqrt":
+        if (args.length !== 1) {
+          throw new Error("sqrt command requires exactly one operand");
+        }
+        return `\\sqrt${args[0]} = ${Math.sqrt(parseFloat(args[0]))}`;
+      // case "pow":
+      // if (args.length !== 2) {
+      //   throw new Error("pow command requires exactly two operands");
+      // }
+      // return {
+      //   operation: "pow",
+      //   base: parseFloat(args[0]),
+      //   exponent: parseFloat(args[1]),
+      // };
+      default:
+        throw new Error(`Unknown command: ${command}`);
+    }
+  }
 
   // useEffect(() => {
   //   server.on("text", (globalTexts) => {
@@ -185,9 +165,7 @@ export default function Canvas() {
   // const { user } = useRouteLoaderData("canvas") as {
   //   user: User;
   // };
-  // const { setJoinClassFormOpen, setCreateClassFormOpen } = useContext(
-  //   FormsContext,
-  // ) as FormsContextType;
+
   // const [drawing, setDrawing] = useState("");
   // const roughGenerator = rough.generator();
 
@@ -224,18 +202,6 @@ export default function Canvas() {
   //   console.log("canvas");
 
   // }, []);
-
-  const navigation = useNavigation();
-  const navigate = useNavigate();
-
-  function handleEndClass(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    const docRef = doc(db, `classes/${id}`);
-    updateDoc(docRef, {
-      status: new Date(),
-    });
-    navigate("/dashboard");
-  }
 
   // useEffect(() => {
   //   server.on("host-create", (data) => {
@@ -295,9 +261,54 @@ export default function Canvas() {
   //   // });
   // }, []);
 
+  const [content, setContent] = useState("");
+  const listRef = useRef<HTMLUListElement>(null);
+  const [classContent, setClassContent] = useState<string[]>([]);
+
+  const navigation = useNavigation();
+  const navigate = useNavigate();
+
+  function handleEndClass(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    const docRef = doc(db, `classes/${id}`);
+    updateDoc(docRef, {
+      status: new Date(),
+    });
+    navigate("/dashboard");
+  }
+
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setContent(e.target.value);
   }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const newContent: string[] = [...classContent, content];
+    console.log(content, classContent, newContent);
+    setClassContent(newContent);
+    console.log(classContent);
+    server.emit("text", { newContent, id });
+    setContent("");
+  }
+
+  useEffect(() => {
+    server.on("receive-text", (data) => {
+      const { newContent } = data;
+      console.log(newContent);
+      setClassContent(newContent);
+    });
+  }, []);
+
+  useEffect(() => {
+    classContent.forEach((text: string) => {
+      const li = document.createElement("li");
+      text = parseCommand(text);
+      console.log(text);
+      const val = <InlineMath>{text}</InlineMath>;
+      ReactDOM.createRoot(li).render(val);
+      listRef.current?.appendChild(li);
+    });
+  }, [classContent]);
 
   return (
     <>
@@ -366,13 +377,7 @@ export default function Canvas() {
         </div>
 
         <div className="flex flex-col gap-1 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm">
-          <Form
-            method="POST"
-            action="."
-            onSubmit={() => {
-              setContent("");
-            }}
-          >
+          <form onSubmit={handleSubmit}>
             <input
               type="text"
               name="text"
@@ -382,8 +387,9 @@ export default function Canvas() {
               className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm disabled:cursor-not-allowed"
               placeholder="Type your command or equation here"
             />
-            <input type="hidden" name="id" value={id} />
-          </Form>
+            {/* <input type="hidden" name="id" value={id} />
+            <input type="hidden" name="class-content" value={classContent} /> */}
+          </form>
 
           <ul
             ref={listRef}
