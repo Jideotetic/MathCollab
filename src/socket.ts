@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
-const PORT = "http://localhost:10000";
-// const PORT = "https://mathcollab-server.onrender.com";
+// const PORT = "http://localhost:10000";
+const PORT = "https://mathcollab-server.onrender.com";
 
 interface ConnectionOptionsType {
   "force new connection": boolean;
