@@ -6,7 +6,6 @@ import Dashboard from "./routes/Dashboard";
 import HomePage from "./routes/HomePage";
 import FormsContextProvider from "./contexts/FormsContext";
 import Canvas from "./routes/Canvas";
-import "./index.css";
 import LoginForm from "./components/forms/LoginForm";
 import SignUpForm from "./components/forms/SignUpForm";
 import VerifyEmailOTPForm from "./components/forms/VerifyEmailForm";
@@ -27,10 +26,10 @@ import createClassAction from "./actions/createClassAction";
 import joinClassAction from "./actions/joinClassAction";
 import homePageLoader from "./loaders/homePageLoader";
 import dashboardLoader from "./loaders/dashboardLoader";
-import canvasAction from "./actions/canvasAction";
 import likeButtonAction from "./actions/likeButtonAction";
 import canvasLoader from "./loaders/canvasLoader";
 import registerAction from "./actions/registerAction";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -109,7 +108,6 @@ const router = createBrowserRouter([
     element: <Canvas />,
     errorElement: <ErrorPage />,
     loader: canvasLoader,
-    action: canvasAction,
   },
 ]);
 
