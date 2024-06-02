@@ -75,6 +75,12 @@ export default function Canvas() {
   const [joinedUser, setJoinedUser] = useState<User | null>(null);
 
   useEffect(() => {
+    server.on("class-started", () => {
+      toast.success("Class started successfully");
+    });
+  }, []);
+
+  useEffect(() => {
     server.on("joined-successfully", (data) => {
       const { user } = data;
       setJoinedUser(user);
@@ -140,128 +146,8 @@ export default function Canvas() {
     }
   }
 
-  // useEffect(() => {
-  //   server.on("text", (globalTexts) => {
-  //     if (globalTexts.length > 0) {
-  //       let text = globalTexts[globalTexts.length - 1];
-  //       const li = document.createElement("li");
-  //       text = parseCommand(text);
-  //       console.log(text);
-  //       const val = <InlineMath>{text}</InlineMath>;
-  //       ReactDOM.createRoot(li).render(val);
-  //       listRef.current?.appendChild(li);
-  //     } else {
-  //       return;
-  //     }
-  //   });
-  // }, []);
-
-  // const [host, setHost] = useState(false);
-  // const [id, setId] = useState<string | null>("");
-  // const [className, setClassName] = useState<string | null>("");
-  // const [sharedContent, setSharedContent] = useState("Shared");
-  // const [element, setElement] = useState([]);
-  // const [isDrawing, setIsDrawing] = useState(false);
-  // const { user } = useRouteLoaderData("canvas") as {
-  //   user: User;
-  // };
-
-  // const [drawing, setDrawing] = useState("");
-  // const roughGenerator = rough.generator();
-
-  // const handleMouseDown = (
-  //   e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>,
-  // ) => {
-  //   const { offsetX, offsetY } = e.nativeEvent;
-
-  //   console.log(offsetX, offsetY);
-  //   setIsDrawing(true);
-  // };
-
-  // const handleMouseUp = (
-  //   e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>,
-  // ) => {
-  //   const { offsetX, offsetY } = e.nativeEvent;
-
-  //   console.log(offsetX, offsetY);
-  //   setIsDrawing(false);
-  // };
-
-  // const handleMouseMove = (
-  //   e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>,
-  // ) => {
-  //   const { offsetX, offsetY } = e.nativeEvent;
-  //   if (isDrawing) {
-  //     console.log(offsetX, offsetY);
-  //   }
-  // };
-
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   console.log("canvas");
-
-  // }, []);
-
-  // useEffect(() => {
-  //   server.on("host-create", (data) => {
-  //     setHost(data.host);
-  //     setId(data.id);
-  //     setClassName(data.className);
-  //     sessionStorage.setItem("host", data.host);
-  //     sessionStorage.setItem("id", data.id);
-  //     sessionStorage.setItem("className", data.className);
-  //   });
-
-  //   const id = sessionStorage.getItem("id");
-  //   setId(id);
-  //   const tempHost = sessionStorage.getItem("host");
-  //   setHost(tempHost === "true");
-  //   const className = sessionStorage.getItem("className");
-  //   setClassName(className);
-  //   if (host === true) {
-  //     toast.info(`You start the ${className} class`);
-  //     toast.info(`Share the id ${id} with user to join`);
-  //   }
-  // }, [host]);
-
-  // useEffect(() => {
-  //   if (host === true) {
-  //     server.emit("canvas-data", content);
-  //   }
-  // }, [content, host]);
-
-  // useEffect(() => {
-  //   server.on("canvas-response", (data) => {
-  //     // setSharedContent(data);
-  //     console.log(data);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   server.emit("content", content);
-  // }, [content]);
-
-  // useEffect(() => {
-  //   server.on("content-data", (content) => {
-  //     setContent(content);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   const canvas = canvasRef.current;
-  //   const ctx = canvas.getContext("2d");
-
-  //   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  //   ctx.font = "12px serif italic";
-  //   ctx.fillStyle = "black";
-  //   ctx.fillText("text", 5, 160);
-  //   // texts.forEach((text, index) => {
-  //   // });
-  // }, []);
-
-  const [content, setContent] = useState("");
+  const [text, setText] = useState("");
+  const [joined, setJoined] = useState<boolean>(false);
   const listRef = useRef<HTMLUListElement>(null);
   const [classContent, setClassContent] = useState<string[]>([]);
 
@@ -278,37 +164,71 @@ export default function Canvas() {
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setContent(e.target.value);
+    setText(e.target.value);
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const newContent: string[] = [...classContent, content];
-    console.log(content, classContent, newContent);
+    const newContent: string[] = [...classContent, text];
     setClassContent(newContent);
-    console.log(classContent);
-    server.emit("text", { newContent, id });
-    setContent("");
+    server.emit("send-text", { newContent, id });
+    setText("");
   }
 
   useEffect(() => {
-    server.on("receive-text", (data) => {
-      const { newContent } = data;
+    server.on("receive-text", (newContent) => {
       console.log(newContent);
       setClassContent(newContent);
     });
   }, []);
 
   useEffect(() => {
-    classContent.forEach((text: string) => {
+    server.on("receive-initial-text", (newContent) => {
+      setJoined(true);
+      setClassContent(newContent);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(joined);
+    if (joined) {
+      classContent.forEach((text: string) => {
+        const li = document.createElement("li");
+        text = parseCommand(text);
+        console.log(text);
+        const val = <InlineMath>{text}</InlineMath>;
+        ReactDOM.createRoot(li).render(val);
+        listRef.current?.appendChild(li);
+      });
+    }
+  }, [classContent, joined]);
+
+  useEffect(() => {
+    if (joined) {
+      setJoined(false);
+      return;
+    }
+    if (classContent.length > 0) {
+      console.log("true");
+      let text = classContent[classContent.length - 1];
       const li = document.createElement("li");
       text = parseCommand(text);
       console.log(text);
       const val = <InlineMath>{text}</InlineMath>;
       ReactDOM.createRoot(li).render(val);
       listRef.current?.appendChild(li);
-    });
-  }, [classContent]);
+    } else {
+      console.log("false");
+      classContent.forEach((text: string) => {
+        const li = document.createElement("li");
+        text = parseCommand(text);
+        console.log(text);
+        const val = <InlineMath>{text}</InlineMath>;
+        ReactDOM.createRoot(li).render(val);
+        listRef.current?.appendChild(li);
+      });
+    }
+  }, [classContent, joined]);
 
   return (
     <>
@@ -381,7 +301,7 @@ export default function Canvas() {
             <input
               type="text"
               name="text"
-              value={content}
+              value={text}
               onChange={handleChange}
               disabled={currentUser.displayName === joinedUser?.displayName}
               className="h-[38px] w-full rounded border border-neutral-200 bg-white font-['Raleway'] text-xs font-normal leading-[18px] text-neutral-500 shadow-sm disabled:cursor-not-allowed"

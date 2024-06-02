@@ -91,25 +91,6 @@ export default function DashboardMain() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   server.on("class-started", () => {
-  //     revalidator.revalidate();
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // useEffect(() => {
-  //   server.emit("class-status")
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // useEffect(() => {
-  //   server.on("class-status-success", () => {
-  //     revalidator.revalidate();
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   return (
     <>
       <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4 py-2">

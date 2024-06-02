@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { authProvider } from "../auth";
-// import { server } from "../socket";
 import { toast } from "react-toastify";
 import { server } from "../socket";
 import { collection, getDocs } from "firebase/firestore";
@@ -15,8 +14,6 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
       toast.info("Sign in to access class");
       return redirect("/");
     }
-
-    // let texts: string[] = [];
 
     const classes: ClassData[] = [];
 
@@ -74,22 +71,10 @@ export default async function canvasLoader({ params }: LoaderFunctionArgs) {
       return redirect("/dashboard");
     }
 
-    server.on("class-started", () => {
-      toast.success("Class started successfully");
-    });
-
-    // const fetchInitialTexts = new Promise((resolve) => {
-    //   server.on("initial-text", (globalTexts) => {
-    //     texts = globalTexts;
-    //     resolve(texts);
-    //   });
-    // });
-
-    // const initialTexts = (await fetchInitialTexts) as string[];
+    server.emit("rejoined-class", params.id);
 
     return {
       currentUser: authProvider.user,
-      // initialTexts,
     };
   } catch (error) {
     console.error(error);
